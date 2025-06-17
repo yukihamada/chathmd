@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wisbee クイックスタートガイド</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Sans', sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            background: #f5f5f5;
+        }
+        
+        .container {
+            background: white;
+            padding: 3rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #ff6b6b;
+            margin-bottom: 2rem;
+        }
+        
+        h2 {
+            color: #333;
+            margin-top: 2rem;
+        }
+        
+        .step {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            border-left: 4px solid #ff6b6b;
+        }
+        
+        code {
+            background: #e9ecef;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Consolas', 'Monaco', monospace;
+        }
+        
+        pre {
+            background: #1a1a2e;
+            color: #4ade80;
+            padding: 1rem;
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+        
+        .download-button {
+            display: inline-block;
+            background: #ff6b6b;
+            color: white;
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            margin: 0.5rem;
+            transition: background 0.2s;
+        }
+        
+        .download-button:hover {
+            background: #ff5252;
+        }
+        
+        .note {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🐝 Wisbee クイックスタートガイド</h1>
+        
+        <p>Wisbeeをお使いいただきありがとうございます！このガイドでは、5分以内にWisbeeを起動する方法を説明します。</p>
+        
+        <h2>📥 ステップ1: インストーラーをダウンロード</h2>
+        
+        <div class="step">
+            <p>お使いのOSに合わせてインストーラーをダウンロードしてください：</p>
+            
+            <div style="text-align: center; margin: 1rem 0;">
+                <a href="/download/wisbee-installer-mac.py" class="download-button">🍎 macOS用</a>
+                <a href="/download/wisbee-installer-win.py" class="download-button">🪟 Windows用</a>
+                <a href="/download/wisbee-installer-linux.py" class="download-button">🐧 Linux用</a>
+            </div>
+            
+            <p><small>※ インストーラーサイズ: 約10KB</small></p>
+        </div>
+        
+        <h2>🚀 ステップ2: インストーラーを実行</h2>
+        
+        <div class="step">
+            <h3>macOS / Linux:</h3>
+            <pre>python3 wisbee-installer-mac.py</pre>
+            
+            <h3>Windows:</h3>
+            <pre>python wisbee-installer-win.py</pre>
+            
+            <p>インストーラーは以下を自動的に行います：</p>
+            <ul>
+                <li>必要なディレクトリの作成</li>
+                <li>jan-nano 4Bモデル（2.27GB）のダウンロード</li>
+                <li>llama.cppのセットアップ</li>
+                <li>起動スクリプトの作成</li>
+            </ul>
+        </div>
+        
+        <div class="note">
+            <strong>💡 ヒント:</strong> 初回のモデルダウンロードには5-10分かかります。コーヒーでも飲みながらお待ちください！
+        </div>
+        
+        <h2>🎯 ステップ3: Wisbeeを起動</h2>
+        
+        <div class="step">
+            <p>インストール完了後、以下のコマンドでWisbeeを起動できます：</p>
+            
+            <pre>python3 ~/.wisbee/wisbee.py</pre>
+            
+            <p>または、macOSの場合は<strong>アプリケーション</strong>フォルダから<strong>Wisbee</strong>を起動できます。</p>
+        </div>
+        
+        <h2>✨ 使い方のヒント</h2>
+        
+        <div class="step">
+            <ul>
+                <li><strong>プライバシー優先:</strong> すべての処理はローカルで行われます</li>
+                <li><strong>オフライン動作:</strong> インターネット接続は不要です</li>
+                <li><strong>学習機能:</strong> あなたのフィードバックから学習します</li>
+                <li><strong>高速推論:</strong> M1 Macで30-50トークン/秒</li>
+            </ul>
+        </div>
+        
+        <h2>🆘 トラブルシューティング</h2>
+        
+        <div class="step">
+            <h3>Python3がインストールされていない場合:</h3>
+            <ul>
+                <li><strong>macOS:</strong> <code>brew install python3</code></li>
+                <li><strong>Ubuntu/Debian:</strong> <code>sudo apt install python3</code></li>
+                <li><strong>Windows:</strong> <a href="https://python.org/downloads">python.org</a>からダウンロード</li>
+            </ul>
+            
+            <h3>その他の問題:</h3>
+            <p>GitHubのIssuesページまたはDiscordコミュニティでお問い合わせください。</p>
+        </div>
+        
+        <div style="text-align: center; margin-top: 3rem;">
+            <p>
+                <a href="/" style="color: #ff6b6b;">← ホームに戻る</a> | 
+                <a href="https://github.com/yukihamada/wisbee" style="color: #ff6b6b;">GitHub</a> | 
+                <a href="https://discord.gg/wisbee" style="color: #ff6b6b;">Discord</a>
+            </p>
+        </div>
+    </div>
+</body>
+</html>

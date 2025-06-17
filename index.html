@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wisbee - AI Assistant</title>
+    <title>Wisbee - プライバシー重視のAIアシスタント</title>
     <style>
         * {
             margin: 0;
@@ -11,32 +11,105 @@
             box-sizing: border-box;
         }
         
+        /* ライトテーマ */
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8f9fa;
+            --bg-sidebar: #f0f2f5;
+            --text-primary: #1a1a1a;
+            --text-secondary: #6c757d;
+            --border-color: #dee2e6;
+            --accent-color: #ff6b6b;
+            --message-user-bg: #007bff;
+            --message-assistant-bg: #f8f9fa;
+            --message-assistant-border: #dee2e6;
+            --input-bg: #ffffff;
+            --sidebar-bg: #f8f9fa;
+            --code-bg: #f5f5f5;
+        }
+        
+        /* ダークテーマ */
+        [data-theme="dark"] {
+            --bg-primary: #0e1117;
+            --bg-secondary: #262730;
+            --bg-sidebar: #1a1a24;
+            --text-primary: #fafafa;
+            --text-secondary: #808495;
+            --border-color: #333;
+            --accent-color: #ff6b6b;
+            --message-user-bg: #2d3748;
+            --message-assistant-bg: #262730;
+            --message-assistant-border: #333;
+            --input-bg: #262730;
+            --sidebar-bg: #262730;
+            --code-bg: #1e1e2e;
+        }
+        
+        /* システムテーマに自動対応 */
+        @media (prefers-color-scheme: dark) {
+            :root:not([data-theme="light"]) {
+                --bg-primary: #0e1117;
+                --bg-secondary: #262730;
+                --bg-sidebar: #1a1a24;
+                --text-primary: #fafafa;
+                --text-secondary: #808495;
+                --border-color: #333;
+                --accent-color: #ff6b6b;
+                --message-user-bg: #2d3748;
+                --message-assistant-bg: #262730;
+                --message-assistant-border: #333;
+                --input-bg: #262730;
+                --sidebar-bg: #262730;
+                --code-bg: #1e1e2e;
+            }
+        }
+        
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background-color: #0e1117;
-            color: #fafafa;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', Meiryo, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
             height: 100vh;
             display: flex;
             overflow: hidden;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
         
-        /* Sidebar */
+        /* サイドバー */
         .sidebar {
             width: 300px;
-            background-color: #262730;
+            background-color: var(--sidebar-bg);
             padding: 2rem 1rem;
             display: flex;
             flex-direction: column;
-            border-right: 1px solid #333;
+            border-right: 1px solid var(--border-color);
+            transition: background-color 0.3s ease;
         }
         
         .sidebar h1 {
             font-size: 1.5rem;
             margin-bottom: 2rem;
-            color: #ff6b6b;
+            color: var(--accent-color);
             display: flex;
             align-items: center;
             gap: 0.5rem;
+        }
+        
+        .theme-toggle {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+        
+        .theme-toggle:hover {
+            background-color: var(--bg-secondary);
         }
         
         .sidebar-section {
@@ -45,22 +118,23 @@
         
         .sidebar-section h3 {
             font-size: 0.875rem;
-            color: #808495;
+            color: var(--text-secondary);
             margin-bottom: 0.75rem;
             text-transform: uppercase;
             letter-spacing: 0.05em;
         }
         
         .model-info {
-            background-color: #1e1e2e;
+            background-color: var(--code-bg);
             padding: 1rem;
             border-radius: 0.5rem;
             margin-bottom: 1rem;
+            transition: background-color 0.3s ease;
         }
         
         .model-info p {
             font-size: 0.875rem;
-            color: #b4b4b4;
+            color: var(--text-secondary);
             margin-bottom: 0.5rem;
         }
         
@@ -69,8 +143,8 @@
             font-weight: 600;
         }
         
-        .advanced-toggle {
-            background-color: #ff6b6b;
+        .download-button {
+            background-color: var(--accent-color);
             color: white;
             border: none;
             padding: 0.75rem 1.5rem;
@@ -83,19 +157,20 @@
             transition: background-color 0.2s;
         }
         
-        .advanced-toggle:hover {
+        .download-button:hover {
             background-color: #ff5252;
         }
         
-        /* Main content */
+        /* メインコンテンツ */
         .main-content {
             flex: 1;
             display: flex;
             flex-direction: column;
-            background-color: #0e1117;
+            background-color: var(--bg-primary);
+            transition: background-color 0.3s ease;
         }
         
-        /* Chat container */
+        /* チャットコンテナ */
         .chat-container {
             flex: 1;
             overflow-y: auto;
@@ -130,14 +205,15 @@
             justify-content: center;
             font-size: 1.2rem;
             flex-shrink: 0;
+            background-color: var(--bg-secondary);
         }
         
         .message.user .message-avatar {
-            background-color: #2d3748;
+            background-color: var(--message-user-bg);
         }
         
         .message.assistant .message-avatar {
-            background-color: #ff6b6b;
+            background-color: var(--accent-color);
         }
         
         .message-content {
@@ -145,15 +221,18 @@
         }
         
         .message-content p {
-            background-color: #262730;
+            background-color: var(--message-assistant-bg);
             padding: 1rem;
             border-radius: 0.5rem;
             line-height: 1.6;
             font-size: 0.875rem;
+            border: 1px solid var(--message-assistant-border);
         }
         
         .message.user .message-content p {
-            background-color: #1e1e2e;
+            background-color: var(--message-user-bg);
+            color: white;
+            border: none;
         }
         
         .feedback-buttons {
@@ -170,8 +249,8 @@
         
         .feedback-btn {
             background: none;
-            border: 1px solid #333;
-            color: #808495;
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
             padding: 0.25rem 0.5rem;
             border-radius: 0.25rem;
             cursor: pointer;
@@ -180,15 +259,15 @@
         }
         
         .feedback-btn:hover {
-            border-color: #ff6b6b;
-            color: #ff6b6b;
+            border-color: var(--accent-color);
+            color: var(--accent-color);
         }
         
-        /* Input area */
+        /* 入力エリア */
         .input-area {
             padding: 1.5rem 2rem;
-            background-color: #0e1117;
-            border-top: 1px solid #333;
+            background-color: var(--bg-primary);
+            border-top: 1px solid var(--border-color);
         }
         
         .input-container {
@@ -199,23 +278,24 @@
         
         .chat-input {
             flex: 1;
-            background-color: #262730;
-            border: 1px solid #333;
-            color: #fafafa;
+            background-color: var(--input-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
             padding: 0.75rem 1rem;
             border-radius: 0.5rem;
             font-size: 0.875rem;
             resize: none;
             outline: none;
-            transition: border-color 0.2s;
+            transition: border-color 0.2s, background-color 0.3s;
+            font-family: inherit;
         }
         
         .chat-input:focus {
-            border-color: #ff6b6b;
+            border-color: var(--accent-color);
         }
         
         .send-button {
-            background-color: #ff6b6b;
+            background-color: var(--accent-color);
             color: white;
             border: none;
             padding: 0.75rem 1.5rem;
@@ -238,17 +318,17 @@
             cursor: not-allowed;
         }
         
-        /* Welcome message */
+        /* ウェルカムメッセージ */
         .welcome-message {
             text-align: center;
             padding: 3rem;
-            color: #808495;
+            color: var(--text-secondary);
         }
         
         .welcome-message h2 {
             font-size: 1.5rem;
             margin-bottom: 1rem;
-            color: #fafafa;
+            color: var(--text-primary);
         }
         
         .welcome-message p {
@@ -258,7 +338,17 @@
             margin: 0 auto;
         }
         
-        /* Loading indicator */
+        .welcome-message ul {
+            text-align: left;
+            display: inline-block;
+            margin-top: 1rem;
+        }
+        
+        .welcome-message li {
+            margin-bottom: 0.5rem;
+        }
+        
+        /* ローディングインジケーター */
         .typing-indicator {
             display: flex;
             gap: 0.3rem;
@@ -268,7 +358,7 @@
         .typing-dot {
             width: 8px;
             height: 8px;
-            background-color: #808495;
+            background-color: var(--text-secondary);
             border-radius: 50%;
             animation: typing 1.4s infinite;
         }
@@ -290,10 +380,17 @@
             }
         }
         
-        /* Mobile responsive */
+        /* モバイル対応 */
         @media (max-width: 768px) {
             .sidebar {
                 display: none;
+            }
+            
+            .theme-toggle {
+                position: fixed;
+                top: 1rem;
+                right: 1rem;
+                z-index: 100;
             }
             
             .input-container {
@@ -308,58 +405,62 @@
     </style>
 </head>
 <body>
+    <button class="theme-toggle" onclick="wisbee.toggleTheme()" title="テーマ切り替え">
+        <span id="themeIcon">🌙</span>
+    </button>
+    
     <div class="sidebar">
         <h1>🐝 Wisbee</h1>
         
         <div class="sidebar-section">
-            <h3>Current Model</h3>
+            <h3>現在のモデル</h3>
             <div class="model-info">
-                <p><strong>jan-nano XS</strong></p>
-                <p>Q4_K_XS quantization</p>
-                <p class="highlight">✨ 3-5x faster inference</p>
-                <p>💾 Only 7.5GB model size</p>
+                <p><strong>jan-nano 4B</strong></p>
+                <p>iQ4_XS 量子化</p>
+                <p class="highlight">✨ 3-5倍高速な推論</p>
+                <p>💾 わずか2.27GBのモデルサイズ</p>
             </div>
         </div>
         
         <div class="sidebar-section">
-            <h3>Features</h3>
+            <h3>特徴</h3>
             <div class="model-info">
-                <p>🧠 Text-to-LoRA Learning</p>
-                <p>🔒 100% Private & Local</p>
-                <p>⚡ Real-time Adaptation</p>
-                <p>📚 Continuous Improvement</p>
+                <p>🧠 Text-to-LoRA学習</p>
+                <p>🔒 100% プライベート＆ローカル</p>
+                <p>⚡ リアルタイム適応</p>
+                <p>📚 継続的な改善</p>
             </div>
         </div>
         
-        <button class="advanced-toggle" onclick="wisbee.toggleAdvanced()">
-            Advanced Settings
+        <button class="download-button" onclick="wisbee.showDownloadOptions()">
+            💾 デスクトップ版をダウンロード
         </button>
     </div>
     
     <div class="main-content">
         <div class="chat-container" id="chatContainer">
             <div class="welcome-message" id="welcomeMessage">
-                <h2>Welcome to Wisbee AI Assistant</h2>
+                <h2>Wisbee AIアシスタントへようこそ</h2>
                 <p>
-                    👋 Hi! I'm Wisbee, your privacy-first AI assistant.
+                    👋 こんにちは！私はWisbee、プライバシーを最優先に考えるAIアシスタントです。
                 </p>
                 <p style="margin-top: 1rem;">
-                    <strong>🔒 Want true privacy?</strong> Download the desktop app for:
+                    <strong>🔒 真のプライバシーをお求めですか？</strong> デスクトップアプリをダウンロードすると：
                 </p>
-                <ul style="text-align: left; display: inline-block; margin-top: 1rem;">
-                    <li>✅ 100% local processing - no cloud, no tracking</li>
-                    <li>✅ jan-nano XS model (7.5GB) with GPT-3.5 quality</li>
-                    <li>✅ Text-to-LoRA learning that adapts to you</li>
-                    <li>✅ 3-5x faster inference speeds</li>
-                    <li>✅ Works offline - no internet required</li>
+                <ul>
+                    <li>✅ 100%ローカル処理 - クラウドなし、トラッキングなし</li>
+                    <li>✅ jan-nano 4Bモデル（2.27GB）でGPT-3.5品質を実現</li>
+                    <li>✅ あなたに適応するText-to-LoRA学習</li>
+                    <li>✅ 3-5倍高速な推論速度</li>
+                    <li>✅ オフライン動作 - インターネット不要</li>
                 </ul>
                 <p style="margin-top: 1.5rem;">
-                    <a href="#" onclick="wisbee.showDownloadOptions()" style="color: #ff6b6b; text-decoration: underline; font-weight: 600;">
-                        📥 Download Wisbee Desktop (Free)
+                    <a href="#" onclick="wisbee.showDownloadOptions()" style="color: var(--accent-color); text-decoration: underline; font-weight: 600;">
+                        📥 Wisbee デスクトップ版をダウンロード（無料）
                     </a>
                 </p>
-                <p style="margin-top: 1rem; font-size: 0.875rem; color: #808495;">
-                    This web version uses demo responses. Download the desktop app for real AI conversations.
+                <p style="margin-top: 1rem; font-size: 0.875rem; color: var(--text-secondary);">
+                    このWeb版はデモ応答を使用しています。実際のAI会話にはデスクトップアプリをダウンロードしてください。
                 </p>
             </div>
         </div>
@@ -369,12 +470,12 @@
                 <textarea 
                     class="chat-input" 
                     id="chatInput" 
-                    placeholder="Send a message..."
+                    placeholder="メッセージを入力..."
                     rows="1"
                     onkeydown="wisbee.handleKeyPress(event)"
                 ></textarea>
                 <button class="send-button" id="sendButton" onclick="wisbee.sendMessage()">
-                    Send
+                    送信
                 </button>
             </div>
         </div>
@@ -394,17 +495,47 @@
                 this.welcomeMessage = document.getElementById('welcomeMessage');
                 
                 this.initializeChat();
+                this.initializeTheme();
             }
             
             initializeChat() {
-                // Auto-resize textarea
+                // テキストエリアの自動リサイズ
                 this.chatInput.addEventListener('input', () => {
                     this.chatInput.style.height = 'auto';
                     this.chatInput.style.height = Math.min(this.chatInput.scrollHeight, 120) + 'px';
                 });
                 
-                // Check API health
+                // APIヘルスチェック
                 this.checkAPIHealth();
+            }
+            
+            initializeTheme() {
+                // 保存されたテーマを読み込む
+                const savedTheme = localStorage.getItem('wisbee-theme');
+                const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                
+                if (savedTheme) {
+                    document.documentElement.setAttribute('data-theme', savedTheme);
+                    this.updateThemeIcon(savedTheme);
+                } else if (systemPrefersDark) {
+                    this.updateThemeIcon('dark');
+                } else {
+                    this.updateThemeIcon('light');
+                }
+            }
+            
+            toggleTheme() {
+                const currentTheme = document.documentElement.getAttribute('data-theme');
+                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                
+                document.documentElement.setAttribute('data-theme', newTheme);
+                localStorage.setItem('wisbee-theme', newTheme);
+                this.updateThemeIcon(newTheme);
+            }
+            
+            updateThemeIcon(theme) {
+                const icon = document.getElementById('themeIcon');
+                icon.textContent = theme === 'dark' ? '☀️' : '🌙';
             }
             
             async checkAPIHealth() {
@@ -415,7 +546,7 @@
                         console.log('API Health:', data);
                     }
                 } catch (error) {
-                    console.log('Using demo mode');
+                    console.log('デモモードを使用');
                 }
             }
             
@@ -430,26 +561,26 @@
                 const message = this.chatInput.value.trim();
                 if (!message || this.isTyping) return;
                 
-                // Hide welcome message on first message
+                // 最初のメッセージでウェルカムメッセージを非表示
                 if (this.welcomeMessage) {
                     this.welcomeMessage.style.display = 'none';
                 }
                 
-                // Add user message
+                // ユーザーメッセージを追加
                 this.addMessage('user', message);
                 
-                // Clear input
+                // 入力をクリア
                 this.chatInput.value = '';
                 this.chatInput.style.height = 'auto';
                 
-                // Disable input while processing
+                // 処理中は入力を無効化
                 this.setTyping(true);
                 
                 try {
                     const response = await this.getAIResponse(message);
                     this.addMessage('assistant', response);
                 } catch (error) {
-                    this.addMessage('assistant', 'Sorry, I encountered an error. Please try again.');
+                    this.addMessage('assistant', '申し訳ございません。エラーが発生しました。もう一度お試しください。');
                 } finally {
                     this.setTyping(false);
                 }
@@ -464,20 +595,20 @@
                         },
                         body: JSON.stringify({
                             message: message,
-                            model: 'runpod',
+                            model: 'demo',
                             temperature: 0.8
                         })
                     });
                     
                     if (!response.ok) {
-                        throw new Error('API error');
+                        throw new Error('APIエラー');
                     }
                     
                     const data = await response.json();
-                    return data.response || data.text || 'No response received';
+                    return data.response || data.text || '応答を受信できませんでした';
                     
                 } catch (error) {
-                    // Fallback to demo responses
+                    // デモ応答にフォールバック
                     return this.getDemoResponse(message);
                 }
             }
@@ -485,34 +616,34 @@
             getDemoResponse(message) {
                 const messageLC = message.toLowerCase();
                 
-                // Context-aware responses
-                if (messageLC.includes('download') || messageLC.includes('install')) {
-                    return "Great choice! You can download Wisbee Desktop for free at wisbee.ai. It includes the full jan-nano XS model (7.5GB) and runs 100% locally on your device. Choose your platform: macOS, Windows, or Linux. The installation is simple - just download and run!";
+                // コンテキストに応じた応答
+                if (messageLC.includes('ダウンロード') || messageLC.includes('インストール')) {
+                    return "素晴らしい選択です！wisbee.aiから無料でWisbeeデスクトップをダウンロードできます。完全なjan-nano 4Bモデル（2.27GB）が含まれており、お使いのデバイスで100%ローカルに動作します。macOS、Windows、Linuxに対応しています！";
                 }
                 
-                if (messageLC.includes('privacy') || messageLC.includes('secure') || messageLC.includes('safe')) {
-                    return "Privacy is our top priority! The desktop version of Wisbee runs entirely on your device - no internet connection required, no data sent to servers, no tracking. Your conversations stay on your computer. Download the desktop app for true privacy: wisbee.ai";
+                if (messageLC.includes('プライバシー') || messageLC.includes('安全') || messageLC.includes('セキュリティ')) {
+                    return "プライバシーは私たちの最優先事項です！デスクトップ版のWisbeeは完全にあなたのデバイス上で動作します - インターネット接続不要、サーバーへのデータ送信なし、トラッキングなし。あなたの会話はコンピュータに残ります。真のプライバシーのためにデスクトップアプリをダウンロードしてください：wisbee.ai";
                 }
                 
-                if (messageLC.includes('how') && (messageLC.includes('work') || messageLC.includes('use'))) {
-                    return "Wisbee uses the revolutionary jan-nano XS model with Text-to-LoRA technology. Simply chat naturally, and I learn from your feedback. When you rate responses or give suggestions, I adapt in real-time. Download the desktop version to experience this personalized AI: wisbee.ai";
+                if (messageLC.includes('使い方') || messageLC.includes('どうやって')) {
+                    return "WisbeeはText-to-LoRA技術を搭載した革新的なjan-nano 4Bモデルを使用しています。自然に会話するだけで、私はあなたのフィードバックから学習します。評価や提案をいただくと、リアルタイムで適応します。この個人化されたAIを体験するには、デスクトップ版をダウンロードしてください：wisbee.ai";
                 }
                 
-                if (messageLC.includes('free') || messageLC.includes('cost') || messageLC.includes('price')) {
-                    return "Yes, Wisbee is completely free! No subscriptions, no hidden costs. Download the desktop app at wisbee.ai and enjoy unlimited AI conversations privately on your device. The jan-nano XS model (7.5GB) is included!";
+                if (messageLC.includes('無料') || messageLC.includes('料金') || messageLC.includes('価格')) {
+                    return "はい、Wisbeeは完全に無料です！サブスクリプションも隠れたコストもありません。wisbee.aiでデスクトップアプリをダウンロードして、あなたのデバイスで無制限のAI会話をプライベートにお楽しみください。jan-nano 4Bモデル（2.27GB）が含まれています！";
                 }
                 
-                if (messageLC.includes('model') || messageLC.includes('llm') || messageLC.includes('ai')) {
-                    return "Wisbee uses the jan-nano XS model - a breakthrough in AI efficiency! It delivers GPT-3.5 quality in just 7.5GB with 3-5x faster inference. Download the desktop app to run this powerful model locally: wisbee.ai";
+                if (messageLC.includes('モデル') || messageLC.includes('ai')) {
+                    return "Wisbeeはjan-nano 4Bモデルを使用しています - AI効率の画期的な進歩です！わずか2.27GBでGPT-3.5品質を実現し、3-5倍高速な推論を提供します。この強力なモデルをローカルで実行するには、デスクトップアプリをダウンロードしてください：wisbee.ai";
                 }
                 
-                // Default responses that encourage download
+                // デフォルトの応答（ダウンロードを促す）
                 const defaultResponses = [
-                    "I'm currently running in demo mode. For real AI conversations with the full jan-nano XS model, download Wisbee Desktop (free) at wisbee.ai. It's just 7.5GB and runs completely offline!",
-                    "This is a demo response. Experience the real Wisbee with Text-to-LoRA learning by downloading the desktop app at wisbee.ai. Your privacy is guaranteed - everything runs locally!",
-                    "Want to see what I can really do? Download Wisbee Desktop for free at wisbee.ai. Get GPT-3.5 quality AI that learns from you, all while keeping your data 100% private.",
-                    "I'm limited in demo mode. The desktop version at wisbee.ai includes the full jan-nano XS model with real AI capabilities, Text-to-LoRA learning, and complete privacy. Free download!",
-                    "Demo mode activated! For genuine AI assistance that adapts to your needs, grab the free desktop app at wisbee.ai. Just 7.5GB for a complete AI assistant that respects your privacy."
+                    "現在デモモードで動作中です。完全なjan-nano 4Bモデルを使った本格的なAI会話には、wisbee.aiで無料のWisbeeデスクトップをダウンロードしてください。わずか2.27GBで完全にオフラインで動作します！",
+                    "これはデモ応答です。Text-to-LoRA学習を搭載した本物のWisbeeを体験するには、wisbee.aiでデスクトップアプリをダウンロードしてください。あなたのプライバシーは保証されています - すべてローカルで動作します！",
+                    "私の本当の能力を見たいですか？wisbee.aiで無料のWisbeeデスクトップをダウンロードしてください。あなたから学習するGPT-3.5品質のAIを、データを100%プライベートに保ちながら利用できます。",
+                    "デモモードで制限されています。wisbee.aiのデスクトップ版には、実際のAI機能、Text-to-LoRA学習、完全なプライバシーを備えた完全なjan-nano 4Bモデルが含まれています。無料ダウンロード！",
+                    "デモモード起動中！あなたのニーズに適応する本格的なAI支援については、wisbee.aiで無料のデスクトップアプリをダウンロードしてください。わずか2.27GBであなたのプライバシーを尊重する完全なAIアシスタントです。"
                 ];
                 
                 return defaultResponses[Math.floor(Math.random() * defaultResponses.length)];
@@ -533,19 +664,19 @@
                 messageDiv.appendChild(avatarDiv);
                 messageDiv.appendChild(contentDiv);
                 
-                // Add feedback buttons for assistant messages
+                // アシスタントメッセージにフィードバックボタンを追加
                 if (type === 'assistant') {
                     const feedbackDiv = document.createElement('div');
                     feedbackDiv.className = 'feedback-buttons';
                     feedbackDiv.innerHTML = `
-                        <button class="feedback-btn" onclick="wisbee.giveFeedback('helpful')">👍 Helpful</button>
-                        <button class="feedback-btn" onclick="wisbee.giveFeedback('improve')">💡 Could be better</button>
-                        <button class="feedback-btn" onclick="wisbee.giveFeedback('wrong')">❌ Not accurate</button>
+                        <button class="feedback-btn" onclick="wisbee.giveFeedback('helpful')">👍 役立った</button>
+                        <button class="feedback-btn" onclick="wisbee.giveFeedback('improve')">💡 改善の余地あり</button>
+                        <button class="feedback-btn" onclick="wisbee.giveFeedback('wrong')">❌ 正確でない</button>
                     `;
                     contentDiv.appendChild(feedbackDiv);
                 }
                 
-                // Remove typing indicator if exists
+                // タイピングインジケーターがあれば削除
                 const typingIndicator = document.querySelector('.typing-indicator');
                 if (typingIndicator) {
                     typingIndicator.remove();
@@ -563,7 +694,7 @@
                 this.chatInput.disabled = typing;
                 
                 if (typing) {
-                    // Add typing indicator
+                    // タイピングインジケーターを追加
                     const typingDiv = document.createElement('div');
                     typingDiv.className = 'message assistant';
                     typingDiv.innerHTML = `
@@ -582,39 +713,34 @@
             giveFeedback(type) {
                 const lastMessage = this.messages[this.messages.length - 1];
                 if (lastMessage && lastMessage.type === 'assistant') {
-                    // In production, this would send feedback to improve the model
-                    console.log('Feedback:', type, 'for message:', lastMessage.content);
+                    // 本番環境では、このフィードバックがモデルの改善に使用されます
+                    console.log('フィードバック:', type, 'メッセージ:', lastMessage.content);
                     
-                    // Show feedback confirmation
+                    // フィードバック確認を表示
                     const feedbackButtons = document.querySelectorAll('.feedback-buttons');
                     const lastFeedbackDiv = feedbackButtons[feedbackButtons.length - 1];
                     if (lastFeedbackDiv) {
-                        lastFeedbackDiv.innerHTML = `<span style="color: #4ade80;">✓ Thanks for your feedback!</span>`;
+                        lastFeedbackDiv.innerHTML = `<span style="color: #4ade80;">✓ フィードバックありがとうございます！</span>`;
                     }
                 }
             }
             
-            toggleAdvanced() {
-                // Placeholder for advanced settings
-                alert('Advanced settings coming soon! Configure model parameters, learning rate, and more.');
-            }
-            
             showDownloadOptions() {
                 const downloadMessage = `
-🐝 <strong>Download Wisbee Desktop</strong>
+🐝 <strong>Wisbee デスクトップ版をダウンロード</strong>
 
-Choose your platform:
+お使いのプラットフォームを選択してください：
 
-🍎 <strong>macOS</strong> (Apple Silicon & Intel)
-→ <a href="https://github.com/yukihamada/wisbee/releases/download/v1.0.0/Wisbee-1.0.0-mac.dmg" style="color: #ff6b6b;">Download DMG (400MB)</a>
+🍎 <strong>macOS</strong> (Apple Silicon & Intel対応)
+→ <a href="https://wisbee.ai/download/wisbee-installer-mac.py" style="color: var(--accent-color);">インストーラーをダウンロード (10KB)</a>
 
-🪟 <strong>Windows</strong> (10/11, 64-bit)
-→ <a href="https://github.com/yukihamada/wisbee/releases/download/v1.0.0/Wisbee-1.0.0-win.exe" style="color: #ff6b6b;">Download EXE (380MB)</a>
+🪟 <strong>Windows</strong> (10/11, 64ビット)
+→ <a href="https://wisbee.ai/download/wisbee-installer-win.py" style="color: var(--accent-color);">インストーラーをダウンロード (10KB)</a>
 
-🐧 <strong>Linux</strong> (Ubuntu 20.04+)
-→ <a href="https://github.com/yukihamada/wisbee/releases/download/v1.0.0/Wisbee-1.0.0-linux.AppImage" style="color: #ff6b6b;">Download AppImage (390MB)</a>
+🐧 <strong>Linux</strong> (Ubuntu 20.04以降)
+→ <a href="https://wisbee.ai/download/wisbee-installer-linux.py" style="color: var(--accent-color);">インストーラーをダウンロード (10KB)</a>
 
-<em>Note: First launch will download the jan-nano XS model (7.5GB)</em>
+<em>注：初回起動時にjan-nano 4Bモデル（2.27GB）がダウンロードされます</em>
                 `;
                 
                 this.addMessage('assistant', downloadMessage);
@@ -632,7 +758,7 @@ Choose your platform:
             }
         }
         
-        // Initialize Wisbee
+        // Wisbeeを初期化
         const wisbee = new WisbeeChat();
     </script>
 </body>
