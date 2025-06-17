@@ -12,745 +12,566 @@
         }
         
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background-color: #f0f2f5;
-            min-height: 100vh;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: #0e1117;
+            color: #fafafa;
+            height: 100vh;
+            display: flex;
+            overflow: hidden;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 300px;
+            background-color: #262730;
+            padding: 2rem 1rem;
             display: flex;
             flex-direction: column;
+            border-right: 1px solid #333;
         }
         
-        .header {
-            background: white;
-            padding: 1rem 2rem;
-            border-bottom: 1px solid #e4e6eb;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .logo {
+        .sidebar h1 {
             font-size: 1.5rem;
-            font-weight: 600;
-            color: #1877f2;
-        }
-        
-        .model-selector {
-            background: #f0f2f5;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 0.5rem 1rem;
-            cursor: pointer;
-            font-size: 0.9rem;
-        }
-        
-        .chat-container {
-            flex: 1;
+            margin-bottom: 2rem;
+            color: #ff6b6b;
             display: flex;
-            flex-direction: column;
-            max-width: 800px;
-            margin: 0 auto;
-            width: 100%;
-            padding: 2rem;
-        }
-        
-        .chat-messages {
-            flex: 1;
-            background: white;
-            border-radius: 8px;
-            padding: 1.5rem;
-            margin-bottom: 1rem;
-            overflow-y: auto;
-            max-height: 65vh;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
-        }
-        
-        .message {
-            margin-bottom: 1rem;
-            padding: 0.75rem 1rem;
-            border-radius: 12px;
-            max-width: 70%;
-            word-wrap: break-word;
-        }
-        
-        .message.user {
-            background: #1877f2;
-            color: white;
-            margin-left: auto;
-            text-align: right;
-        }
-        
-        .message.assistant {
-            background: #e4e6eb;
-            color: #1c1e21;
-        }
-        
-        .message.system {
-            background: #fff3cd;
-            color: #856404;
-            border: 1px solid #ffeaa7;
-            text-align: center;
-            max-width: 100%;
-            font-size: 0.9rem;
-        }
-        
-        .input-container {
-            background: white;
-            border-radius: 8px;
-            padding: 1rem;
-            display: flex;
+            align-items: center;
             gap: 0.5rem;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
         }
         
-        .chat-input {
-            flex: 1;
-            border: 1px solid #ddd;
-            border-radius: 20px;
-            padding: 0.5rem 1rem;
-            font-size: 1rem;
-            outline: none;
-            resize: none;
-            min-height: 2.5rem;
-            max-height: 6rem;
-            transition: border-color 0.2s;
+        .sidebar-section {
+            margin-bottom: 2rem;
         }
         
-        .chat-input:focus {
-            border-color: #1877f2;
+        .sidebar-section h3 {
+            font-size: 0.875rem;
+            color: #808495;
+            margin-bottom: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
         
-        .send-button {
-            background: #1877f2;
+        .model-info {
+            background-color: #1e1e2e;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .model-info p {
+            font-size: 0.875rem;
+            color: #b4b4b4;
+            margin-bottom: 0.5rem;
+        }
+        
+        .model-info .highlight {
+            color: #4ade80;
+            font-weight: 600;
+        }
+        
+        .advanced-toggle {
+            background-color: #ff6b6b;
             color: white;
             border: none;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
             cursor: pointer;
-            font-size: 1.2rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            font-size: 0.875rem;
+            font-weight: 600;
+            width: 100%;
+            margin-top: auto;
             transition: background-color 0.2s;
         }
         
-        .send-button:hover:not(:disabled) {
-            background: #166fe5;
+        .advanced-toggle:hover {
+            background-color: #ff5252;
         }
         
-        .send-button:disabled {
-            background: #bcc0c4;
-            cursor: not-allowed;
+        /* Main content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background-color: #0e1117;
         }
         
-        .feedback-container {
+        /* Chat container */
+        .chat-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 2rem;
+            padding-bottom: 0;
+        }
+        
+        .message {
+            margin-bottom: 1.5rem;
+            display: flex;
+            gap: 1rem;
+            animation: fadeIn 0.3s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .message-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+        
+        .message.user .message-avatar {
+            background-color: #2d3748;
+        }
+        
+        .message.assistant .message-avatar {
+            background-color: #ff6b6b;
+        }
+        
+        .message-content {
+            flex: 1;
+        }
+        
+        .message-content p {
+            background-color: #262730;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            line-height: 1.6;
+            font-size: 0.875rem;
+        }
+        
+        .message.user .message-content p {
+            background-color: #1e1e2e;
+        }
+        
+        .feedback-buttons {
+            margin-top: 0.5rem;
             display: flex;
             gap: 0.5rem;
-            margin-top: 0.5rem;
             opacity: 0;
             transition: opacity 0.2s;
         }
         
-        .message.assistant:hover .feedback-container {
+        .message:hover .feedback-buttons {
             opacity: 1;
         }
         
         .feedback-btn {
             background: none;
-            border: 1px solid #ddd;
-            border-radius: 12px;
+            border: 1px solid #333;
+            color: #808495;
             padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
             cursor: pointer;
             font-size: 0.75rem;
-            color: #65676b;
             transition: all 0.2s;
         }
         
         .feedback-btn:hover {
-            background: #f0f2f5;
+            border-color: #ff6b6b;
+            color: #ff6b6b;
         }
         
-        .typing-indicator {
-            display: none;
-            padding: 0.5rem;
-            color: #65676b;
-            font-size: 0.9rem;
+        /* Input area */
+        .input-area {
+            padding: 1.5rem 2rem;
+            background-color: #0e1117;
+            border-top: 1px solid #333;
         }
         
-        .typing-indicator.show {
-            display: block;
+        .input-container {
+            display: flex;
+            gap: 0.75rem;
+            max-width: 100%;
         }
         
-        .footer {
-            background: white;
-            padding: 1rem;
-            text-align: center;
-            border-top: 1px solid #e4e6eb;
-            font-size: 0.9rem;
-            color: #65676b;
-        }
-        
-        .footer a {
-            color: #1877f2;
-            text-decoration: none;
-        }
-        
-        .footer a:hover {
-            text-decoration: underline;
-        }
-        
-        /* Modal styles */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.5);
-        }
-        
-        .modal-content {
-            background-color: white;
-            margin: 10% auto;
-            padding: 2rem;
-            border-radius: 12px;
-            width: 90%;
-            max-width: 400px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-        }
-        
-        .modal-header {
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 1.5rem;
-            color: #1c1e21;
-        }
-        
-        .modal-close {
-            color: #aaa;
-            float: right;
-            font-size: 1.5rem;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        
-        .modal-close:hover {
-            color: #000;
-        }
-        
-        .form-group {
-            margin-bottom: 1rem;
-        }
-        
-        .form-label {
-            display: block;
-            margin-bottom: 0.5rem;
-            color: #65676b;
-            font-size: 0.9rem;
-        }
-        
-        .form-input {
-            width: 100%;
-            padding: 0.5rem;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            font-size: 1rem;
+        .chat-input {
+            flex: 1;
+            background-color: #262730;
+            border: 1px solid #333;
+            color: #fafafa;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            resize: none;
             outline: none;
+            transition: border-color 0.2s;
         }
         
-        .form-input:focus {
-            border-color: #1877f2;
+        .chat-input:focus {
+            border-color: #ff6b6b;
         }
         
-        .form-button {
-            width: 100%;
-            padding: 0.75rem;
-            background: #1877f2;
+        .send-button {
+            background-color: #ff6b6b;
             color: white;
             border: none;
-            border-radius: 6px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-        
-        .form-button:hover {
-            background: #166fe5;
-        }
-        
-        .form-button.secondary {
-            background: #e4e6eb;
-            color: #1c1e21;
-            margin-top: 0.5rem;
-        }
-        
-        .form-button.secondary:hover {
-            background: #d8dadf;
-        }
-        
-        .download-section {
-            background: #e3f2fd;
-            padding: 1rem;
-            border-radius: 8px;
-            margin: 1rem 0;
-            text-align: center;
-        }
-        
-        .download-button {
-            display: inline-block;
             padding: 0.75rem 1.5rem;
-            background: #2196f3;
-            color: white;
-            text-decoration: none;
-            border-radius: 6px;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-size: 0.875rem;
             font-weight: 600;
-            margin: 0.5rem;
             transition: background-color 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
         
-        .download-button:hover {
-            background: #1976d2;
+        .send-button:hover:not(:disabled) {
+            background-color: #ff5252;
         }
         
+        .send-button:disabled {
+            background-color: #4a4a4a;
+            cursor: not-allowed;
+        }
+        
+        /* Welcome message */
+        .welcome-message {
+            text-align: center;
+            padding: 3rem;
+            color: #808495;
+        }
+        
+        .welcome-message h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #fafafa;
+        }
+        
+        .welcome-message p {
+            font-size: 0.875rem;
+            line-height: 1.6;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        /* Loading indicator */
+        .typing-indicator {
+            display: flex;
+            gap: 0.3rem;
+            padding: 1rem;
+        }
+        
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #808495;
+            border-radius: 50%;
+            animation: typing 1.4s infinite;
+        }
+        
+        .typing-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        
+        .typing-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        
+        @keyframes typing {
+            0%, 60%, 100% {
+                transform: translateY(0);
+            }
+            30% {
+                transform: translateY(-10px);
+            }
+        }
+        
+        /* Mobile responsive */
         @media (max-width: 768px) {
-            .chat-container {
-                padding: 1rem;
+            .sidebar {
+                display: none;
             }
             
-            .header {
-                padding: 1rem;
+            .input-container {
+                flex-direction: column;
             }
             
-            .logo {
-                font-size: 1.2rem;
-            }
-            
-            .message {
-                max-width: 85%;
+            .send-button {
+                width: 100%;
+                justify-content: center;
             }
         }
     </style>
 </head>
 <body>
-    <header class="header">
-        <div class="logo">🐝 Wisbee</div>
-        <select class="model-selector" id="modelSelector">
-            <option value="wisbee">Wisbee AI</option>
-            <option value="local">Local (Download)</option>
-            <option value="chatgpt">ChatGPT</option>
-            <option value="claude">Claude</option>
-        </select>
-    </header>
-
-    <div class="chat-container">
-        <div class="chat-messages" id="chatMessages">
-            <div class="message system">
-                Welcome to Wisbee! Select your preferred AI model from the dropdown above.
+    <div class="sidebar">
+        <h1>🐝 Wisbee</h1>
+        
+        <div class="sidebar-section">
+            <h3>Current Model</h3>
+            <div class="model-info">
+                <p><strong>jan-nano XS</strong></p>
+                <p>Q4_K_XS quantization</p>
+                <p class="highlight">✨ 3-5x faster inference</p>
+                <p>💾 Only 7.5GB model size</p>
             </div>
         </div>
         
-        <div class="input-container">
-            <textarea 
-                class="chat-input" 
-                id="chatInput" 
-                placeholder="Type a message..."
-                rows="1"
-            ></textarea>
-            <button class="send-button" id="sendButton">→</button>
-        </div>
-    </div>
-
-    <div class="footer">
-        <a href="https://wisbee.ai">wisbee.ai</a> • 
-        <a href="#" onclick="wisbee.showAbout()">About</a> • 
-        <a href="#" onclick="wisbee.showLogin()">Login</a>
-    </div>
-
-    <!-- Login Modal -->
-    <div id="loginModal" class="modal">
-        <div class="modal-content">
-            <span class="modal-close" onclick="wisbee.hideLogin()">&times;</span>
-            <h2 class="modal-header">Login to Wisbee</h2>
-            <form onsubmit="wisbee.handleLogin(event)">
-                <div class="form-group">
-                    <label class="form-label">Email</label>
-                    <input type="email" class="form-input" id="loginEmail" required>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Password</label>
-                    <input type="password" class="form-input" id="loginPassword" required>
-                </div>
-                <button type="submit" class="form-button">Login</button>
-                <button type="button" class="form-button secondary" onclick="wisbee.showSignup()">Create New Account</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Signup Modal -->
-    <div id="signupModal" class="modal">
-        <div class="modal-content">
-            <span class="modal-close" onclick="wisbee.hideSignup()">&times;</span>
-            <h2 class="modal-header">Create Account</h2>
-            <form onsubmit="wisbee.handleSignup(event)">
-                <div class="form-group">
-                    <label class="form-label">Name</label>
-                    <input type="text" class="form-input" id="signupName" required>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Email</label>
-                    <input type="email" class="form-input" id="signupEmail" required>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Password</label>
-                    <input type="password" class="form-input" id="signupPassword" required>
-                </div>
-                <button type="submit" class="form-button">Create Account</button>
-                <button type="button" class="form-button secondary" onclick="wisbee.showLogin()">Already have an account?</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Download Modal -->
-    <div id="downloadModal" class="modal">
-        <div class="modal-content">
-            <span class="modal-close" onclick="wisbee.hideDownload()">&times;</span>
-            <h2 class="modal-header">Download Wisbee Desktop</h2>
-            <p>Run Wisbee AI locally on your device for maximum privacy and performance!</p>
-            <div class="download-section">
-                <a href="#" class="download-button" onclick="wisbee.downloadFor('mac')">
-                    🍎 Download for macOS
-                </a>
-                <a href="#" class="download-button" onclick="wisbee.downloadFor('windows')">
-                    🪟 Download for Windows
-                </a>
-                <a href="#" class="download-button" onclick="wisbee.downloadFor('linux')">
-                    🐧 Download for Linux
-                </a>
+        <div class="sidebar-section">
+            <h3>Features</h3>
+            <div class="model-info">
+                <p>🧠 Text-to-LoRA Learning</p>
+                <p>🔒 100% Private & Local</p>
+                <p>⚡ Real-time Adaptation</p>
+                <p>📚 Continuous Improvement</p>
             </div>
-            <p style="font-size: 0.9rem; color: #65676b; margin-top: 1rem;">
-                Local version includes jan-nano XS model (7.5GB) with Text-to-LoRA learning technology.
-            </p>
+        </div>
+        
+        <button class="advanced-toggle" onclick="wisbee.toggleAdvanced()">
+            Advanced Settings
+        </button>
+    </div>
+    
+    <div class="main-content">
+        <div class="chat-container" id="chatContainer">
+            <div class="welcome-message" id="welcomeMessage">
+                <h2>Welcome to Wisbee AI Assistant</h2>
+                <p>
+                    I'm powered by the revolutionary jan-nano XS model with Text-to-LoRA learning technology. 
+                    Your conversations are 100% private and processed locally. 
+                    I can learn from your feedback to provide better assistance over time.
+                </p>
+            </div>
+        </div>
+        
+        <div class="input-area">
+            <div class="input-container">
+                <textarea 
+                    class="chat-input" 
+                    id="chatInput" 
+                    placeholder="Send a message..."
+                    rows="1"
+                    onkeydown="wisbee.handleKeyPress(event)"
+                ></textarea>
+                <button class="send-button" id="sendButton" onclick="wisbee.sendMessage()">
+                    Send
+                </button>
+            </div>
         </div>
     </div>
-
+    
     <script>
-        class Wisbee {
+        class WisbeeChat {
             constructor() {
                 this.messages = [];
                 this.isTyping = false;
-                this.currentModel = 'wisbee';
-                this.isAuthenticated = false;
-                this.user = null;
+                this.apiEndpoint = window.location.hostname === 'localhost' ? 
+                    'http://localhost:8501/api/chat' : '/api/chat';
                 
-                this.chatMessages = document.getElementById('chatMessages');
+                this.chatContainer = document.getElementById('chatContainer');
                 this.chatInput = document.getElementById('chatInput');
                 this.sendButton = document.getElementById('sendButton');
-                this.modelSelector = document.getElementById('modelSelector');
+                this.welcomeMessage = document.getElementById('welcomeMessage');
                 
-                this.initializeEventListeners();
-                this.checkAuthStatus();
+                this.initializeChat();
             }
             
-            initializeEventListeners() {
-                this.sendButton.addEventListener('click', () => this.sendMessage());
-                
-                this.chatInput.addEventListener('keydown', (e) => {
-                    if (e.key === 'Enter' && !e.shiftKey) {
-                        e.preventDefault();
-                        this.sendMessage();
-                    }
-                });
-                
+            initializeChat() {
+                // Auto-resize textarea
                 this.chatInput.addEventListener('input', () => {
-                    this.autoResize();
+                    this.chatInput.style.height = 'auto';
+                    this.chatInput.style.height = Math.min(this.chatInput.scrollHeight, 120) + 'px';
                 });
                 
-                this.modelSelector.addEventListener('change', (e) => {
-                    this.switchModel(e.target.value);
-                });
+                // Check API health
+                this.checkAPIHealth();
             }
             
-            checkAuthStatus() {
-                // Check localStorage for auth token
-                const authToken = localStorage.getItem('wisbee_auth');
-                if (authToken) {
-                    this.isAuthenticated = true;
-                    this.user = JSON.parse(localStorage.getItem('wisbee_user') || '{}');
-                }
-            }
-            
-            switchModel(model) {
-                this.currentModel = model;
-                
-                if (model === 'local') {
-                    this.showDownload();
-                } else if (model === 'chatgpt' || model === 'claude') {
-                    if (!this.isAuthenticated) {
-                        this.addSystemMessage(`To use ${model === 'chatgpt' ? 'ChatGPT' : 'Claude'}, please login or create an account.`);
-                        this.showLogin();
-                        this.modelSelector.value = 'wisbee';
-                        this.currentModel = 'wisbee';
-                    } else {
-                        this.addSystemMessage(`Switched to ${model === 'chatgpt' ? 'ChatGPT' : 'Claude'} model.`);
+            async checkAPIHealth() {
+                try {
+                    const response = await fetch('/api/health');
+                    if (response.ok) {
+                        const data = await response.json();
+                        console.log('API Health:', data);
                     }
-                } else {
-                    this.addSystemMessage('Using Wisbee AI - Privacy-first assistant powered by jan-nano technology.');
+                } catch (error) {
+                    console.log('Using demo mode');
                 }
             }
             
-            autoResize() {
-                this.chatInput.style.height = 'auto';
-                this.chatInput.style.height = Math.min(this.chatInput.scrollHeight, 96) + 'px';
+            handleKeyPress(event) {
+                if (event.key === 'Enter' && !event.shiftKey) {
+                    event.preventDefault();
+                    this.sendMessage();
+                }
             }
             
             async sendMessage() {
                 const message = this.chatInput.value.trim();
                 if (!message || this.isTyping) return;
                 
-                // Check if premium models require auth
-                if ((this.currentModel === 'chatgpt' || this.currentModel === 'claude') && !this.isAuthenticated) {
-                    this.addSystemMessage('Please login to use premium AI models.');
-                    this.showLogin();
-                    return;
+                // Hide welcome message on first message
+                if (this.welcomeMessage) {
+                    this.welcomeMessage.style.display = 'none';
                 }
                 
-                this.addUserMessage(message);
-                this.chatInput.value = '';
-                this.autoResize();
+                // Add user message
+                this.addMessage('user', message);
                 
+                // Clear input
+                this.chatInput.value = '';
+                this.chatInput.style.height = 'auto';
+                
+                // Disable input while processing
                 this.setTyping(true);
                 
                 try {
                     const response = await this.getAIResponse(message);
-                    this.addAssistantMessage(response);
+                    this.addMessage('assistant', response);
                 } catch (error) {
-                    this.addSystemMessage('Sorry, there was an error processing your request.');
+                    this.addMessage('assistant', 'Sorry, I encountered an error. Please try again.');
                 } finally {
                     this.setTyping(false);
                 }
             }
             
             async getAIResponse(message) {
-                if (this.currentModel === 'wisbee') {
-                    // Try cloud API
-                    try {
-                        const response = await fetch('/api/chat', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                            },
-                            body: JSON.stringify({
-                                message: message,
-                                model: 'wisbee',
-                                temperature: 0.8
-                            })
-                        });
-                        
-                        if (response.ok) {
-                            const data = await response.json();
-                            return data.response;
-                        }
-                    } catch (error) {
-                        console.error('API Error:', error);
+                try {
+                    const response = await fetch(this.apiEndpoint, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            message: message,
+                            model: 'runpod',
+                            temperature: 0.8
+                        })
+                    });
+                    
+                    if (!response.ok) {
+                        throw new Error('API error');
                     }
                     
-                    // Fallback to demo
-                    return this.getDemoResponse(message);
+                    const data = await response.json();
+                    return data.response || data.text || 'No response received';
                     
-                } else if (this.currentModel === 'chatgpt' || this.currentModel === 'claude') {
-                    // Premium models - would integrate with respective APIs
-                    return `[${this.currentModel === 'chatgpt' ? 'ChatGPT' : 'Claude'}] This would be a response from the ${this.currentModel === 'chatgpt' ? 'OpenAI' : 'Anthropic'} API. Premium features coming soon!`;
+                } catch (error) {
+                    // Fallback to demo responses
+                    return this.getDemoResponse(message);
                 }
-                
-                return this.getDemoResponse(message);
             }
             
             getDemoResponse(message) {
                 const responses = [
-                    "I'm Wisbee, your privacy-first AI assistant. I run locally on your device to keep your data safe!",
-                    "With Text-to-LoRA technology, I can learn from your feedback and adapt to your needs.",
-                    "Download the desktop app to run me locally with the jan-nano XS model - just 7.5GB!",
-                    "I prioritize your privacy while providing intelligent assistance.",
-                    "Try the local version for unlimited, private conversations without any data collection.",
+                    "I'm Wisbee, powered by jan-nano XS model. This is a demo response while the API connects.",
+                    "With Text-to-LoRA technology, I can learn from your feedback and improve over time.",
+                    "Your privacy is my priority. All processing happens locally on your device.",
+                    "The jan-nano XS model provides GPT-3.5 quality in just 7.5GB!",
+                    "I'm designed to be fast, private, and continuously learning from our interactions."
                 ];
                 
                 return responses[Math.floor(Math.random() * responses.length)];
             }
             
-            addUserMessage(message) {
-                this.addMessage('user', message);
-            }
-            
-            addAssistantMessage(message) {
-                const messageEl = this.addMessage('assistant', message);
-                this.addFeedbackButtons(messageEl);
-            }
-            
-            addSystemMessage(message) {
-                this.addMessage('system', message);
-            }
-            
             addMessage(type, content) {
-                const messageEl = document.createElement('div');
-                messageEl.className = `message ${type}`;
-                messageEl.innerHTML = `
-                    <div class="message-content">${this.formatMessage(content)}</div>
-                `;
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${type}`;
                 
-                this.chatMessages.appendChild(messageEl);
+                const avatarDiv = document.createElement('div');
+                avatarDiv.className = 'message-avatar';
+                avatarDiv.textContent = type === 'user' ? '👤' : '🐝';
+                
+                const contentDiv = document.createElement('div');
+                contentDiv.className = 'message-content';
+                contentDiv.innerHTML = `<p>${this.escapeHtml(content)}</p>`;
+                
+                messageDiv.appendChild(avatarDiv);
+                messageDiv.appendChild(contentDiv);
+                
+                // Add feedback buttons for assistant messages
+                if (type === 'assistant') {
+                    const feedbackDiv = document.createElement('div');
+                    feedbackDiv.className = 'feedback-buttons';
+                    feedbackDiv.innerHTML = `
+                        <button class="feedback-btn" onclick="wisbee.giveFeedback('helpful')">👍 Helpful</button>
+                        <button class="feedback-btn" onclick="wisbee.giveFeedback('improve')">💡 Could be better</button>
+                        <button class="feedback-btn" onclick="wisbee.giveFeedback('wrong')">❌ Not accurate</button>
+                    `;
+                    contentDiv.appendChild(feedbackDiv);
+                }
+                
+                // Remove typing indicator if exists
+                const typingIndicator = document.querySelector('.typing-indicator');
+                if (typingIndicator) {
+                    typingIndicator.remove();
+                }
+                
+                this.chatContainer.appendChild(messageDiv);
                 this.scrollToBottom();
                 
-                return messageEl;
-            }
-            
-            addFeedbackButtons(messageEl) {
-                const feedbackContainer = document.createElement('div');
-                feedbackContainer.className = 'feedback-container';
-                feedbackContainer.innerHTML = `
-                    <button class="feedback-btn" onclick="wisbee.giveFeedback('positive')">👍</button>
-                    <button class="feedback-btn" onclick="wisbee.giveFeedback('negative')">👎</button>
-                `;
-                
-                messageEl.appendChild(feedbackContainer);
-            }
-            
-            giveFeedback(type) {
-                if (type === 'positive') {
-                    this.addSystemMessage('Thank you for the feedback!');
-                } else if (type === 'negative') {
-                    this.addSystemMessage('Your feedback helps improve Wisbee!');
-                }
+                this.messages.push({ type, content });
             }
             
             setTyping(typing) {
                 this.isTyping = typing;
                 this.sendButton.disabled = typing;
-                this.sendButton.textContent = typing ? '...' : '→';
+                this.chatInput.disabled = typing;
                 
                 if (typing) {
-                    this.showTypingIndicator();
-                } else {
-                    this.hideTypingIndicator();
+                    // Add typing indicator
+                    const typingDiv = document.createElement('div');
+                    typingDiv.className = 'message assistant';
+                    typingDiv.innerHTML = `
+                        <div class="message-avatar">🐝</div>
+                        <div class="typing-indicator">
+                            <div class="typing-dot"></div>
+                            <div class="typing-dot"></div>
+                            <div class="typing-dot"></div>
+                        </div>
+                    `;
+                    this.chatContainer.appendChild(typingDiv);
+                    this.scrollToBottom();
                 }
             }
             
-            showTypingIndicator() {
-                const indicator = document.createElement('div');
-                indicator.className = 'typing-indicator show';
-                indicator.id = 'typingIndicator';
-                indicator.textContent = 'Wisbee is typing...';
-                this.chatMessages.appendChild(indicator);
-                this.scrollToBottom();
-            }
-            
-            hideTypingIndicator() {
-                const indicator = document.getElementById('typingIndicator');
-                if (indicator) {
-                    indicator.remove();
+            giveFeedback(type) {
+                const lastMessage = this.messages[this.messages.length - 1];
+                if (lastMessage && lastMessage.type === 'assistant') {
+                    // In production, this would send feedback to improve the model
+                    console.log('Feedback:', type, 'for message:', lastMessage.content);
+                    
+                    // Show feedback confirmation
+                    const feedbackButtons = document.querySelectorAll('.feedback-buttons');
+                    const lastFeedbackDiv = feedbackButtons[feedbackButtons.length - 1];
+                    if (lastFeedbackDiv) {
+                        lastFeedbackDiv.innerHTML = `<span style="color: #4ade80;">✓ Thanks for your feedback!</span>`;
+                    }
                 }
             }
             
-            formatMessage(content) {
-                return content.replace(/\n/g, '<br>');
+            toggleAdvanced() {
+                // Placeholder for advanced settings
+                alert('Advanced settings coming soon! Configure model parameters, learning rate, and more.');
             }
             
             scrollToBottom() {
-                this.chatMessages.scrollTop = this.chatMessages.scrollHeight;
+                this.chatContainer.scrollTop = this.chatContainer.scrollHeight;
             }
             
-            // Modal functions
-            showLogin() {
-                document.getElementById('loginModal').style.display = 'block';
-            }
-            
-            hideLogin() {
-                document.getElementById('loginModal').style.display = 'none';
-            }
-            
-            showSignup() {
-                this.hideLogin();
-                document.getElementById('signupModal').style.display = 'block';
-            }
-            
-            hideSignup() {
-                document.getElementById('signupModal').style.display = 'none';
-            }
-            
-            showDownload() {
-                document.getElementById('downloadModal').style.display = 'block';
-            }
-            
-            hideDownload() {
-                document.getElementById('downloadModal').style.display = 'none';
-                this.modelSelector.value = 'wisbee';
-                this.currentModel = 'wisbee';
-            }
-            
-            showAbout() {
-                this.addSystemMessage('Wisbee is a privacy-first AI assistant that runs locally on your device. Powered by jan-nano XS model with Text-to-LoRA learning technology.');
-            }
-            
-            async handleLogin(event) {
-                event.preventDefault();
-                const email = document.getElementById('loginEmail').value;
-                const password = document.getElementById('loginPassword').value;
-                
-                // Simulate login (in production, this would call your auth API)
-                this.isAuthenticated = true;
-                this.user = { email, name: email.split('@')[0] };
-                localStorage.setItem('wisbee_auth', 'demo_token');
-                localStorage.setItem('wisbee_user', JSON.stringify(this.user));
-                
-                this.hideLogin();
-                this.addSystemMessage(`Welcome back, ${this.user.name}! You now have access to all AI models.`);
-                
-                // Re-select model if it was premium
-                if (this.modelSelector.value === 'chatgpt' || this.modelSelector.value === 'claude') {
-                    this.switchModel(this.modelSelector.value);
-                }
-            }
-            
-            async handleSignup(event) {
-                event.preventDefault();
-                const name = document.getElementById('signupName').value;
-                const email = document.getElementById('signupEmail').value;
-                const password = document.getElementById('signupPassword').value;
-                
-                // Simulate signup
-                this.isAuthenticated = true;
-                this.user = { email, name };
-                localStorage.setItem('wisbee_auth', 'demo_token');
-                localStorage.setItem('wisbee_user', JSON.stringify(this.user));
-                
-                this.hideSignup();
-                this.addSystemMessage(`Welcome to Wisbee, ${name}! Your account has been created.`);
-            }
-            
-            downloadFor(platform) {
-                const urls = {
-                    mac: 'https://github.com/yukihamada/wisbee/releases/download/v1.0.0/Wisbee-1.0.0-mac.dmg',
-                    windows: 'https://github.com/yukihamada/wisbee/releases/download/v1.0.0/Wisbee-1.0.0-win.exe',
-                    linux: 'https://github.com/yukihamada/wisbee/releases/download/v1.0.0/Wisbee-1.0.0-linux.AppImage'
-                };
-                
-                window.open(urls[platform] || '#', '_blank');
-                this.hideDownload();
-                this.addSystemMessage(`Downloading Wisbee for ${platform}. Once installed, select "Local" from the model dropdown to connect.`);
+            escapeHtml(text) {
+                const div = document.createElement('div');
+                div.textContent = text;
+                return div.innerHTML;
             }
         }
         
         // Initialize Wisbee
-        const wisbee = new Wisbee();
-        
-        // Close modals when clicking outside
-        window.onclick = function(event) {
-            if (event.target.className === 'modal') {
-                event.target.style.display = 'none';
-            }
-        }
+        const wisbee = new WisbeeChat();
     </script>
 </body>
 </html>
