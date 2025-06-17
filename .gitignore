@@ -1,0 +1,91 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+venv/
+ENV/
+env/
+.venv
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Build directories
+build/
+build_*/
+dist/
+dist_*/
+*.app/
+*.dmg
+*.exe
+*.deb
+*.rpm
+*.tar.gz
+*.zip
+
+# Logs
+*.log
+logs/
+
+# Local data
+learning_data/conversations/*
+learning_data/feedback/*
+!learning_data/conversations/.gitkeep
+!learning_data/feedback/.gitkeep
+
+# Models (too large for git)
+models/*.gguf
+models/*.bin
+models/*.safetensors
+
+# LoRA models (too large for git)
+loras/**/*.safetensors
+trained_t2l/**/*.safetensors
+**/*.safetensors
+
+# Temporary files
+temp/
+tmp/
+.tmp/
+
+# llama.cpp (submodule or exclude large parts)
+llama.cpp/build/
+llama.cpp/*.o
+llama.cpp/*.a
+llama.cpp/main
+llama.cpp/quantize
+llama.cpp/server
+
+# Streamlit
+.streamlit/
+
+# API keys
+.env
+config.json

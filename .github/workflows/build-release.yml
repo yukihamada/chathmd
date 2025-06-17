@@ -1,0 +1,227 @@
+name: Build and Release chatHMD
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release version (e.g., v1.0.0)'
+        required: true
+        default: 'v1.0.0'
+
+jobs:
+  build-mac:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+        env:
+          RUNPOD_API_KEY: ${{ secrets.RUNPOD_API_KEY }}
+
+      - name: Build macOS app
+        run: |
+          python build_mac_app.py
+
+      - name: Upload macOS artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: chatHMD-macos
+          path: |
+            dist/*.dmg
+            dist/*.app
+
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+        env:
+          RUNPOD_API_KEY: ${{ secrets.RUNPOD_API_KEY }}
+
+      - name: Build Windows package
+        run: |
+          python build_windows.py
+
+      - name: Upload Windows artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: chatHMD-windows
+          path: |
+            dist_windows/*.zip
+            dist_windows/*.exe
+
+  build-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+        env:
+          RUNPOD_API_KEY: ${{ secrets.RUNPOD_API_KEY }}
+          sudo apt-get update
+          sudo apt-get install -y dpkg-dev
+
+      - name: Build Linux packages
+        run: |
+          python build_linux.py
+
+      - name: Upload Linux artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: chatHMD-linux
+          path: |
+            dist_linux/*.tar.gz
+            dist_linux/*.deb
+
+  create-release:
+    needs: [build-mac, build-windows, build-linux]
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v3
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: chatHMD ${{ github.ref }}
+          draft: false
+          prerelease: false
+          body: |
+            ## chatHMD AI Assistant - Release ${{ github.ref }}
+            
+            Privacy-first AI assistant with Text-to-LoRA learning technology.
+            
+            ### 📥 Downloads
+            
+            **🍎 macOS**
+            - Universal App Bundle (Intel & Apple Silicon)
+            - Requires macOS 10.15 or later
+            
+            **🪟 Windows**  
+            - Portable version (no installation required)
+            - Requires Windows 10/11 (64-bit)
+            
+            **🐧 Linux**
+            - Portable tar.gz for all distributions
+            - Debian package for Ubuntu/Debian
+            
+            ### 🚀 Quick Start
+            
+            1. Download the appropriate package for your platform
+            2. Extract/install the package
+            3. Run the application
+            4. Your browser will open to the chatHMD interface
+            
+            ### 🔧 System Requirements
+            
+            - Python 3.8 or higher
+            - 8GB RAM (16GB recommended)
+            - 10GB free disk space
+            - Internet connection for initial model download
+            
+            ### 🆕 What's New
+            
+            - Complete Text-to-LoRA implementation
+            - Privacy-first AI learning from feedback
+            - Cross-platform support (Mac, Windows, Linux)
+            - Easy one-click installation
+            - Local AI model execution
+            
+            ### 📚 Documentation
+            
+            - [Installation Guide](https://github.com/${{ github.repository }}/blob/main/DEPLOYMENT.md)
+            - [User Manual](https://github.com/${{ github.repository }}/blob/main/README.md)
+            - [Strategy Overview](https://github.com/${{ github.repository }}/blob/main/STRATEGY.md)
+            
+            ---
+            
+            **Full Changelog**: https://github.com/${{ github.repository }}/compare/v0.9.0...${{ github.ref }}
+
+      - name: Upload macOS DMG
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./chatHMD-macos/chatHMD-1.0.0-mac.dmg
+          asset_name: chatHMD-macos-universal.dmg
+          asset_content_type: application/octet-stream
+
+      - name: Upload Windows Portable
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./chatHMD-windows/chatHMD-1.0.0-windows-portable.zip
+          asset_name: chatHMD-windows-portable.zip
+          asset_content_type: application/zip
+
+      - name: Upload Linux Portable
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./chatHMD-linux/chatHMD-1.0.0-linux-portable.tar.gz
+          asset_name: chatHMD-linux-portable.tar.gz
+          asset_content_type: application/gzip
+
+      - name: Upload Debian Package
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./chatHMD-linux/chathmd_1.0.0_amd64.deb
+          asset_name: chatHMD-debian-amd64.deb
+          asset_content_type: application/octet-stream

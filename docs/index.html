@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>chatHMD - Privacy-First AI Assistant</title>
+    <meta name="description" content="AI assistant that learns from your feedback while keeping all data local. Features Text-to-LoRA learning technology.">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://chathmd.com/">
+    <meta property="og:title" content="chatHMD - Privacy-First AI Assistant">
+    <meta property="og:description" content="AI assistant that learns from your feedback while keeping all data local.">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://chathmd.com/">
+    <meta property="twitter:title" content="chatHMD - Privacy-First AI Assistant">
+    <meta property="twitter:description" content="AI assistant that learns from your feedback while keeping all data local.">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            padding: 2rem 0;
+            text-align: center;
+            color: white;
+        }
+        
+        .logo {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        
+        .tagline {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .hero {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            margin: 2rem 0;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #2c3e50;
+        }
+        
+        .hero p {
+            font-size: 1.1rem;
+            color: #7f8c8d;
+            margin-bottom: 2rem;
+        }
+        
+        .download-section {
+            margin: 3rem 0;
+        }
+        
+        .download-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .download-card {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .download-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+        }
+        
+        .platform-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .download-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 1rem 2rem;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            margin: 0.5rem;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+        
+        .feature {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .feature h3 {
+            color: #2c3e50;
+            margin-bottom: 1rem;
+        }
+        
+        .stats {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 2rem 0;
+            color: white;
+            text-align: center;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .stat {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            display: block;
+        }
+        
+        .stat-label {
+            opacity: 0.9;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 2rem 0;
+            color: white;
+            opacity: 0.8;
+        }
+        
+        .github-link {
+            color: white;
+            text-decoration: none;
+            border-bottom: 1px solid rgba(255,255,255,0.3);
+        }
+        
+        .github-link:hover {
+            border-bottom-color: white;
+        }
+        
+        @media (max-width: 768px) {
+            .hero {
+                padding: 2rem;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .logo {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">🥽 chatHMD</div>
+            <div class="tagline">Privacy-First AI Assistant with Learning Technology</div>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="hero">
+            <h1>AI That Learns From You, Not About You</h1>
+            <p>Experience the future of AI with Text-to-LoRA technology. Your data stays local, your AI gets smarter.</p>
+            
+            <div class="download-section">
+                <h2>Download chatHMD</h2>
+                <div class="download-grid">
+                    <div class="download-card">
+                        <div class="platform-icon">🍎</div>
+                        <h3>macOS</h3>
+                        <p>Universal app for Intel & Apple Silicon</p>
+                        <a href="#" class="download-btn" onclick="downloadFile('mac')">Download DMG</a>
+                        <br><small>macOS 10.15+</small>
+                    </div>
+                    
+                    <div class="download-card">
+                        <div class="platform-icon">🪟</div>
+                        <h3>Windows</h3>
+                        <p>Portable version, no installation required</p>
+                        <a href="#" class="download-btn" onclick="downloadFile('windows')">Download ZIP</a>
+                        <br><small>Windows 10/11 (64-bit)</small>
+                    </div>
+                    
+                    <div class="download-card">
+                        <div class="platform-icon">🐧</div>
+                        <h3>Linux</h3>
+                        <p>Works on all major distributions</p>
+                        <a href="#" class="download-btn" onclick="downloadFile('linux')">Download TAR.GZ</a>
+                        <a href="#" class="download-btn" onclick="downloadFile('debian')">Download DEB</a>
+                        <br><small>All major distros</small>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="stats">
+            <h2>Why Choose chatHMD?</h2>
+            <div class="stats-grid">
+                <div class="stat">
+                    <span class="stat-number">100%</span>
+                    <span class="stat-label">Local Processing</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">0</span>
+                    <span class="stat-label">Data Collection</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">∞</span>
+                    <span class="stat-label">Learning Potential</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="features">
+            <div class="feature">
+                <div class="feature-icon">🔒</div>
+                <h3>Privacy First</h3>
+                <p>All processing happens locally. Your conversations never leave your device.</p>
+            </div>
+            
+            <div class="feature">
+                <div class="feature-icon">🧠</div>
+                <h3>Text-to-LoRA Learning</h3>
+                <p>Revolutionary technology that learns from your feedback without compromising privacy.</p>
+            </div>
+            
+            <div class="feature">
+                <div class="feature-icon">⚡</div>
+                <h3>Fast & Efficient</h3>
+                <p>Optimized for performance with GPU acceleration and smart caching.</p>
+            </div>
+            
+            <div class="feature">
+                <div class="feature-icon">🎯</div>
+                <h3>Personalized</h3>
+                <p>AI that adapts to your writing style and preferences over time.</p>
+            </div>
+            
+            <div class="feature">
+                <div class="feature-icon">🌐</div>
+                <h3>Cross-Platform</h3>
+                <p>Works seamlessly on Mac, Windows, and Linux with the same experience.</p>
+            </div>
+            
+            <div class="feature">
+                <div class="feature-icon">🛠️</div>
+                <h3>Easy Setup</h3>
+                <p>One-click installation and automatic model downloads. Get started in minutes.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>Open source project. <a href="https://github.com/yukihamada/chathmd" class="github-link">View on GitHub</a></p>
+            <p>Built with ❤️ for privacy-conscious AI users</p>
+        </div>
+    </footer>
+
+    <script>
+        // Download links - these will be updated with actual GitHub release URLs
+        const downloadLinks = {
+            mac: 'https://github.com/yukihamada/chathmd/releases/latest/download/chatHMD-macos-universal.dmg',
+            windows: 'https://github.com/yukihamada/chathmd/releases/latest/download/chatHMD-windows-portable.zip',
+            linux: 'https://github.com/yukihamada/chathmd/releases/latest/download/chatHMD-linux-portable.tar.gz',
+            debian: 'https://github.com/yukihamada/chathmd/releases/latest/download/chatHMD-debian-amd64.deb'
+        };
+
+        function downloadFile(platform) {
+            // Check if we have a release available
+            if (downloadLinks[platform].includes('yukihamada')) {
+                // Check if release exists first
+                fetch('https://api.github.com/repos/yukihamada/chathmd/releases/latest')
+                    .then(response => {
+                        if (!response.ok) {
+                            alert('Downloads will be available after the first release is published on GitHub!');
+                            return;
+                        }
+                    });
+            }
+            
+            // Track download
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'download', {
+                    'event_category': 'file',
+                    'event_label': platform
+                });
+            }
+            
+            // Trigger download
+            window.open(downloadLinks[platform], '_blank');
+        }
+
+        // Update download links dynamically from GitHub API
+        async function updateDownloadLinks() {
+            try {
+                const response = await fetch('https://api.github.com/repos/yukihamada/chathmd/releases/latest');
+                const release = await response.json();
+                
+                if (release.assets) {
+                    release.assets.forEach(asset => {
+                        if (asset.name.includes('macos')) {
+                            downloadLinks.mac = asset.browser_download_url;
+                        } else if (asset.name.includes('windows')) {
+                            downloadLinks.windows = asset.browser_download_url;
+                        } else if (asset.name.includes('linux') && asset.name.includes('tar.gz')) {
+                            downloadLinks.linux = asset.browser_download_url;
+                        } else if (asset.name.includes('debian')) {
+                            downloadLinks.debian = asset.browser_download_url;
+                        }
+                    });
+                }
+            } catch (error) {
+                console.log('Could not fetch latest release info');
+            }
+        }
+
+        // Update links on page load
+        updateDownloadLinks();
+    </script>
+</body>
+</html>

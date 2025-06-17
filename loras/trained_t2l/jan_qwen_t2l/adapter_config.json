@@ -1,0 +1,24 @@
+{
+  "peft_type": "LORA",
+  "auto_mapping": null,
+  "base_model_name_or_path": "jan-ai/Jan-mini-14B-qwen3",
+  "revision": null,
+  "task_type": "CAUSAL_LM",
+  "inference_mode": true,
+  "r": 8,
+  "target_modules": [
+    "q_proj",
+    "v_proj",
+    "k_proj",
+    "o_proj",
+    "gate_proj",
+    "up_proj",
+    "down_proj"
+  ],
+  "lora_alpha": 16,
+  "lora_dropout": 0.05,
+  "fan_in_fan_out": false,
+  "bias": "none",
+  "task_description": "\u9762\u767d\u3044\u8a71\u3057\u3066",
+  "modules_to_save": null
+}

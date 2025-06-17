@@ -1,0 +1,28 @@
+# Cloudflare Pages configuration for chatHMD
+
+name = "chathmd-web"
+compatibility_date = "2024-06-17"
+
+[env.production]
+name = "chathmd"
+
+[env.production.vars]
+ENVIRONMENT = "production"
+
+# Environment variables for RunPod integration
+# Set these in Cloudflare dashboard:
+# RUNPOD_API_KEY = "your-runpod-api-key"
+# RUNPOD_ENDPOINT = "your-runpod-endpoint-id"
+
+[[env.production.kv_namespaces]]
+binding = "ANALYTICS"
+id = "analytics_namespace_id"
+preview_id = "analytics_preview_id"
+
+# Pages Functions compatibility
+[build]
+command = ""
+publish = "."
+
+[functions]
+compatibility_date = "2024-06-17"

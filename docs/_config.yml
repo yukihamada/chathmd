@@ -1,0 +1,25 @@
+title: chatHMD - Privacy-First AI Assistant
+description: AI assistant that learns from your feedback while keeping all data local
+baseurl: ""
+url: "https://yukihamada.github.io/chathmd"
+
+# Build settings
+markdown: kramdown
+highlighter: rouge
+theme: minima
+
+# Exclude from processing
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor/bundle/
+  - vendor/cache/
+  - vendor/gems/
+  - vendor/ruby/
+
+# GitHub Pages settings
+plugins:
+  - jekyll-feed
+  - jekyll-sitemap
+  - jekyll-seo-tag
