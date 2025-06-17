@@ -22,8 +22,8 @@ export async function onRequestPost(context) {
     if (model === 'local' || model === 'demo') {
       response = await getLocalResponse(message);
     } else {
-      // Use RunPod for cloud inference
-      response = await getRunPodResponse(message, temperature, env);
+      // Use demo response since RunPod is not configured
+      response = await getLocalResponse(message);
     }
     
     return new Response(JSON.stringify({
