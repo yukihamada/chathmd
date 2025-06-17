@@ -1,0 +1,20 @@
+# Cloudflare Pages configuration for chatHMD
+
+name = "chathmd"
+compatibility_date = "2024-06-17"
+pages_build_output_dir = "."
+
+[env.production]
+name = "chathmd"
+
+[env.production.vars]
+ENVIRONMENT = "production"
+MODEL_NAME = "jan-nano-xs"
+
+# Environment variables for RunPod integration
+# RUNPOD_API_KEY set via GitHub Actions secrets
+# RUNPOD_ENDPOINT set after deployment
+
+# Pages Functions compatibility
+[functions]
+compatibility_date = "2024-06-17"

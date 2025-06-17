@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>chatHMD - AI Assistant</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .model-selector {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            border-radius: 20px;
+            padding: 0.5rem 1rem;
+            color: white;
+            cursor: pointer;
+        }
+        
+        .model-selector option {
+            color: #333;
+        }
+        
+        .chat-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            max-width: 800px;
+            margin: 0 auto;
+            width: 100%;
+            padding: 2rem;
+        }
+        
+        .chat-messages {
+            flex: 1;
+            background: rgba(255,255,255,0.95);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            max-height: 60vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+        }
+        
+        .message {
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            border-radius: 15px;
+            max-width: 80%;
+            word-wrap: break-word;
+        }
+        
+        .message.user {
+            background: #667eea;
+            color: white;
+            margin-left: auto;
+        }
+        
+        .message.assistant {
+            background: #f8f9fa;
+            color: #333;
+            border: 1px solid #dee2e6;
+        }
+        
+        .message.system {
+            background: #e3f2fd;
+            color: #1565c0;
+            font-style: italic;
+            text-align: center;
+            max-width: 100%;
+        }
+        
+        .input-container {
+            background: rgba(255,255,255,0.95);
+            border-radius: 25px;
+            padding: 1rem;
+            display: flex;
+            gap: 1rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .chat-input {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-size: 1rem;
+            padding: 0.5rem;
+            background: transparent;
+            resize: vertical;
+            min-height: 2.5rem;
+            max-height: 10rem;
+        }
+        
+        .send-button {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 0.75rem 1.5rem;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .send-button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .send-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        .feedback-container {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .message.assistant:hover .feedback-container {
+            opacity: 1;
+        }
+        
+        .feedback-btn {
+            background: none;
+            border: 1px solid #ddd;
+            border-radius: 15px;
+            padding: 0.25rem 0.5rem;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.2s ease;
+        }
+        
+        .feedback-btn:hover {
+            background: #f8f9fa;
+        }
+        
+        .feedback-btn.positive {
+            border-color: #28a745;
+            color: #28a745;
+        }
+        
+        .feedback-btn.negative {
+            border-color: #dc3545;
+            color: #dc3545;
+        }
+        
+        .typing-indicator {
+            display: none;
+            padding: 1rem;
+            color: #666;
+            font-style: italic;
+        }
+        
+        .typing-indicator.show {
+            display: block;
+        }
+        
+        .download-banner {
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+        
+        .download-link {
+            color: #fff;
+            text-decoration: underline;
+            margin: 0 1rem;
+        }
+        
+        @media (max-width: 768px) {
+            .chat-container {
+                padding: 1rem;
+            }
+            
+            .header {
+                padding: 1rem;
+            }
+            
+            .logo {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">🥽 chatHMD</div>
+        <select class="model-selector" id="modelSelector">
+            <option value="auto">🤖 Auto (Best Available)</option>
+            <option value="local">🏠 Local App (jan-nano XS)</option>
+            <option value="runpod">☁️ Cloud GPU (jan-nano XS)</option>
+            <option value="demo">🎮 Demo Mode</option>
+        </select>
+    </header>
+
+    <div class="chat-container">
+        <div class="chat-messages" id="chatMessages">
+            <div class="message system">
+                Welcome to chatHMD! Your privacy-first AI assistant. 
+                <br><strong>Note:</strong> This is a web demo. For full functionality and local AI, download the desktop app.
+            </div>
+        </div>
+        
+        <div class="input-container">
+            <textarea 
+                class="chat-input" 
+                id="chatInput" 
+                placeholder="Type your message here... (Press Shift+Enter for new line)"
+                rows="1"
+            ></textarea>
+            <button class="send-button" id="sendButton">Send</button>
+        </div>
+    </div>
+
+    <div class="download-banner">
+        🚀 <strong>Want the full experience?</strong> 
+        <a href="https://github.com/yukihamada/chathmd/releases" class="download-link">Download Desktop App</a>
+        for local AI processing and advanced features.
+    </div>
+
+    <script>
+        class ChatHMD {
+            constructor() {
+                this.messages = [];
+                this.isTyping = false;
+                this.localAppAvailable = false;
+                this.runpodAvailable = false;
+                this.bestModel = 'demo';
+                
+                this.chatMessages = document.getElementById('chatMessages');
+                this.chatInput = document.getElementById('chatInput');
+                this.sendButton = document.getElementById('sendButton');
+                this.modelSelector = document.getElementById('modelSelector');
+                
+                this.initializeEventListeners();
+                this.detectAvailableModels();
+            }
+            
+            async detectAvailableModels() {
+                this.addSystemMessage('🔍 Detecting available AI models...');
+                
+                // Check for local chatHMD app
+                try {
+                    // Try to connect to local app (default port 8501)
+                    const localResponse = await fetch('http://localhost:8501/api/health', {
+                        method: 'GET',
+                        signal: AbortSignal.timeout(2000) // 2 second timeout
+                    });
+                    
+                    if (localResponse.ok) {
+                        this.localAppAvailable = true;
+                        this.bestModel = 'local';
+                        this.addSystemMessage('✅ Local chatHMD app detected! Using jan-nano XS locally.');
+                    }
+                } catch (error) {
+                    console.log('Local app not available:', error.message);
+                }
+                
+                // Check RunPod availability
+                try {
+                    const runpodCheck = await fetch('/api/health', {
+                        method: 'GET',
+                        signal: AbortSignal.timeout(3000)
+                    });
+                    
+                    if (runpodCheck.ok) {
+                        const data = await runpodCheck.json();
+                        if (data.runpod_available) {
+                            this.runpodAvailable = true;
+                            if (!this.localAppAvailable) {
+                                this.bestModel = 'runpod';
+                            }
+                            this.addSystemMessage('✅ Cloud GPU (RunPod) available with jan-nano XS!');
+                        }
+                    }
+                } catch (error) {
+                    console.log('RunPod not available:', error.message);
+                }
+                
+                // Update UI based on available models
+                this.updateModelSelector();
+                
+                // Auto-select best model
+                if (this.bestModel !== 'demo') {
+                    this.modelSelector.value = this.bestModel;
+                    this.switchModel(this.bestModel);
+                } else {
+                    this.addSystemMessage('💡 No AI models detected. Download the desktop app for local processing!');
+                }
+            }
+            
+            updateModelSelector() {
+                const options = this.modelSelector.options;
+                
+                // Enable/disable options based on availability
+                for (let option of options) {
+                    if (option.value === 'local') {
+                        option.disabled = !this.localAppAvailable;
+                        option.textContent = this.localAppAvailable ? 
+                            '🏠 Local App (jan-nano XS) ✓' : 
+                            '🏠 Local App (Not Available)';
+                    } else if (option.value === 'runpod') {
+                        option.disabled = !this.runpodAvailable;
+                        option.textContent = this.runpodAvailable ? 
+                            '☁️ Cloud GPU (jan-nano XS) ✓' : 
+                            '☁️ Cloud GPU (Not Available)';
+                    }
+                }
+                
+                // Update auto option text
+                const autoOption = [...options].find(opt => opt.value === 'auto');
+                if (autoOption) {
+                    if (this.localAppAvailable) {
+                        autoOption.textContent = '🤖 Auto (Using Local App)';
+                    } else if (this.runpodAvailable) {
+                        autoOption.textContent = '🤖 Auto (Using Cloud GPU)';
+                    } else {
+                        autoOption.textContent = '🤖 Auto (Demo Mode)';
+                    }
+                }
+            }
+            
+            initializeEventListeners() {
+                this.sendButton.addEventListener('click', () => this.sendMessage());
+                
+                this.chatInput.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
+                        this.sendMessage();
+                    }
+                });
+                
+                this.chatInput.addEventListener('input', () => {
+                    this.autoResize();
+                });
+                
+                this.modelSelector.addEventListener('change', (e) => {
+                    this.switchModel(e.target.value);
+                });
+            }
+            
+            autoResize() {
+                this.chatInput.style.height = 'auto';
+                this.chatInput.style.height = Math.min(this.chatInput.scrollHeight, 160) + 'px';
+            }
+            
+            async sendMessage() {
+                const message = this.chatInput.value.trim();
+                if (!message || this.isTyping) return;
+                
+                this.addUserMessage(message);
+                this.chatInput.value = '';
+                this.autoResize();
+                
+                this.setTyping(true);
+                
+                try {
+                    const response = await this.getAIResponse(message);
+                    this.addAssistantMessage(response);
+                } catch (error) {
+                    this.addSystemMessage('Sorry, there was an error processing your request.');
+                } finally {
+                    this.setTyping(false);
+                }
+            }
+            
+            async getAIResponse(message) {
+                let model = this.modelSelector.value;
+                
+                // Auto model selection
+                if (model === 'auto') {
+                    model = this.bestModel;
+                }
+                
+                // Try local app first if available and selected
+                if (model === 'local' && this.localAppAvailable) {
+                    try {
+                        return await this.getLocalAppResponse(message);
+                    } catch (error) {
+                        console.error('Local app error:', error);
+                        // Fallback to RunPod if available
+                        if (this.runpodAvailable) {
+                            this.addSystemMessage('⚠️ Local app unavailable, switching to Cloud GPU...');
+                            model = 'runpod';
+                        } else {
+                            return this.getDemoResponse(message);
+                        }
+                    }
+                }
+                
+                // Try RunPod for cloud processing
+                if (model === 'runpod' && this.runpodAvailable) {
+                    try {
+                        const response = await fetch('/api/chat', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                message: message,
+                                model: 'runpod',
+                                temperature: 0.8
+                            })
+                        });
+                        
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+                        
+                        const data = await response.json();
+                        
+                        if (data.error) {
+                            throw new Error(data.error);
+                        }
+                        
+                        return data.response;
+                        
+                    } catch (error) {
+                        console.error('RunPod API Error:', error);
+                        this.addSystemMessage('⚠️ Cloud GPU unavailable, using demo mode...');
+                        return this.getDemoResponse(message);
+                    }
+                }
+                
+                // Fallback to demo mode
+                return this.getDemoResponse(message);
+            }
+            
+            async getLocalAppResponse(message) {
+                const response = await fetch('http://localhost:8501/api/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        message: message,
+                        model: 'jan-nano-xs',
+                        temperature: 0.8
+                    }),
+                    signal: AbortSignal.timeout(30000) // 30 second timeout for local processing
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`Local app error: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                return data.response || data.text || 'No response from local app';
+            }
+            
+            getDemoResponse(message) {
+                const demoResponses = [
+                    "This is a demo response! For real AI conversations, please download the desktop app.",
+                    "I'm just a demo, but the real chatHMD can learn from your feedback using Text-to-LoRA technology!",
+                    "Demo mode: The desktop version runs actual AI models locally while keeping your data private.",
+                    "That's an interesting question! The full chatHMD app would give you a much better answer.",
+                    "Demo response: The real app features local LLM processing with no data collection!",
+                ];
+                
+                return demoResponses[Math.floor(Math.random() * demoResponses.length)];
+            }
+            
+            async getLocalAIResponse(message) {
+                // In the full version, this would call the local API
+                // For now, return a message about needing the desktop app
+                return "Local AI is not available in the web version. Please download the desktop app for full AI functionality with local processing and privacy protection.";
+            }
+            
+            addUserMessage(message) {
+                this.addMessage('user', message);
+            }
+            
+            addAssistantMessage(message) {
+                const messageEl = this.addMessage('assistant', message);
+                this.addFeedbackButtons(messageEl);
+            }
+            
+            addSystemMessage(message) {
+                this.addMessage('system', message);
+            }
+            
+            addMessage(type, content) {
+                const messageEl = document.createElement('div');
+                messageEl.className = `message ${type}`;
+                messageEl.innerHTML = `
+                    <div class="message-content">${this.formatMessage(content)}</div>
+                `;
+                
+                this.chatMessages.appendChild(messageEl);
+                this.scrollToBottom();
+                
+                return messageEl;
+            }
+            
+            addFeedbackButtons(messageEl) {
+                const feedbackContainer = document.createElement('div');
+                feedbackContainer.className = 'feedback-container';
+                feedbackContainer.innerHTML = `
+                    <button class="feedback-btn positive" onclick="chatHMD.giveFeedback('positive')">👍 Good</button>
+                    <button class="feedback-btn negative" onclick="chatHMD.giveFeedback('negative')">👎 Improve</button>
+                    <button class="feedback-btn" onclick="chatHMD.giveFeedback('download')">📱 Get Desktop App</button>
+                `;
+                
+                messageEl.appendChild(feedbackContainer);
+            }
+            
+            giveFeedback(type) {
+                if (type === 'download') {
+                    window.open('https://github.com/yukihamada/chathmd/releases', '_blank');
+                } else if (type === 'positive') {
+                    this.addSystemMessage('Thank you for the feedback! 👍');
+                } else if (type === 'negative') {
+                    this.addSystemMessage('Your feedback helps improve the AI! Download the desktop app for learning capabilities.');
+                }
+            }
+            
+            switchModel(model) {
+                if (model === 'auto') {
+                    this.addSystemMessage(`🤖 Auto mode: Using ${this.bestModel === 'local' ? 'Local App' : this.bestModel === 'runpod' ? 'Cloud GPU' : 'Demo Mode'} with jan-nano XS.`);
+                } else if (model === 'runpod') {
+                    if (this.runpodAvailable) {
+                        this.addSystemMessage('☁️ Cloud GPU mode: Using jan-nano XS on RunPod infrastructure.');
+                    } else {
+                        this.addSystemMessage('⚠️ Cloud GPU not available. Please check RunPod configuration.');
+                    }
+                } else if (model === 'local') {
+                    if (this.localAppAvailable) {
+                        this.addSystemMessage('🏠 Local App mode: Using jan-nano XS on your device for maximum privacy.');
+                    } else {
+                        this.addSystemMessage('⚠️ Local app not detected. Please ensure chatHMD desktop app is running.');
+                    }
+                } else {
+                    this.addSystemMessage('🎮 Demo mode: Simulated responses. Download the app for real AI!');
+                }
+            }
+            
+            setTyping(typing) {
+                this.isTyping = typing;
+                this.sendButton.disabled = typing;
+                this.sendButton.textContent = typing ? '...' : 'Send';
+                
+                if (typing) {
+                    this.showTypingIndicator();
+                } else {
+                    this.hideTypingIndicator();
+                }
+            }
+            
+            showTypingIndicator() {
+                const indicator = document.createElement('div');
+                indicator.className = 'typing-indicator show';
+                indicator.id = 'typingIndicator';
+                indicator.textContent = 'AI is thinking...';
+                this.chatMessages.appendChild(indicator);
+                this.scrollToBottom();
+            }
+            
+            hideTypingIndicator() {
+                const indicator = document.getElementById('typingIndicator');
+                if (indicator) {
+                    indicator.remove();
+                }
+            }
+            
+            formatMessage(content) {
+                return content.replace(/\n/g, '<br>');
+            }
+            
+            scrollToBottom() {
+                this.chatMessages.scrollTop = this.chatMessages.scrollHeight;
+            }
+        }
+        
+        // Initialize the chat application
+        const chatHMD = new ChatHMD();
+        
+        // Track page views for analytics
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'page_view', {
+                page_title: 'chatHMD Web Demo',
+                page_location: window.location.href
+            });
+        }
+    </script>
+</body>
+</html>

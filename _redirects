@@ -1,0 +1,17 @@
+# Cloudflare Pages redirects
+
+# SPA routing
+/*    /index.html   200
+
+# API routes to Functions
+/api/*  /api/:splat  200
+
+# Download redirects
+/download/mac       https://github.com/yukihamada/chathmd/releases/latest/download/chatHMD-macos-universal.dmg     302
+/download/windows   https://github.com/yukihamada/chathmd/releases/latest/download/chatHMD-windows-portable.zip    302
+/download/linux     https://github.com/yukihamada/chathmd/releases/latest/download/chatHMD-linux-portable.tar.gz   302
+/download/debian    https://github.com/yukihamada/chathmd/releases/latest/download/chatHMD-debian-amd64.deb        302
+
+# Legacy redirects
+/app              /                200
+/chat             /                200
