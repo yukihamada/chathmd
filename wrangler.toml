@@ -1,11 +1,11 @@
-# Cloudflare Pages configuration for chatHMD
+# Cloudflare Pages configuration for Wisbee
 
-name = "chathmd"
+name = "wisbee"
 compatibility_date = "2024-06-17"
 pages_build_output_dir = "."
 
 [env.production]
-name = "chathmd"
+name = "wisbee"
 
 [env.production.vars]
 ENVIRONMENT = "production"

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>chatHMD - AI Assistant</title>
+    <title>Wisbee - AI Assistant</title>
     <style>
         * {
             margin: 0;
@@ -13,17 +13,16 @@
         
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background-color: #f0f2f5;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
         }
         
         .header {
-            background: rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px);
+            background: white;
             padding: 1rem 2rem;
-            color: white;
+            border-bottom: 1px solid #e4e6eb;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -31,20 +30,17 @@
         
         .logo {
             font-size: 1.5rem;
-            font-weight: bold;
+            font-weight: 600;
+            color: #1877f2;
         }
         
         .model-selector {
-            background: rgba(255,255,255,0.2);
-            border: none;
-            border-radius: 20px;
+            background: #f0f2f5;
+            border: 1px solid #ddd;
+            border-radius: 8px;
             padding: 0.5rem 1rem;
-            color: white;
             cursor: pointer;
-        }
-        
-        .model-selector option {
-            color: #333;
+            font-size: 0.9rem;
         }
         
         .chat-container {
@@ -59,82 +55,91 @@
         
         .chat-messages {
             flex: 1;
-            background: rgba(255,255,255,0.95);
-            border-radius: 20px;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            max-height: 60vh;
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
             overflow-y: auto;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            max-height: 65vh;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
         }
         
         .message {
-            margin-bottom: 1.5rem;
-            padding: 1rem;
-            border-radius: 15px;
-            max-width: 80%;
+            margin-bottom: 1rem;
+            padding: 0.75rem 1rem;
+            border-radius: 12px;
+            max-width: 70%;
             word-wrap: break-word;
         }
         
         .message.user {
-            background: #667eea;
+            background: #1877f2;
             color: white;
             margin-left: auto;
+            text-align: right;
         }
         
         .message.assistant {
-            background: #f8f9fa;
-            color: #333;
-            border: 1px solid #dee2e6;
+            background: #e4e6eb;
+            color: #1c1e21;
         }
         
         .message.system {
-            background: #e3f2fd;
-            color: #1565c0;
-            font-style: italic;
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
             text-align: center;
             max-width: 100%;
+            font-size: 0.9rem;
         }
         
         .input-container {
-            background: rgba(255,255,255,0.95);
-            border-radius: 25px;
+            background: white;
+            border-radius: 8px;
             padding: 1rem;
             display: flex;
-            gap: 1rem;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            gap: 0.5rem;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
         }
         
         .chat-input {
             flex: 1;
-            border: none;
-            outline: none;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            padding: 0.5rem 1rem;
             font-size: 1rem;
-            padding: 0.5rem;
-            background: transparent;
-            resize: vertical;
+            outline: none;
+            resize: none;
             min-height: 2.5rem;
-            max-height: 10rem;
+            max-height: 6rem;
+            transition: border-color 0.2s;
+        }
+        
+        .chat-input:focus {
+            border-color: #1877f2;
         }
         
         .send-button {
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: #1877f2;
             color: white;
             border: none;
-            border-radius: 20px;
-            padding: 0.75rem 1.5rem;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
             cursor: pointer;
-            font-weight: bold;
-            transition: all 0.3s ease;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.2s;
         }
         
         .send-button:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+            background: #166fe5;
         }
         
         .send-button:disabled {
-            opacity: 0.6;
+            background: #bcc0c4;
             cursor: not-allowed;
         }
         
@@ -143,7 +148,7 @@
             gap: 0.5rem;
             margin-top: 0.5rem;
             opacity: 0;
-            transition: opacity 0.3s ease;
+            transition: opacity 0.2s;
         }
         
         .message.assistant:hover .feedback-container {
@@ -153,49 +158,45 @@
         .feedback-btn {
             background: none;
             border: 1px solid #ddd;
-            border-radius: 15px;
+            border-radius: 12px;
             padding: 0.25rem 0.5rem;
             cursor: pointer;
-            font-size: 0.8rem;
-            transition: all 0.2s ease;
+            font-size: 0.75rem;
+            color: #65676b;
+            transition: all 0.2s;
         }
         
         .feedback-btn:hover {
-            background: #f8f9fa;
-        }
-        
-        .feedback-btn.positive {
-            border-color: #28a745;
-            color: #28a745;
-        }
-        
-        .feedback-btn.negative {
-            border-color: #dc3545;
-            color: #dc3545;
+            background: #f0f2f5;
         }
         
         .typing-indicator {
             display: none;
-            padding: 1rem;
-            color: #666;
-            font-style: italic;
+            padding: 0.5rem;
+            color: #65676b;
+            font-size: 0.9rem;
         }
         
         .typing-indicator.show {
             display: block;
         }
         
-        .download-banner {
-            background: rgba(0,0,0,0.8);
-            color: white;
+        .footer {
+            background: white;
             padding: 1rem;
             text-align: center;
+            border-top: 1px solid #e4e6eb;
+            font-size: 0.9rem;
+            color: #65676b;
         }
         
-        .download-link {
-            color: #fff;
+        .footer a {
+            color: #1877f2;
+            text-decoration: none;
+        }
+        
+        .footer a:hover {
             text-decoration: underline;
-            margin: 0 1rem;
         }
         
         @media (max-width: 768px) {
@@ -210,25 +211,28 @@
             .logo {
                 font-size: 1.2rem;
             }
+            
+            .message {
+                max-width: 85%;
+            }
         }
     </style>
 </head>
 <body>
     <header class="header">
-        <div class="logo">🥽 chatHMD</div>
+        <div class="logo">🐝 Wisbee</div>
         <select class="model-selector" id="modelSelector">
-            <option value="auto">🤖 Auto (Best Available)</option>
-            <option value="local">🏠 Local App (jan-nano XS)</option>
-            <option value="runpod">☁️ Cloud GPU (jan-nano XS)</option>
-            <option value="demo">🎮 Demo Mode</option>
+            <option value="auto">Auto (Best Available)</option>
+            <option value="local">Local App</option>
+            <option value="cloud">Cloud GPU</option>
+            <option value="demo">Demo Mode</option>
         </select>
     </header>
 
     <div class="chat-container">
         <div class="chat-messages" id="chatMessages">
             <div class="message system">
-                Welcome to chatHMD! Your privacy-first AI assistant. 
-                <br><strong>Note:</strong> This is a web demo. For full functionality and local AI, download the desktop app.
+                Welcome to Wisbee! Your privacy-first AI assistant powered by jan-nano technology.
             </div>
         </div>
         
@@ -236,26 +240,25 @@
             <textarea 
                 class="chat-input" 
                 id="chatInput" 
-                placeholder="Type your message here... (Press Shift+Enter for new line)"
+                placeholder="Type a message..."
                 rows="1"
             ></textarea>
-            <button class="send-button" id="sendButton">Send</button>
+            <button class="send-button" id="sendButton">→</button>
         </div>
     </div>
 
-    <div class="download-banner">
-        🚀 <strong>Want the full experience?</strong> 
-        <a href="https://github.com/yukihamada/chathmd/releases" class="download-link">Download Desktop App</a>
-        for local AI processing and advanced features.
+    <div class="footer">
+        <a href="https://github.com/yukihamada/wisbee/releases">Download Desktop App</a> • 
+        <a href="https://wisbee.ai">wisbee.ai</a>
     </div>
 
     <script>
-        class ChatHMD {
+        class Wisbee {
             constructor() {
                 this.messages = [];
                 this.isTyping = false;
                 this.localAppAvailable = false;
-                this.runpodAvailable = false;
+                this.cloudAvailable = false;
                 this.bestModel = 'demo';
                 
                 this.chatMessages = document.getElementById('chatMessages');
@@ -268,86 +271,57 @@
             }
             
             async detectAvailableModels() {
-                this.addSystemMessage('🔍 Detecting available AI models...');
-                
-                // Check for local chatHMD app
+                // Check for local app
                 try {
-                    // Try to connect to local app (default port 8501)
                     const localResponse = await fetch('http://localhost:8501/api/health', {
-                        method: 'GET',
-                        signal: AbortSignal.timeout(2000) // 2 second timeout
+                        signal: AbortSignal.timeout(1000)
                     });
                     
                     if (localResponse.ok) {
                         this.localAppAvailable = true;
                         this.bestModel = 'local';
-                        this.addSystemMessage('✅ Local chatHMD app detected! Using jan-nano XS locally.');
                     }
                 } catch (error) {
-                    console.log('Local app not available:', error.message);
+                    console.log('Local app not available');
                 }
                 
-                // Check RunPod availability
+                // Check cloud availability
                 try {
-                    const runpodCheck = await fetch('/api/health', {
-                        method: 'GET',
-                        signal: AbortSignal.timeout(3000)
+                    const cloudCheck = await fetch('/api/health', {
+                        signal: AbortSignal.timeout(2000)
                     });
                     
-                    if (runpodCheck.ok) {
-                        const data = await runpodCheck.json();
+                    if (cloudCheck.ok) {
+                        const data = await cloudCheck.json();
                         if (data.runpod_available) {
-                            this.runpodAvailable = true;
+                            this.cloudAvailable = true;
                             if (!this.localAppAvailable) {
-                                this.bestModel = 'runpod';
+                                this.bestModel = 'cloud';
                             }
-                            this.addSystemMessage('✅ Cloud GPU (RunPod) available with jan-nano XS!');
                         }
                     }
                 } catch (error) {
-                    console.log('RunPod not available:', error.message);
+                    console.log('Cloud not available');
                 }
                 
-                // Update UI based on available models
                 this.updateModelSelector();
-                
-                // Auto-select best model
-                if (this.bestModel !== 'demo') {
-                    this.modelSelector.value = this.bestModel;
-                    this.switchModel(this.bestModel);
-                } else {
-                    this.addSystemMessage('💡 No AI models detected. Download the desktop app for local processing!');
-                }
             }
             
             updateModelSelector() {
                 const options = this.modelSelector.options;
                 
-                // Enable/disable options based on availability
                 for (let option of options) {
                     if (option.value === 'local') {
                         option.disabled = !this.localAppAvailable;
-                        option.textContent = this.localAppAvailable ? 
-                            '🏠 Local App (jan-nano XS) ✓' : 
-                            '🏠 Local App (Not Available)';
-                    } else if (option.value === 'runpod') {
-                        option.disabled = !this.runpodAvailable;
-                        option.textContent = this.runpodAvailable ? 
-                            '☁️ Cloud GPU (jan-nano XS) ✓' : 
-                            '☁️ Cloud GPU (Not Available)';
+                        option.textContent = this.localAppAvailable ? 'Local App ✓' : 'Local App';
+                    } else if (option.value === 'cloud') {
+                        option.disabled = !this.cloudAvailable;
+                        option.textContent = this.cloudAvailable ? 'Cloud GPU ✓' : 'Cloud GPU';
                     }
                 }
                 
-                // Update auto option text
-                const autoOption = [...options].find(opt => opt.value === 'auto');
-                if (autoOption) {
-                    if (this.localAppAvailable) {
-                        autoOption.textContent = '🤖 Auto (Using Local App)';
-                    } else if (this.runpodAvailable) {
-                        autoOption.textContent = '🤖 Auto (Using Cloud GPU)';
-                    } else {
-                        autoOption.textContent = '🤖 Auto (Demo Mode)';
-                    }
+                if (this.modelSelector.value === 'auto') {
+                    this.modelSelector.value = this.bestModel;
                 }
             }
             
@@ -372,7 +346,7 @@
             
             autoResize() {
                 this.chatInput.style.height = 'auto';
-                this.chatInput.style.height = Math.min(this.chatInput.scrollHeight, 160) + 'px';
+                this.chatInput.style.height = Math.min(this.chatInput.scrollHeight, 96) + 'px';
             }
             
             async sendMessage() {
@@ -398,29 +372,24 @@
             async getAIResponse(message) {
                 let model = this.modelSelector.value;
                 
-                // Auto model selection
                 if (model === 'auto') {
                     model = this.bestModel;
                 }
                 
-                // Try local app first if available and selected
                 if (model === 'local' && this.localAppAvailable) {
                     try {
                         return await this.getLocalAppResponse(message);
                     } catch (error) {
                         console.error('Local app error:', error);
-                        // Fallback to RunPod if available
-                        if (this.runpodAvailable) {
-                            this.addSystemMessage('⚠️ Local app unavailable, switching to Cloud GPU...');
-                            model = 'runpod';
+                        if (this.cloudAvailable) {
+                            model = 'cloud';
                         } else {
                             return this.getDemoResponse(message);
                         }
                     }
                 }
                 
-                // Try RunPod for cloud processing
-                if (model === 'runpod' && this.runpodAvailable) {
+                if (model === 'cloud' && this.cloudAvailable) {
                     try {
                         const response = await fetch('/api/chat', {
                             method: 'POST',
@@ -434,26 +403,15 @@
                             })
                         });
                         
-                        if (!response.ok) {
-                            throw new Error(`HTTP error! status: ${response.status}`);
-                        }
-                        
                         const data = await response.json();
-                        
-                        if (data.error) {
-                            throw new Error(data.error);
-                        }
-                        
                         return data.response;
                         
                     } catch (error) {
-                        console.error('RunPod API Error:', error);
-                        this.addSystemMessage('⚠️ Cloud GPU unavailable, using demo mode...');
+                        console.error('Cloud API Error:', error);
                         return this.getDemoResponse(message);
                     }
                 }
                 
-                // Fallback to demo mode
                 return this.getDemoResponse(message);
             }
             
@@ -468,12 +426,8 @@
                         model: 'jan-nano-xs',
                         temperature: 0.8
                     }),
-                    signal: AbortSignal.timeout(30000) // 30 second timeout for local processing
+                    signal: AbortSignal.timeout(30000)
                 });
-                
-                if (!response.ok) {
-                    throw new Error(`Local app error: ${response.status}`);
-                }
                 
                 const data = await response.json();
                 return data.response || data.text || 'No response from local app';
@@ -482,19 +436,13 @@
             getDemoResponse(message) {
                 const demoResponses = [
                     "This is a demo response! For real AI conversations, please download the desktop app.",
-                    "I'm just a demo, but the real chatHMD can learn from your feedback using Text-to-LoRA technology!",
-                    "Demo mode: The desktop version runs actual AI models locally while keeping your data private.",
-                    "That's an interesting question! The full chatHMD app would give you a much better answer.",
-                    "Demo response: The real app features local LLM processing with no data collection!",
+                    "I'm running in demo mode. The full version uses local AI for privacy.",
+                    "Demo mode: Download Wisbee desktop for full AI capabilities!",
+                    "That's an interesting question! The full app would give you a much better answer.",
+                    "Demo response: Try the desktop app for private, local AI processing!",
                 ];
                 
                 return demoResponses[Math.floor(Math.random() * demoResponses.length)];
-            }
-            
-            async getLocalAIResponse(message) {
-                // In the full version, this would call the local API
-                // For now, return a message about needing the desktop app
-                return "Local AI is not available in the web version. Please download the desktop app for full AI functionality with local processing and privacy protection.";
             }
             
             addUserMessage(message) {
@@ -527,48 +475,35 @@
                 const feedbackContainer = document.createElement('div');
                 feedbackContainer.className = 'feedback-container';
                 feedbackContainer.innerHTML = `
-                    <button class="feedback-btn positive" onclick="chatHMD.giveFeedback('positive')">👍 Good</button>
-                    <button class="feedback-btn negative" onclick="chatHMD.giveFeedback('negative')">👎 Improve</button>
-                    <button class="feedback-btn" onclick="chatHMD.giveFeedback('download')">📱 Get Desktop App</button>
+                    <button class="feedback-btn" onclick="wisbee.giveFeedback('positive')">👍</button>
+                    <button class="feedback-btn" onclick="wisbee.giveFeedback('negative')">👎</button>
                 `;
                 
                 messageEl.appendChild(feedbackContainer);
             }
             
             giveFeedback(type) {
-                if (type === 'download') {
-                    window.open('https://github.com/yukihamada/chathmd/releases', '_blank');
-                } else if (type === 'positive') {
-                    this.addSystemMessage('Thank you for the feedback! 👍');
+                if (type === 'positive') {
+                    this.addSystemMessage('Thank you for the feedback!');
                 } else if (type === 'negative') {
-                    this.addSystemMessage('Your feedback helps improve the AI! Download the desktop app for learning capabilities.');
+                    this.addSystemMessage('Your feedback helps improve Wisbee!');
                 }
             }
             
             switchModel(model) {
-                if (model === 'auto') {
-                    this.addSystemMessage(`🤖 Auto mode: Using ${this.bestModel === 'local' ? 'Local App' : this.bestModel === 'runpod' ? 'Cloud GPU' : 'Demo Mode'} with jan-nano XS.`);
-                } else if (model === 'runpod') {
-                    if (this.runpodAvailable) {
-                        this.addSystemMessage('☁️ Cloud GPU mode: Using jan-nano XS on RunPod infrastructure.');
-                    } else {
-                        this.addSystemMessage('⚠️ Cloud GPU not available. Please check RunPod configuration.');
-                    }
+                if (model === 'cloud') {
+                    this.addSystemMessage('Switched to Cloud GPU mode.');
                 } else if (model === 'local') {
-                    if (this.localAppAvailable) {
-                        this.addSystemMessage('🏠 Local App mode: Using jan-nano XS on your device for maximum privacy.');
-                    } else {
-                        this.addSystemMessage('⚠️ Local app not detected. Please ensure chatHMD desktop app is running.');
-                    }
+                    this.addSystemMessage('Switched to Local App mode.');
                 } else {
-                    this.addSystemMessage('🎮 Demo mode: Simulated responses. Download the app for real AI!');
+                    this.addSystemMessage('Switched to Demo mode.');
                 }
             }
             
             setTyping(typing) {
                 this.isTyping = typing;
                 this.sendButton.disabled = typing;
-                this.sendButton.textContent = typing ? '...' : 'Send';
+                this.sendButton.textContent = typing ? '...' : '→';
                 
                 if (typing) {
                     this.showTypingIndicator();
@@ -581,7 +516,7 @@
                 const indicator = document.createElement('div');
                 indicator.className = 'typing-indicator show';
                 indicator.id = 'typingIndicator';
-                indicator.textContent = 'AI is thinking...';
+                indicator.textContent = 'Wisbee is typing...';
                 this.chatMessages.appendChild(indicator);
                 this.scrollToBottom();
             }
@@ -602,16 +537,8 @@
             }
         }
         
-        // Initialize the chat application
-        const chatHMD = new ChatHMD();
-        
-        // Track page views for analytics
-        if (typeof gtag !== 'undefined') {
-            gtag('event', 'page_view', {
-                page_title: 'chatHMD Web Demo',
-                page_location: window.location.href
-            });
-        }
+        // Initialize Wisbee
+        const wisbee = new Wisbee();
     </script>
 </body>
 </html>
