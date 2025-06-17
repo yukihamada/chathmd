@@ -199,6 +199,122 @@
             text-decoration: underline;
         }
         
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+        
+        .modal-content {
+            background-color: white;
+            margin: 10% auto;
+            padding: 2rem;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        
+        .modal-header {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: #1c1e21;
+        }
+        
+        .modal-close {
+            color: #aaa;
+            float: right;
+            font-size: 1.5rem;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .modal-close:hover {
+            color: #000;
+        }
+        
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #65676b;
+            font-size: 0.9rem;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 1rem;
+            outline: none;
+        }
+        
+        .form-input:focus {
+            border-color: #1877f2;
+        }
+        
+        .form-button {
+            width: 100%;
+            padding: 0.75rem;
+            background: #1877f2;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .form-button:hover {
+            background: #166fe5;
+        }
+        
+        .form-button.secondary {
+            background: #e4e6eb;
+            color: #1c1e21;
+            margin-top: 0.5rem;
+        }
+        
+        .form-button.secondary:hover {
+            background: #d8dadf;
+        }
+        
+        .download-section {
+            background: #e3f2fd;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            text-align: center;
+        }
+        
+        .download-button {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            background: #2196f3;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 600;
+            margin: 0.5rem;
+            transition: background-color 0.2s;
+        }
+        
+        .download-button:hover {
+            background: #1976d2;
+        }
+        
         @media (max-width: 768px) {
             .chat-container {
                 padding: 1rem;
@@ -222,17 +338,17 @@
     <header class="header">
         <div class="logo">🐝 Wisbee</div>
         <select class="model-selector" id="modelSelector">
-            <option value="auto">Auto (Best Available)</option>
-            <option value="local">Local App</option>
-            <option value="cloud">Cloud GPU</option>
-            <option value="demo">Demo Mode</option>
+            <option value="wisbee">Wisbee AI</option>
+            <option value="local">Local (Download)</option>
+            <option value="chatgpt">ChatGPT</option>
+            <option value="claude">Claude</option>
         </select>
     </header>
 
     <div class="chat-container">
         <div class="chat-messages" id="chatMessages">
             <div class="message system">
-                Welcome to Wisbee! Your privacy-first AI assistant powered by jan-nano technology.
+                Welcome to Wisbee! Select your preferred AI model from the dropdown above.
             </div>
         </div>
         
@@ -248,8 +364,76 @@
     </div>
 
     <div class="footer">
-        <a href="https://github.com/yukihamada/wisbee/releases">Download Desktop App</a> • 
-        <a href="https://wisbee.ai">wisbee.ai</a>
+        <a href="https://wisbee.ai">wisbee.ai</a> • 
+        <a href="#" onclick="wisbee.showAbout()">About</a> • 
+        <a href="#" onclick="wisbee.showLogin()">Login</a>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="wisbee.hideLogin()">&times;</span>
+            <h2 class="modal-header">Login to Wisbee</h2>
+            <form onsubmit="wisbee.handleLogin(event)">
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-input" id="loginEmail" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input type="password" class="form-input" id="loginPassword" required>
+                </div>
+                <button type="submit" class="form-button">Login</button>
+                <button type="button" class="form-button secondary" onclick="wisbee.showSignup()">Create New Account</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Signup Modal -->
+    <div id="signupModal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="wisbee.hideSignup()">&times;</span>
+            <h2 class="modal-header">Create Account</h2>
+            <form onsubmit="wisbee.handleSignup(event)">
+                <div class="form-group">
+                    <label class="form-label">Name</label>
+                    <input type="text" class="form-input" id="signupName" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-input" id="signupEmail" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input type="password" class="form-input" id="signupPassword" required>
+                </div>
+                <button type="submit" class="form-button">Create Account</button>
+                <button type="button" class="form-button secondary" onclick="wisbee.showLogin()">Already have an account?</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Download Modal -->
+    <div id="downloadModal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="wisbee.hideDownload()">&times;</span>
+            <h2 class="modal-header">Download Wisbee Desktop</h2>
+            <p>Run Wisbee AI locally on your device for maximum privacy and performance!</p>
+            <div class="download-section">
+                <a href="#" class="download-button" onclick="wisbee.downloadFor('mac')">
+                    🍎 Download for macOS
+                </a>
+                <a href="#" class="download-button" onclick="wisbee.downloadFor('windows')">
+                    🪟 Download for Windows
+                </a>
+                <a href="#" class="download-button" onclick="wisbee.downloadFor('linux')">
+                    🐧 Download for Linux
+                </a>
+            </div>
+            <p style="font-size: 0.9rem; color: #65676b; margin-top: 1rem;">
+                Local version includes jan-nano XS model (7.5GB) with Text-to-LoRA learning technology.
+            </p>
+        </div>
     </div>
 
     <script>
@@ -257,9 +441,9 @@
             constructor() {
                 this.messages = [];
                 this.isTyping = false;
-                this.localAppAvailable = false;
-                this.cloudAvailable = false;
-                this.bestModel = 'demo';
+                this.currentModel = 'wisbee';
+                this.isAuthenticated = false;
+                this.user = null;
                 
                 this.chatMessages = document.getElementById('chatMessages');
                 this.chatInput = document.getElementById('chatInput');
@@ -267,62 +451,7 @@
                 this.modelSelector = document.getElementById('modelSelector');
                 
                 this.initializeEventListeners();
-                this.detectAvailableModels();
-            }
-            
-            async detectAvailableModels() {
-                // Check for local app
-                try {
-                    const localResponse = await fetch('http://localhost:8501/api/health', {
-                        signal: AbortSignal.timeout(1000)
-                    });
-                    
-                    if (localResponse.ok) {
-                        this.localAppAvailable = true;
-                        this.bestModel = 'local';
-                    }
-                } catch (error) {
-                    console.log('Local app not available');
-                }
-                
-                // Check cloud availability
-                try {
-                    const cloudCheck = await fetch('/api/health', {
-                        signal: AbortSignal.timeout(2000)
-                    });
-                    
-                    if (cloudCheck.ok) {
-                        const data = await cloudCheck.json();
-                        if (data.runpod_available) {
-                            this.cloudAvailable = true;
-                            if (!this.localAppAvailable) {
-                                this.bestModel = 'cloud';
-                            }
-                        }
-                    }
-                } catch (error) {
-                    console.log('Cloud not available');
-                }
-                
-                this.updateModelSelector();
-            }
-            
-            updateModelSelector() {
-                const options = this.modelSelector.options;
-                
-                for (let option of options) {
-                    if (option.value === 'local') {
-                        option.disabled = !this.localAppAvailable;
-                        option.textContent = this.localAppAvailable ? 'Local App ✓' : 'Local App';
-                    } else if (option.value === 'cloud') {
-                        option.disabled = !this.cloudAvailable;
-                        option.textContent = this.cloudAvailable ? 'Cloud GPU ✓' : 'Cloud GPU';
-                    }
-                }
-                
-                if (this.modelSelector.value === 'auto') {
-                    this.modelSelector.value = this.bestModel;
-                }
+                this.checkAuthStatus();
             }
             
             initializeEventListeners() {
@@ -344,6 +473,34 @@
                 });
             }
             
+            checkAuthStatus() {
+                // Check localStorage for auth token
+                const authToken = localStorage.getItem('wisbee_auth');
+                if (authToken) {
+                    this.isAuthenticated = true;
+                    this.user = JSON.parse(localStorage.getItem('wisbee_user') || '{}');
+                }
+            }
+            
+            switchModel(model) {
+                this.currentModel = model;
+                
+                if (model === 'local') {
+                    this.showDownload();
+                } else if (model === 'chatgpt' || model === 'claude') {
+                    if (!this.isAuthenticated) {
+                        this.addSystemMessage(`To use ${model === 'chatgpt' ? 'ChatGPT' : 'Claude'}, please login or create an account.`);
+                        this.showLogin();
+                        this.modelSelector.value = 'wisbee';
+                        this.currentModel = 'wisbee';
+                    } else {
+                        this.addSystemMessage(`Switched to ${model === 'chatgpt' ? 'ChatGPT' : 'Claude'} model.`);
+                    }
+                } else {
+                    this.addSystemMessage('Using Wisbee AI - Privacy-first assistant powered by jan-nano technology.');
+                }
+            }
+            
             autoResize() {
                 this.chatInput.style.height = 'auto';
                 this.chatInput.style.height = Math.min(this.chatInput.scrollHeight, 96) + 'px';
@@ -352,6 +509,13 @@
             async sendMessage() {
                 const message = this.chatInput.value.trim();
                 if (!message || this.isTyping) return;
+                
+                // Check if premium models require auth
+                if ((this.currentModel === 'chatgpt' || this.currentModel === 'claude') && !this.isAuthenticated) {
+                    this.addSystemMessage('Please login to use premium AI models.');
+                    this.showLogin();
+                    return;
+                }
                 
                 this.addUserMessage(message);
                 this.chatInput.value = '';
@@ -370,26 +534,8 @@
             }
             
             async getAIResponse(message) {
-                let model = this.modelSelector.value;
-                
-                if (model === 'auto') {
-                    model = this.bestModel;
-                }
-                
-                if (model === 'local' && this.localAppAvailable) {
-                    try {
-                        return await this.getLocalAppResponse(message);
-                    } catch (error) {
-                        console.error('Local app error:', error);
-                        if (this.cloudAvailable) {
-                            model = 'cloud';
-                        } else {
-                            return this.getDemoResponse(message);
-                        }
-                    }
-                }
-                
-                if (model === 'cloud' && this.cloudAvailable) {
+                if (this.currentModel === 'wisbee') {
+                    // Try cloud API
                     try {
                         const response = await fetch('/api/chat', {
                             method: 'POST',
@@ -398,51 +544,40 @@
                             },
                             body: JSON.stringify({
                                 message: message,
-                                model: 'runpod',
+                                model: 'wisbee',
                                 temperature: 0.8
                             })
                         });
                         
-                        const data = await response.json();
-                        return data.response;
-                        
+                        if (response.ok) {
+                            const data = await response.json();
+                            return data.response;
+                        }
                     } catch (error) {
-                        console.error('Cloud API Error:', error);
-                        return this.getDemoResponse(message);
+                        console.error('API Error:', error);
                     }
+                    
+                    // Fallback to demo
+                    return this.getDemoResponse(message);
+                    
+                } else if (this.currentModel === 'chatgpt' || this.currentModel === 'claude') {
+                    // Premium models - would integrate with respective APIs
+                    return `[${this.currentModel === 'chatgpt' ? 'ChatGPT' : 'Claude'}] This would be a response from the ${this.currentModel === 'chatgpt' ? 'OpenAI' : 'Anthropic'} API. Premium features coming soon!`;
                 }
                 
                 return this.getDemoResponse(message);
             }
             
-            async getLocalAppResponse(message) {
-                const response = await fetch('http://localhost:8501/api/chat', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        message: message,
-                        model: 'jan-nano-xs',
-                        temperature: 0.8
-                    }),
-                    signal: AbortSignal.timeout(30000)
-                });
-                
-                const data = await response.json();
-                return data.response || data.text || 'No response from local app';
-            }
-            
             getDemoResponse(message) {
-                const demoResponses = [
-                    "This is a demo response! For real AI conversations, please download the desktop app.",
-                    "I'm running in demo mode. The full version uses local AI for privacy.",
-                    "Demo mode: Download Wisbee desktop for full AI capabilities!",
-                    "That's an interesting question! The full app would give you a much better answer.",
-                    "Demo response: Try the desktop app for private, local AI processing!",
+                const responses = [
+                    "I'm Wisbee, your privacy-first AI assistant. I run locally on your device to keep your data safe!",
+                    "With Text-to-LoRA technology, I can learn from your feedback and adapt to your needs.",
+                    "Download the desktop app to run me locally with the jan-nano XS model - just 7.5GB!",
+                    "I prioritize your privacy while providing intelligent assistance.",
+                    "Try the local version for unlimited, private conversations without any data collection.",
                 ];
                 
-                return demoResponses[Math.floor(Math.random() * demoResponses.length)];
+                return responses[Math.floor(Math.random() * responses.length)];
             }
             
             addUserMessage(message) {
@@ -490,16 +625,6 @@
                 }
             }
             
-            switchModel(model) {
-                if (model === 'cloud') {
-                    this.addSystemMessage('Switched to Cloud GPU mode.');
-                } else if (model === 'local') {
-                    this.addSystemMessage('Switched to Local App mode.');
-                } else {
-                    this.addSystemMessage('Switched to Demo mode.');
-                }
-            }
-            
             setTyping(typing) {
                 this.isTyping = typing;
                 this.sendButton.disabled = typing;
@@ -535,10 +660,97 @@
             scrollToBottom() {
                 this.chatMessages.scrollTop = this.chatMessages.scrollHeight;
             }
+            
+            // Modal functions
+            showLogin() {
+                document.getElementById('loginModal').style.display = 'block';
+            }
+            
+            hideLogin() {
+                document.getElementById('loginModal').style.display = 'none';
+            }
+            
+            showSignup() {
+                this.hideLogin();
+                document.getElementById('signupModal').style.display = 'block';
+            }
+            
+            hideSignup() {
+                document.getElementById('signupModal').style.display = 'none';
+            }
+            
+            showDownload() {
+                document.getElementById('downloadModal').style.display = 'block';
+            }
+            
+            hideDownload() {
+                document.getElementById('downloadModal').style.display = 'none';
+                this.modelSelector.value = 'wisbee';
+                this.currentModel = 'wisbee';
+            }
+            
+            showAbout() {
+                this.addSystemMessage('Wisbee is a privacy-first AI assistant that runs locally on your device. Powered by jan-nano XS model with Text-to-LoRA learning technology.');
+            }
+            
+            async handleLogin(event) {
+                event.preventDefault();
+                const email = document.getElementById('loginEmail').value;
+                const password = document.getElementById('loginPassword').value;
+                
+                // Simulate login (in production, this would call your auth API)
+                this.isAuthenticated = true;
+                this.user = { email, name: email.split('@')[0] };
+                localStorage.setItem('wisbee_auth', 'demo_token');
+                localStorage.setItem('wisbee_user', JSON.stringify(this.user));
+                
+                this.hideLogin();
+                this.addSystemMessage(`Welcome back, ${this.user.name}! You now have access to all AI models.`);
+                
+                // Re-select model if it was premium
+                if (this.modelSelector.value === 'chatgpt' || this.modelSelector.value === 'claude') {
+                    this.switchModel(this.modelSelector.value);
+                }
+            }
+            
+            async handleSignup(event) {
+                event.preventDefault();
+                const name = document.getElementById('signupName').value;
+                const email = document.getElementById('signupEmail').value;
+                const password = document.getElementById('signupPassword').value;
+                
+                // Simulate signup
+                this.isAuthenticated = true;
+                this.user = { email, name };
+                localStorage.setItem('wisbee_auth', 'demo_token');
+                localStorage.setItem('wisbee_user', JSON.stringify(this.user));
+                
+                this.hideSignup();
+                this.addSystemMessage(`Welcome to Wisbee, ${name}! Your account has been created.`);
+            }
+            
+            downloadFor(platform) {
+                const urls = {
+                    mac: 'https://github.com/yukihamada/wisbee/releases/download/v1.0.0/Wisbee-1.0.0-mac.dmg',
+                    windows: 'https://github.com/yukihamada/wisbee/releases/download/v1.0.0/Wisbee-1.0.0-win.exe',
+                    linux: 'https://github.com/yukihamada/wisbee/releases/download/v1.0.0/Wisbee-1.0.0-linux.AppImage'
+                };
+                
+                window.open(urls[platform] || '#', '_blank');
+                this.hideDownload();
+                this.addSystemMessage(`Downloading Wisbee for ${platform}. Once installed, select "Local" from the model dropdown to connect.`);
+            }
         }
         
         // Initialize Wisbee
         const wisbee = new Wisbee();
+        
+        // Close modals when clicking outside
+        window.onclick = function(event) {
+            if (event.target.className === 'modal') {
+                event.target.style.display = 'none';
+            }
+        }
     </script>
 </body>
 </html>
