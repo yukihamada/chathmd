@@ -1,0 +1,31 @@
+FROM runpod/pytorch:2.0.1-py3.10-cuda11.8.0-devel
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    git \
+    build-essential \
+    cmake \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Python dependencies
+RUN pip install --no-cache-dir \
+    runpod \
+    requests \
+    numpy
+
+# Create workspace
+WORKDIR /workspace
+
+# Copy handler
+COPY runpod_handler.py /workspace/handler.py
+
+# Make the handler executable
+RUN chmod +x /workspace/handler.py
+
+# Set environment variables
+ENV PYTHONUNBUFFERED=1
+ENV CUDA_VISIBLE_DEVICES=0
+
+# Command to run
+CMD ["python", "-u", "/workspace/handler.py"]
