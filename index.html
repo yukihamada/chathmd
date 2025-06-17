@@ -341,9 +341,25 @@
             <div class="welcome-message" id="welcomeMessage">
                 <h2>Welcome to Wisbee AI Assistant</h2>
                 <p>
-                    I'm powered by the revolutionary jan-nano XS model with Text-to-LoRA learning technology. 
-                    Your conversations are 100% private and processed locally. 
-                    I can learn from your feedback to provide better assistance over time.
+                    👋 Hi! I'm Wisbee, your privacy-first AI assistant.
+                </p>
+                <p style="margin-top: 1rem;">
+                    <strong>🔒 Want true privacy?</strong> Download the desktop app for:
+                </p>
+                <ul style="text-align: left; display: inline-block; margin-top: 1rem;">
+                    <li>✅ 100% local processing - no cloud, no tracking</li>
+                    <li>✅ jan-nano XS model (7.5GB) with GPT-3.5 quality</li>
+                    <li>✅ Text-to-LoRA learning that adapts to you</li>
+                    <li>✅ 3-5x faster inference speeds</li>
+                    <li>✅ Works offline - no internet required</li>
+                </ul>
+                <p style="margin-top: 1.5rem;">
+                    <a href="#" onclick="wisbee.showDownloadOptions()" style="color: #ff6b6b; text-decoration: underline; font-weight: 600;">
+                        📥 Download Wisbee Desktop (Free)
+                    </a>
+                </p>
+                <p style="margin-top: 1rem; font-size: 0.875rem; color: #808495;">
+                    This web version uses demo responses. Download the desktop app for real AI conversations.
                 </p>
             </div>
         </div>
@@ -467,15 +483,39 @@
             }
             
             getDemoResponse(message) {
-                const responses = [
-                    "I'm Wisbee, powered by jan-nano XS model. This is a demo response while the API connects.",
-                    "With Text-to-LoRA technology, I can learn from your feedback and improve over time.",
-                    "Your privacy is my priority. All processing happens locally on your device.",
-                    "The jan-nano XS model provides GPT-3.5 quality in just 7.5GB!",
-                    "I'm designed to be fast, private, and continuously learning from our interactions."
+                const messageLC = message.toLowerCase();
+                
+                // Context-aware responses
+                if (messageLC.includes('download') || messageLC.includes('install')) {
+                    return "Great choice! You can download Wisbee Desktop for free at wisbee.ai. It includes the full jan-nano XS model (7.5GB) and runs 100% locally on your device. Choose your platform: macOS, Windows, or Linux. The installation is simple - just download and run!";
+                }
+                
+                if (messageLC.includes('privacy') || messageLC.includes('secure') || messageLC.includes('safe')) {
+                    return "Privacy is our top priority! The desktop version of Wisbee runs entirely on your device - no internet connection required, no data sent to servers, no tracking. Your conversations stay on your computer. Download the desktop app for true privacy: wisbee.ai";
+                }
+                
+                if (messageLC.includes('how') && (messageLC.includes('work') || messageLC.includes('use'))) {
+                    return "Wisbee uses the revolutionary jan-nano XS model with Text-to-LoRA technology. Simply chat naturally, and I learn from your feedback. When you rate responses or give suggestions, I adapt in real-time. Download the desktop version to experience this personalized AI: wisbee.ai";
+                }
+                
+                if (messageLC.includes('free') || messageLC.includes('cost') || messageLC.includes('price')) {
+                    return "Yes, Wisbee is completely free! No subscriptions, no hidden costs. Download the desktop app at wisbee.ai and enjoy unlimited AI conversations privately on your device. The jan-nano XS model (7.5GB) is included!";
+                }
+                
+                if (messageLC.includes('model') || messageLC.includes('llm') || messageLC.includes('ai')) {
+                    return "Wisbee uses the jan-nano XS model - a breakthrough in AI efficiency! It delivers GPT-3.5 quality in just 7.5GB with 3-5x faster inference. Download the desktop app to run this powerful model locally: wisbee.ai";
+                }
+                
+                // Default responses that encourage download
+                const defaultResponses = [
+                    "I'm currently running in demo mode. For real AI conversations with the full jan-nano XS model, download Wisbee Desktop (free) at wisbee.ai. It's just 7.5GB and runs completely offline!",
+                    "This is a demo response. Experience the real Wisbee with Text-to-LoRA learning by downloading the desktop app at wisbee.ai. Your privacy is guaranteed - everything runs locally!",
+                    "Want to see what I can really do? Download Wisbee Desktop for free at wisbee.ai. Get GPT-3.5 quality AI that learns from you, all while keeping your data 100% private.",
+                    "I'm limited in demo mode. The desktop version at wisbee.ai includes the full jan-nano XS model with real AI capabilities, Text-to-LoRA learning, and complete privacy. Free download!",
+                    "Demo mode activated! For genuine AI assistance that adapts to your needs, grab the free desktop app at wisbee.ai. Just 7.5GB for a complete AI assistant that respects your privacy."
                 ];
                 
-                return responses[Math.floor(Math.random() * responses.length)];
+                return defaultResponses[Math.floor(Math.random() * defaultResponses.length)];
             }
             
             addMessage(type, content) {
@@ -557,6 +597,28 @@
             toggleAdvanced() {
                 // Placeholder for advanced settings
                 alert('Advanced settings coming soon! Configure model parameters, learning rate, and more.');
+            }
+            
+            showDownloadOptions() {
+                const downloadMessage = `
+🐝 <strong>Download Wisbee Desktop</strong>
+
+Choose your platform:
+
+🍎 <strong>macOS</strong> (Apple Silicon & Intel)
+→ <a href="https://github.com/yukihamada/wisbee/releases/download/v1.0.0/Wisbee-1.0.0-mac.dmg" style="color: #ff6b6b;">Download DMG (400MB)</a>
+
+🪟 <strong>Windows</strong> (10/11, 64-bit)
+→ <a href="https://github.com/yukihamada/wisbee/releases/download/v1.0.0/Wisbee-1.0.0-win.exe" style="color: #ff6b6b;">Download EXE (380MB)</a>
+
+🐧 <strong>Linux</strong> (Ubuntu 20.04+)
+→ <a href="https://github.com/yukihamada/wisbee/releases/download/v1.0.0/Wisbee-1.0.0-linux.AppImage" style="color: #ff6b6b;">Download AppImage (390MB)</a>
+
+<em>Note: First launch will download the jan-nano XS model (7.5GB)</em>
+                `;
+                
+                this.addMessage('assistant', downloadMessage);
+                this.scrollToBottom();
             }
             
             scrollToBottom() {

@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>chatHMD - Revolutionary Text-to-LoRA AI Assistant</title>
+    <meta name="description" content="The world's first Text-to-LoRA AI assistant that runs 100% locally. Private, powerful, and personalized AI for everyone.">
+    <meta property="og:title" content="chatHMD - Revolutionary Text-to-LoRA AI Assistant">
+    <meta property="og:description" content="The world's first Text-to-LoRA AI assistant that runs 100% locally. Private, powerful, and personalized AI for everyone.">
+    <meta property="og:image" content="https://chathmd.ai/images/og-image.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #0a0a0a;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+        
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            background: linear-gradient(180deg, #0a0a0a 0%, #1a1a1a 100%);
+            position: relative;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: radial-gradient(circle at 20% 50%, #ff6b6b22 0%, transparent 50%),
+                              radial-gradient(circle at 80% 80%, #4ecdc422 0%, transparent 50%);
+            pointer-events: none;
+        }
+        
+        .logo {
+            width: 120px;
+            height: 120px;
+            margin-bottom: 3rem;
+            background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            font-weight: bold;
+            box-shadow: 0 10px 40px rgba(255, 107, 107, 0.3);
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #ffffff 0%, #888888 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .tagline {
+            font-size: 1.5rem;
+            color: #888;
+            text-align: center;
+            margin-bottom: 3rem;
+            max-width: 600px;
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1000px;
+            margin-bottom: 4rem;
+            z-index: 1;
+        }
+        
+        .feature {
+            background: #1a1a1a;
+            padding: 2rem;
+            border-radius: 16px;
+            border: 1px solid #2a2a2a;
+            transition: all 0.3s ease;
+        }
+        
+        .feature:hover {
+            transform: translateY(-5px);
+            border-color: #ff6b6b;
+            box-shadow: 0 10px 40px rgba(255, 107, 107, 0.2);
+        }
+        
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .feature h3 {
+            margin-bottom: 0.5rem;
+            color: #ff6b6b;
+        }
+        
+        .downloads {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 3rem;
+        }
+        
+        .download-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, #ff6b6b, #ff5252);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+        }
+        
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(255, 107, 107, 0.4);
+        }
+        
+        .download-btn.secondary {
+            background: #2a2a2a;
+            box-shadow: none;
+        }
+        
+        .download-btn.secondary:hover {
+            background: #3a3a3a;
+        }
+        
+        .demo-link {
+            color: #4ecdc4;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+        
+        .demo-link:hover {
+            color: #7eddd9;
+            text-decoration: underline;
+        }
+        
+        .stats {
+            display: flex;
+            gap: 3rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .stat {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #ff6b6b;
+        }
+        
+        .stat-label {
+            color: #888;
+            font-size: 0.9rem;
+        }
+        
+        .section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 5rem 2rem;
+        }
+        
+        .section h2 {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .code-example {
+            background: #1a1a1a;
+            border: 1px solid #2a2a2a;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            overflow-x: auto;
+        }
+        
+        .code-example pre {
+            color: #4ecdc4;
+            font-family: 'Monaco', 'Courier New', monospace;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 3rem 2rem;
+            border-top: 1px solid #2a2a2a;
+            color: #888;
+        }
+        
+        .footer a {
+            color: #ff6b6b;
+            text-decoration: none;
+        }
+        
+        .footer a:hover {
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .tagline {
+                font-size: 1.2rem;
+            }
+            
+            .downloads {
+                flex-direction: column;
+                width: 100%;
+                max-width: 300px;
+            }
+            
+            .download-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <div class="logo">AI</div>
+        <h1>chatHMD</h1>
+        <p class="tagline">The World's First Text-to-LoRA AI Assistant That Runs 100% Locally</p>
+        
+        <div class="stats">
+            <div class="stat">
+                <div class="stat-value">3-5x</div>
+                <div class="stat-label">Faster Inference</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value">7.5GB</div>
+                <div class="stat-label">Memory Usage</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value">100%</div>
+                <div class="stat-label">Private & Local</div>
+            </div>
+        </div>
+        
+        <div class="downloads">
+            <a href="https://github.com/yourusername/chathmd/releases/latest/download/chatHMD-win-x64.exe" class="download-btn">
+                <span>⬇</span> Download for Windows
+            </a>
+            <a href="https://github.com/yourusername/chathmd/releases/latest/download/chatHMD.app.zip" class="download-btn">
+                <span>⬇</span> Download for macOS
+            </a>
+            <a href="https://github.com/yourusername/chathmd/releases/latest/download/chatHMD-linux-x64.AppImage" class="download-btn">
+                <span>⬇</span> Download for Linux
+            </a>
+        </div>
+        
+        <p>Or try the <a href="https://04f7f43a.chathmd.pages.dev" class="demo-link">web demo</a> (limited features)</p>
+        
+        <div class="features">
+            <div class="feature">
+                <div class="feature-icon">🧠</div>
+                <h3>Text-to-LoRA</h3>
+                <p>Generate custom AI behaviors from simple text descriptions. No training required.</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">🔒</div>
+                <h3>100% Private</h3>
+                <p>All processing happens on your device. Your data never leaves your computer.</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">⚡</div>
+                <h3>Lightning Fast</h3>
+                <p>Q4_K_XS quantization delivers incredible speed while maintaining quality.</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">🔄</div>
+                <h3>Real-time Learning</h3>
+                <p>Adapts to your style and preferences as you chat. Gets better over time.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="section">
+        <h2>Transform Your AI in Seconds</h2>
+        <div class="code-example">
+            <pre>You: "Be more creative and poetic in your responses"
+chatHMD: *Generates custom LoRA adapter in real-time*
+
+You: "Now be extremely technical and concise"
+chatHMD: *Instantly switches personality*</pre>
+        </div>
+        <p style="text-align: center; color: #888; margin-top: 2rem;">
+            No cloud processing. No waiting. Just instant AI transformation on your device.
+        </p>
+    </div>
+    
+    <div class="section">
+        <h2>Join the Revolution</h2>
+        <div style="text-align: center; margin-bottom: 3rem;">
+            <p style="font-size: 1.2rem; margin-bottom: 2rem;">
+                Experience AI that's truly yours. Private, powerful, and personalized.
+            </p>
+            <div class="downloads">
+                <a href="https://github.com/yourusername/chathmd" class="download-btn secondary">
+                    <span>⭐</span> Star on GitHub
+                </a>
+                <a href="https://discord.gg/chathmd" class="download-btn secondary">
+                    <span>💬</span> Join Discord
+                </a>
+                <a href="https://docs.chathmd.ai" class="download-btn secondary">
+                    <span>📚</span> Documentation
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <p>© 2025 chatHMD. Released under MIT License.</p>
+        <p style="margin-top: 1rem;">
+            <a href="https://github.com/yourusername/chathmd">GitHub</a> • 
+            <a href="https://discord.gg/chathmd">Discord</a> • 
+            <a href="mailto:support@chathmd.ai">Contact</a> • 
+            <a href="https://docs.chathmd.ai">Docs</a>
+        </p>
+    </div>
+    
+    <script>
+        // Add some interactive effects
+        document.querySelectorAll('.download-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                // Track download (you can add analytics here)
+                console.log('Download clicked:', this.textContent);
+            });
+        });
+        
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>

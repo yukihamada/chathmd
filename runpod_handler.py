@@ -14,8 +14,8 @@ import tempfile
 import shutil
 
 # Model configuration
-MODEL_URL = "https://huggingface.co/TheBloke/Mistral-7B-Instruct-v0.2-GGUF/resolve/main/mistral-7b-instruct-v0.2.Q4_K_M.gguf"
-MODEL_PATH = "/workspace/model.gguf"
+MODEL_URL = "https://huggingface.co/Menlo/Jan-nano-gguf/resolve/main/jan-nano-4b-iQ4_XS.gguf"
+MODEL_PATH = "/workspace/jan-nano-4b-iQ4_XS.gguf"
 LLAMA_CPP_PATH = "/workspace/llama.cpp"
 
 def download_model():

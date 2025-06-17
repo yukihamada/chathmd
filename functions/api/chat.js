@@ -196,17 +196,40 @@ function sleep(ms) {
 }
 
 async function getLocalResponse(message) {
-  // Demo responses for when RunPod is not available
+  const messageLC = message.toLowerCase();
+  
+  // Context-aware demo responses
+  if (messageLC.includes('hello') || messageLC.includes('hi')) {
+    return "👋 Hi! I'm Wisbee, your privacy-first AI assistant. I'm currently running in demo mode. For real AI conversations with the full jan-nano XS model, download Wisbee Desktop at wisbee.ai - it's free and runs 100% locally on your device!";
+  }
+  
+  if (messageLC.includes('help')) {
+    return "I'd love to help! In demo mode, I can provide basic responses. For full AI assistance with GPT-3.5 quality, download the free desktop app at wisbee.ai. It includes Text-to-LoRA learning that adapts to your preferences!";
+  }
+  
+  if (messageLC.includes('download') || messageLC.includes('install')) {
+    return "Great choice! Visit wisbee.ai to download Wisbee Desktop for free. Available for macOS, Windows, and Linux. The app includes the jan-nano XS model (7.5GB) and runs completely offline - your privacy is guaranteed!";
+  }
+  
+  if (messageLC.includes('privacy') || messageLC.includes('secure')) {
+    return "Privacy is our #1 priority! The desktop version runs 100% locally - no internet required, no data collection, no tracking. Your conversations never leave your device. Download at wisbee.ai for true AI privacy.";
+  }
+  
+  if (messageLC.includes('learn') || messageLC.includes('lora')) {
+    return "Text-to-LoRA is our breakthrough technology! Simply tell Wisbee how to improve: 'be more concise', 'use examples', 'be more technical' - and it adapts instantly. Experience this in the desktop app at wisbee.ai!";
+  }
+  
+  // General demo responses
   const demoResponses = [
-    "This is a demo response! For real AI conversations with RunPod GPU inference, please contact support to enable cloud processing.",
-    "I'm running in demo mode. The full version uses RunPod GPUs for fast, high-quality AI responses.",
-    "Demo mode: Real conversations use powerful cloud GPUs via RunPod for the best AI experience.",
-    "That's an interesting question! The cloud-powered version would give you a much more detailed answer.",
-    "Demo response: The full app features GPU-accelerated inference with no data retention!",
+    "This is a demo response. For real AI conversations with the jan-nano XS model, download Wisbee Desktop (free) at wisbee.ai. It runs 100% locally with no internet required!",
+    "I'm in demo mode right now. Experience the full Wisbee with Text-to-LoRA learning by downloading the desktop app at wisbee.ai. Your privacy is our priority!",
+    "Demo mode active! The desktop version at wisbee.ai provides GPT-3.5 quality AI that learns from you, all while keeping your data completely private. Free download!",
+    "Want to see what I can really do? Download Wisbee Desktop at wisbee.ai. Get a full AI assistant that runs locally, learns from your feedback, and never shares your data.",
+    "This is a limited demo. The real Wisbee offers so much more! Download the free desktop app at wisbee.ai for unlimited AI conversations with complete privacy."
   ];
   
   // Simulate processing time
-  await new Promise(resolve => setTimeout(resolve, 1000 + Math.random() * 2000));
+  await new Promise(resolve => setTimeout(resolve, 800 + Math.random() * 1200));
   
   return demoResponses[Math.floor(Math.random() * demoResponses.length)];
 }
