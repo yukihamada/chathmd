@@ -1,0 +1,493 @@
+{
+  "total_categories": 37,
+  "total_samples": 10108,
+  "categories": {
+    "programming_web": {
+      "sample_count": 128,
+      "description": "Webプログラミング関連",
+      "keywords": [
+        "html",
+        "css",
+        "javascript",
+        "react",
+        "vue",
+        "angular",
+        "node.js",
+        "typescript"
+      ],
+      "priority": 1
+    },
+    "wisbee_character": {
+      "sample_count": 6961,
+      "description": "Wisbeeキャラクター関連",
+      "keywords": [
+        "wisbee",
+        "ウィズビー",
+        "みつばち",
+        "ぶんぶん",
+        "はちみつ"
+      ],
+      "priority": 0
+    },
+    "health_nutrition": {
+      "sample_count": 1,
+      "description": "栄養・食事関連",
+      "keywords": [
+        "栄養",
+        "食事",
+        "食品",
+        "ビタミン",
+        "カロリー",
+        "食べ物"
+      ],
+      "priority": 1
+    },
+    "art_music": {
+      "sample_count": 49,
+      "description": "音楽関連",
+      "keywords": [
+        "音楽",
+        "楽器",
+        "作曲",
+        "歌",
+        "メロディ",
+        "リズム",
+        "楽譜"
+      ],
+      "priority": 1
+    },
+    "programming_data": {
+      "sample_count": 24,
+      "description": "データベース・データ分析",
+      "keywords": [
+        "データベース",
+        "sql",
+        "nosql",
+        "mongodb",
+        "mysql",
+        "postgresql",
+        "データ分析"
+      ],
+      "priority": 1
+    },
+    "science_physics": {
+      "sample_count": 177,
+      "description": "物理学関連",
+      "keywords": [
+        "物理",
+        "力学",
+        "電磁気",
+        "量子",
+        "相対性理論",
+        "エネルギー",
+        "波動"
+      ],
+      "priority": 1
+    },
+    "science_mathematics": {
+      "sample_count": 8,
+      "description": "数学関連",
+      "keywords": [
+        "数学",
+        "微積分",
+        "代数",
+        "幾何",
+        "統計",
+        "確率",
+        "方程式",
+        "関数"
+      ],
+      "priority": 1
+    },
+    "science_chemistry": {
+      "sample_count": 62,
+      "description": "化学関連",
+      "keywords": [
+        "化学",
+        "分子",
+        "原子",
+        "化学反応",
+        "有機化学",
+        "無機化学",
+        "元素"
+      ],
+      "priority": 1
+    },
+    "science_biology": {
+      "sample_count": 80,
+      "description": "生物学関連",
+      "keywords": [
+        "生物",
+        "dna",
+        "遺伝子",
+        "細胞",
+        "進化",
+        "生態系",
+        "生物学"
+      ],
+      "priority": 1
+    },
+    "general_other": {
+      "sample_count": 260,
+      "description": "その他・未分類",
+      "keywords": [],
+      "priority": 4
+    },
+    "lifestyle_cooking": {
+      "sample_count": 740,
+      "description": "料理・グルメ関連",
+      "keywords": [
+        "料理",
+        "レシピ",
+        "調理",
+        "食材",
+        "グルメ",
+        "味"
+      ],
+      "priority": 1
+    },
+    "education_methods": {
+      "sample_count": 247,
+      "description": "学習方法・技術",
+      "keywords": [
+        "勉強法",
+        "学習",
+        "記憶",
+        "集中",
+        "効率",
+        "方法"
+      ],
+      "priority": 1
+    },
+    "philosophy_ethics": {
+      "sample_count": 3,
+      "description": "倫理・道徳関連",
+      "keywords": [
+        "倫理",
+        "道徳",
+        "善悪",
+        "正義",
+        "人権",
+        "価値観"
+      ],
+      "priority": 1
+    },
+    "programming_ai_ml": {
+      "sample_count": 324,
+      "description": "AI・機械学習関連",
+      "keywords": [
+        "機械学習",
+        "ai",
+        "人工知能",
+        "tensorflow",
+        "pytorch",
+        "scikit-learn",
+        "neural network"
+      ],
+      "priority": 1
+    },
+    "language_writing": {
+      "sample_count": 3,
+      "description": "文章作成・表現",
+      "keywords": [
+        "文章",
+        "作文",
+        "エッセイ",
+        "論文",
+        "文章力",
+        "表現"
+      ],
+      "priority": 1
+    },
+    "programming_general": {
+      "sample_count": 54,
+      "description": "プログラミング一般",
+      "keywords": [
+        "プログラミング",
+        "コード",
+        "アルゴリズム",
+        "デバッグ",
+        "git",
+        "github"
+      ],
+      "priority": 2
+    },
+    "lifestyle_travel": {
+      "sample_count": 320,
+      "description": "旅行・観光関連",
+      "keywords": [
+        "旅行",
+        "観光",
+        "旅",
+        "海外",
+        "国内",
+        "ホテル",
+        "交通"
+      ],
+      "priority": 1
+    },
+    "science_general": {
+      "sample_count": 35,
+      "description": "科学一般",
+      "keywords": [
+        "科学",
+        "実験",
+        "理論",
+        "研究",
+        "論文",
+        "仮説"
+      ],
+      "priority": 2
+    },
+    "health_medical": {
+      "sample_count": 8,
+      "description": "医療関連",
+      "keywords": [
+        "医療",
+        "病気",
+        "治療",
+        "薬",
+        "医師",
+        "看護",
+        "病院"
+      ],
+      "priority": 1
+    },
+    "art_performance": {
+      "sample_count": 3,
+      "description": "パフォーマンス芸術",
+      "keywords": [
+        "演劇",
+        "ダンス",
+        "パフォーマンス",
+        "舞台",
+        "演技"
+      ],
+      "priority": 1
+    },
+    "education_higher": {
+      "sample_count": 38,
+      "description": "高等教育関連",
+      "keywords": [
+        "大学",
+        "大学院",
+        "研究",
+        "論文",
+        "学会",
+        "専門"
+      ],
+      "priority": 1
+    },
+    "business_management": {
+      "sample_count": 102,
+      "description": "経営・マネジメント",
+      "keywords": [
+        "経営",
+        "マネジメント",
+        "リーダーシップ",
+        "組織",
+        "戦略"
+      ],
+      "priority": 1
+    },
+    "programming_python": {
+      "sample_count": 22,
+      "description": "Python関連のプログラミング",
+      "keywords": [
+        "python",
+        "pandas",
+        "numpy",
+        "django",
+        "flask",
+        "matplotlib",
+        "jupyter"
+      ],
+      "priority": 1
+    },
+    "psychology_emotional": {
+      "sample_count": 13,
+      "description": "感情・メンタルヘルス",
+      "keywords": [
+        "感情",
+        "気持ち",
+        "ストレス",
+        "癒し",
+        "幸せ",
+        "悲しみ"
+      ],
+      "priority": 1
+    },
+    "psychology_cognitive": {
+      "sample_count": 5,
+      "description": "認知心理学関連",
+      "keywords": [
+        "心理学",
+        "認知",
+        "記憶",
+        "学習",
+        "知覚",
+        "思考"
+      ],
+      "priority": 1
+    },
+    "lifestyle_fashion": {
+      "sample_count": 4,
+      "description": "ファッション関連",
+      "keywords": [
+        "ファッション",
+        "服",
+        "おしゃれ",
+        "スタイル",
+        "ブランド"
+      ],
+      "priority": 1
+    },
+    "culture_traditional": {
+      "sample_count": 147,
+      "description": "伝統文化関連",
+      "keywords": [
+        "伝統",
+        "文化",
+        "祭り",
+        "茶道",
+        "華道",
+        "書道",
+        "武道"
+      ],
+      "priority": 1
+    },
+    "language_japanese": {
+      "sample_count": 2,
+      "description": "日本語・国語関連",
+      "keywords": [
+        "日本語",
+        "ひらがな",
+        "カタカナ",
+        "漢字",
+        "敬語",
+        "方言",
+        "文法"
+      ],
+      "priority": 1
+    },
+    "language_english": {
+      "sample_count": 2,
+      "description": "英語関連",
+      "keywords": [
+        "english",
+        "英語",
+        "英会話",
+        "文法",
+        "grammar",
+        "vocabulary",
+        "toeic"
+      ],
+      "priority": 1
+    },
+    "lifestyle_hobbies": {
+      "sample_count": 2,
+      "description": "趣味・娯楽関連",
+      "keywords": [
+        "趣味",
+        "スポーツ",
+        "ゲーム",
+        "読書",
+        "映画",
+        "音楽鑑賞"
+      ],
+      "priority": 1
+    },
+    "history_world": {
+      "sample_count": 1,
+      "description": "世界史関連",
+      "keywords": [
+        "世界史",
+        "ヨーロッパ",
+        "アメリカ",
+        "中国",
+        "古代",
+        "中世",
+        "近世"
+      ],
+      "priority": 1
+    },
+    "society_law": {
+      "sample_count": 2,
+      "description": "法律関連",
+      "keywords": [
+        "法律",
+        "法",
+        "裁判",
+        "弁護士",
+        "判決",
+        "権利"
+      ],
+      "priority": 1
+    },
+    "education_secondary": {
+      "sample_count": 1,
+      "description": "中等教育関連",
+      "keywords": [
+        "中学校",
+        "高校",
+        "受験",
+        "進学",
+        "部活",
+        "青春"
+      ],
+      "priority": 1
+    },
+    "language_literature": {
+      "sample_count": 89,
+      "description": "文学関連",
+      "keywords": [
+        "文学",
+        "小説",
+        "詩",
+        "俳句",
+        "短歌",
+        "作家",
+        "文芸"
+      ],
+      "priority": 1
+    },
+    "business_marketing": {
+      "sample_count": 32,
+      "description": "マーケティング関連",
+      "keywords": [
+        "マーケティング",
+        "広告",
+        "ブランド",
+        "宣伝",
+        "販売"
+      ],
+      "priority": 1
+    },
+    "education_elementary": {
+      "sample_count": 131,
+      "description": "小学校教育関連",
+      "keywords": [
+        "小学校",
+        "小学生",
+        "基礎",
+        "算数",
+        "国語",
+        "ひらがな"
+      ],
+      "priority": 1
+    },
+    "business_finance": {
+      "sample_count": 28,
+      "description": "金融・経済関連",
+      "keywords": [
+        "金融",
+        "投資",
+        "株式",
+        "経済",
+        "会計",
+        "財務"
+      ],
+      "priority": 1
+    }
+  }
+}
