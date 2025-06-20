@@ -22,8 +22,14 @@ export async function onRequestPost(context) {
     if (model === 'local' || model === 'demo') {
       response = await getLocalResponse(message);
     } else {
-      // Use demo response since RunPod is not configured
-      response = await getLocalResponse(message);
+      // Try real AI backends (Vast.ai or RunPod)
+      try {
+        response = await getRunPodResponse(message, temperature, env);
+      } catch (error) {
+        console.error('All AI backends failed:', error);
+        // Fallback to demo response
+        response = await getLocalResponse(message);
+      }
     }
     
     return new Response(JSON.stringify({
@@ -69,8 +75,22 @@ export async function onRequestOptions() {
 }
 
 async function getRunPodResponse(message, temperature, env) {
+  // Try Vast.ai first, then fallback to RunPod
+  const VAST_ENDPOINT = env.VAST_ENDPOINT || "http://12.16.140.162:8080";
   const RUNPOD_API_KEY = env.RUNPOD_API_KEY;
   const RUNPOD_ENDPOINT = env.RUNPOD_ENDPOINT;
+  
+  // Try Vast.ai endpoint first
+  if (VAST_ENDPOINT) {
+    try {
+      const vastResponse = await getVastResponse(message, temperature, VAST_ENDPOINT);
+      if (vastResponse) {
+        return vastResponse;
+      }
+    } catch (error) {
+      console.error('Vast.ai failed, trying RunPod:', error.message);
+    }
+  }
   
   if (!RUNPOD_API_KEY) {
     throw new Error('RunPod API key not configured');
@@ -232,6 +252,43 @@ async function getLocalResponse(message) {
   await new Promise(resolve => setTimeout(resolve, 800 + Math.random() * 1200));
   
   return demoResponses[Math.floor(Math.random() * demoResponses.length)];
+}
+
+async function getVastResponse(message, temperature, endpoint) {
+  try {
+    console.log('🚀 Trying Vast.ai endpoint:', endpoint);
+    
+    const payload = {
+      prompt: formatPromptForModel(message),
+      max_tokens: 500,
+      temperature: temperature,
+      top_p: 0.95,
+      stream: false
+    };
+    
+    const response = await fetch(`${endpoint}/completion`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload),
+      signal: AbortSignal.timeout(30000) // 30 second timeout
+    });
+    
+    if (!response.ok) {
+      throw new Error(`Vast.ai API error: ${response.status} ${response.statusText}`);
+    }
+    
+    const data = await response.json();
+    console.log('✅ Vast.ai response received');
+    
+    // Extract the generated text from various possible response formats
+    return data.content || data.response || data.choices?.[0]?.text || data.text || 'No response generated';
+    
+  } catch (error) {
+    console.error('❌ Vast.ai error:', error.message);
+    throw error;
+  }
 }
 
 function formatPromptForModel(message) {

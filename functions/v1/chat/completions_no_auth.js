@@ -1,50 +1,34 @@
 // OpenAI-compatible chat completions endpoint for api.wisbee.ai
+// Version: No authentication required
 // Endpoint: https://api.wisbee.ai/v1/chat/completions
 
 export async function onRequestPost(context) {
   const { request, env } = context;
   
   try {
-    // Check authentication settings
+    // Check if authentication should be disabled
     const DISABLE_AUTH = env.DISABLE_AUTH === 'true' || env.DISABLE_AUTH === true;
-    const REQUIRE_API_KEY = env.REQUIRE_API_KEY === 'true' || env.REQUIRE_API_KEY === true;
     
-    // Handle API key authentication
-    if (!DISABLE_AUTH && REQUIRE_API_KEY) {
+    // Optional: Check for API key if auth is enabled
+    if (!DISABLE_AUTH && env.REQUIRE_API_KEY === 'true') {
       const authHeader = request.headers.get('Authorization');
       const providedKey = authHeader?.replace('Bearer ', '').trim();
       
-      // List of valid API keys - simplified for easy management
+      // Check against multiple possible keys
       const validKeys = [
-        // Master keys
-        'sk-master-wisbee-2025-43cdc7d696895919bb3ef32e9a1af805b806d70444612cef7a83d6d72d80a015',
-        
-        // Production keys
-        'sk-wisbee-2025-prod-43cdc7d696895919bb3ef32e9a1af805b806d70444612cef7a83d6d72d80a015',
-        
-        // Vast.ai key (legacy format supported)
-        '43cdc7d696895919bb3ef32e9a1af805b806d70444612cef7a83d6d72d80a015',
-        
-        // Test keys
-        'sk-test-wisbee-2025',
-        'test-key-2025',
-        
-        // Environment keys
         env.WISBEE_API_KEY,
+        env.OPENAI_API_KEY,
         env.VAST_API_KEY,
-        env.CUSTOM_API_KEY
+        'sk-test-wisbee-2025', // Test key
+        '43cdc7d696895919bb3ef32e9a1af805b806d70444612cef7a83d6d72d80a015' // Vast key
       ].filter(Boolean);
       
       if (!providedKey || !validKeys.includes(providedKey)) {
-        // Log failed attempt
-        console.log(`API key validation failed: ${providedKey?.substring(0, 20)}...`);
-        
         return new Response(JSON.stringify({ 
           error: {
-            message: 'Invalid API key. Please use a valid Wisbee API key.',
+            message: 'Missing API key. Please register your device first.',
             type: 'authentication_error',
-            code: 'invalid_api_key',
-            hint: 'Contact admin for a valid API key or use the master key.'
+            code: 'invalid_api_key'
           }
         }), {
           status: 401,
@@ -286,7 +270,7 @@ async function getLLMResponse(prompt, temperature, env) {
 }
 
 function formatMessagesForLLM(messages) {
-  let prompt = "You are Wisbee, a helpful AI assistant.\n\n";
+  let prompt = "You are Wisbee, a helpful AI assistant powered by jan-nano model.\n\n";
   
   for (const message of messages) {
     if (message.role === 'system') {
@@ -310,14 +294,14 @@ function getDemoResponse(message) {
   }
   
   if (messageLC.includes('test') || messageLC.includes('working')) {
-    return "API is working perfectly! I'm Wisbee, running on the jan-nano model. Ready to assist you!";
+    return "API is working! I'm Wisbee, running on the jan-nano model. Ready to assist you!";
   }
   
   if (messageLC.includes('help')) {
     return "I'd be happy to help! I'm Wisbee, powered by the jan-nano model. I can assist with various tasks including answering questions, creative writing, coding help, and more. What would you like to know?";
   }
   
-  return "I'm Wisbee, running in demo mode. For full functionality, please ensure the LLM backend is properly configured. How can I assist you?";
+  return "I'm Wisbee, your AI assistant. I'm currently running in demo mode. For full functionality, please ensure the LLM backend is properly configured. How can I assist you today?";
 }
 
 function generateId() {
