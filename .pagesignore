@@ -1,0 +1,48 @@
+# Ignore large files and unnecessary content for Pages deployment
+*.log
+*.pyc
+__pycache__/
+.DS_Store
+.env
+.env.local
+.vast_api_key
+
+# Large directories
+training_data/
+training_data_clean/
+training_data_strict/
+training_data_split/
+detailed_categorized_wisbee_data/
+buzzquan_*/
+models/
+loras/
+logs/
+dist/
+build/
+web/downloads/
+
+# Development files
+*.py
+*.sh
+Dockerfile*
+*.toml
+!wrangler.toml
+
+# macOS apps
+*.app/
+
+# Documentation
+*.md
+*.html
+
+# Test files
+test_*.py
+mock_*.py
+
+# Keep only essential files
+!functions/
+!index.html
+!landing.html
+!download.html
+!quickstart.html
+!_redirects

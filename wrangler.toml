@@ -10,11 +10,23 @@ name = "wisbee"
 [env.production.vars]
 ENVIRONMENT = "production"
 MODEL_NAME = "jan-nano-xs"
+DISABLE_AUTH = "false"
+REQUIRE_API_KEY = "true"
+WISBEE_API_KEY = "sk-wisbee-2025-prod-43cdc7d696895919bb3ef32e9a1af805b806d70444612cef7a83d6d72d80a015"
+VAST_API_KEY = "43cdc7d696895919bb3ef32e9a1af805b806d70444612cef7a83d6d72d80a015"
 
 # Environment variables for RunPod integration
 # RUNPOD_API_KEY set via GitHub Actions secrets
 # RUNPOD_ENDPOINT set after deployment
 
-# Pages Functions compatibility
-[functions]
-compatibility_date = "2024-06-17"
+# Preview environment with relaxed auth for testing
+[env.preview]
+name = "wisbee-preview"
+
+[env.preview.vars]
+ENVIRONMENT = "preview"
+MODEL_NAME = "jan-nano-xs"
+DISABLE_AUTH = "true"
+REQUIRE_API_KEY = "false"
+
+# Pages Functions compatibility is set above

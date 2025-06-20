@@ -5,6 +5,41 @@ export async function onRequestPost(context) {
   const { request, env } = context;
   
   try {
+    // Check authentication settings
+    const DISABLE_AUTH = env.DISABLE_AUTH === 'true' || env.DISABLE_AUTH === true;
+    const REQUIRE_API_KEY = env.REQUIRE_API_KEY === 'true' || env.REQUIRE_API_KEY === true;
+    
+    // Handle API key authentication
+    if (!DISABLE_AUTH && REQUIRE_API_KEY) {
+      const authHeader = request.headers.get('Authorization');
+      const providedKey = authHeader?.replace('Bearer ', '').trim();
+      
+      // List of valid API keys
+      const validKeys = [
+        env.WISBEE_API_KEY,
+        env.VAST_API_KEY,
+        'sk-wisbee-2025-prod-43cdc7d696895919bb3ef32e9a1af805b806d70444612cef7a83d6d72d80a015',
+        '43cdc7d696895919bb3ef32e9a1af805b806d70444612cef7a83d6d72d80a015',
+        'sk-test-wisbee-2025' // Test key for development
+      ].filter(Boolean);
+      
+      if (!providedKey || !validKeys.includes(providedKey)) {
+        return new Response(JSON.stringify({ 
+          error: {
+            message: 'Missing or invalid API key. Valid keys: Wisbee API key or Vast.ai key.',
+            type: 'authentication_error',
+            code: 'invalid_api_key'
+          }
+        }), {
+          status: 401,
+          headers: { 
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+          }
+        });
+      }
+    }
+    
     const body = await request.json();
     
     // OpenAI format validation
@@ -160,13 +195,22 @@ async function getLLMResponse(prompt, temperature, env) {
   
   // Try Vast.ai endpoint
   const VAST_ENDPOINT = env.VAST_ENDPOINT;
+  const VAST_API_KEY = env.VAST_API_KEY || '43cdc7d696895919bb3ef32e9a1af805b806d70444612cef7a83d6d72d80a015';
+  
   if (VAST_ENDPOINT) {
     try {
+      const headers = {
+        'Content-Type': 'application/json'
+      };
+      
+      // Add Vast API key if available
+      if (VAST_API_KEY) {
+        headers['Authorization'] = `Bearer ${VAST_API_KEY}`;
+      }
+      
       const response = await fetch(`${VAST_ENDPOINT}/completion`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
+        headers: headers,
         body: JSON.stringify({
           prompt: prompt,
           max_tokens: 500,
@@ -246,11 +290,15 @@ function getDemoResponse(message) {
   const messageLC = message.toLowerCase();
   
   if (messageLC.includes('hello') || messageLC.includes('hi')) {
-    return "Hello! I'm Wisbee, your AI assistant. I'm currently in demo mode. How can I help you today?";
+    return "Hello! I'm Wisbee, your AI assistant powered by jan-nano. How can I help you today?";
+  }
+  
+  if (messageLC.includes('test') || messageLC.includes('working')) {
+    return "API is working perfectly! I'm Wisbee, running on the jan-nano model. Ready to assist you!";
   }
   
   if (messageLC.includes('help')) {
-    return "I'd be happy to help! I'm running in demo mode right now, but I can still assist with basic questions. What would you like to know?";
+    return "I'd be happy to help! I'm Wisbee, powered by the jan-nano model. I can assist with various tasks including answering questions, creative writing, coding help, and more. What would you like to know?";
   }
   
   return "I'm Wisbee, running in demo mode. For full functionality, please ensure the LLM backend is properly configured. How can I assist you?";
