@@ -209,11 +209,11 @@ async function getLLMResponse(prompt, temperature, env) {
     console.error('Local LLM error:', error);
   }
   
-  // Try Vast.ai endpoint
-  const VAST_ENDPOINT = env.VAST_ENDPOINT;
+  // Try backend endpoints
+  const BACKEND_URL = env.VAST_ENDPOINT || 'https://8092-2405-6580-36a0-6200-219e-3a10-45a7-96d3.ngrok-free.app';
   const VAST_API_KEY = env.VAST_API_KEY || '43cdc7d696895919bb3ef32e9a1af805b806d70444612cef7a83d6d72d80a015';
   
-  if (VAST_ENDPOINT) {
+  if (BACKEND_URL) {
     try {
       const headers = {
         'Content-Type': 'application/json'
@@ -224,11 +224,12 @@ async function getLLMResponse(prompt, temperature, env) {
         headers['Authorization'] = `Bearer ${VAST_API_KEY}`;
       }
       
-      const response = await fetch(`${VAST_ENDPOINT}/completion`, {
+      const response = await fetch(`${BACKEND_URL}/v1/chat/completions`, {
         method: 'POST',
         headers: headers,
         body: JSON.stringify({
-          prompt: prompt,
+          model: model,
+          messages: messages,
           max_tokens: 500,
           temperature: temperature,
           top_p: 0.95,
@@ -239,6 +240,10 @@ async function getLLMResponse(prompt, temperature, env) {
       
       if (response.ok) {
         const data = await response.json();
+        // Handle OpenAI-compatible response format
+        if (data.choices && data.choices[0] && data.choices[0].message) {
+          return data.choices[0].message.content;
+        }
         return data.content || data.response || data.choices?.[0]?.text || data.text || '';
       }
     } catch (error) {
