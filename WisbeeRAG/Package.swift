@@ -4,7 +4,7 @@
 import PackageDescription
 
 let package = Package(
-    name: "WisbeeRAG",
+    name: "Wisbee",
     platforms: [
         .iOS(.v17),
         .macOS(.v14)
@@ -15,10 +15,10 @@ let package = Package(
     ],
     targets: [
         .executableTarget(
-            name: "WisbeeRAG",
-            dependencies: [
-                .product(name: "LangChain", package: "langchain-swift"),
-                .product(name: "ObjectBox", package: "objectbox-swift")
+            name: "Wisbee",
+            dependencies: [],
+            swiftSettings: [
+                .define("SWIFT_PACKAGE")
             ]
         ),
     ]

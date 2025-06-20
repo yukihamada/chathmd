@@ -1,0 +1,116 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+# Xcode
+build/
+DerivedData/
+*.pbxuser
+!default.pbxuser
+*.mode1v3
+!default.mode1v3
+*.mode2v3
+!default.mode2v3
+*.perspectivev3
+!default.perspectivev3
+xcuserdata/
+*.xccheckout
+*.moved-aside
+*.xcuserstate
+*.xcscmblueprint
+*.xcscheme
+*.playground
+
+# Swift Package Manager
+.build/
+.swiftpm/
+Package.resolved
+/*.xcodeproj
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.venv
+
+# Logs
+*.log
+logs/
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# API Keys
+.vast_api_key
+vast_endpoint.json
+
+# IDE
+.vscode/
+.idea/
+
+# Distribution
+dist/
+web/
+
+# Models and data
+models/
+loras/
+training_data/
+training_data_clean/
+training_data_strict/
+training_data_split/
+detailed_categorized_wisbee_data/
+buzzquan_*/
+huggingface_upload/
+quantized_buzzquan_models/
+trained_t2l/
+buzz_simple_lora/
+buzz_jan_nano_gguf/
+
+# Temporary files
+*.tmp
+*.temp
+*.backup
+ngrok.log
+
+# Build directories
+WisbeeRAG/build/
+WisbeeRAG/DerivedData/
+WisbeeRAG/.build/
+
+# Reports and outputs
+vast_reports/
+q8_test_results/
+project_summary.html
+final_data_summary.md
+quality_report.md
