@@ -2,131 +2,63 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wisbee - ブンブン先生と学ぼう！</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Wisbee - AIブンブン先生</title>
+    <link rel="apple-touch-icon" href="data:image/png;base64,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">
     <style>
-        body {
-            font-family: -apple-system, system-ui, sans-serif;
+        * {
             margin: 0;
             padding: 0;
-            background: #f0f4ff;
-            color: #333;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            background: linear-gradient(135deg, #F0F5FF 0%, #FFE5D9 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
         }
         
         .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 40px 20px;
-            text-align: center;
-        }
-        
-        .bee-logo {
-            font-size: 80px;
-            margin-bottom: 20px;
-        }
-        
-        h1 {
-            margin: 0;
-            font-size: 36px;
-        }
-        
-        .subtitle {
-            font-size: 20px;
-            opacity: 0.9;
-            margin-top: 10px;
-        }
-        
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        
-        .card {
-            background: white;
-            border-radius: 16px;
-            padding: 30px;
-            margin: 20px 0;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-        
-        .demo-section {
-            background: #fff9e6;
-            border: 2px solid #ffd700;
-            border-radius: 12px;
-            padding: 20px;
-            margin: 20px 0;
-            text-align: center;
-        }
-        
-        .chat-demo {
-            background: #f8f9fa;
-            border-radius: 12px;
-            padding: 20px;
-            margin: 20px 0;
-            min-height: 300px;
-        }
-        
-        .message {
-            margin: 10px 0;
-            padding: 12px 16px;
-            border-radius: 16px;
-            max-width: 70%;
-        }
-        
-        .user-message {
-            background: #007AFF;
-            color: white;
-            margin-left: auto;
-            text-align: right;
-        }
-        
-        .ai-message {
-            background: #e9ecef;
-            color: #333;
-        }
-        
-        .input-area {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 15px 20px;
             display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .app-title {
+            display: flex;
+            align-items: center;
             gap: 10px;
-            margin-top: 20px;
         }
         
-        input[type="text"] {
-            flex: 1;
-            padding: 12px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            font-size: 16px;
+        .bee-icon {
+            font-size: 30px;
         }
         
-        button {
-            background: #007AFF;
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 8px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        button:hover {
-            background: #0051D5;
+        .app-name {
+            font-size: 20px;
+            font-weight: 600;
+            color: #333;
         }
         
         .mode-selector {
             display: flex;
             gap: 10px;
-            margin: 20px 0;
-            flex-wrap: wrap;
         }
         
         .mode-btn {
             padding: 8px 16px;
             border-radius: 20px;
-            background: #e9ecef;
-            border: 2px solid transparent;
+            background: #F0F0F0;
+            color: #666;
+            font-size: 14px;
             cursor: pointer;
             transition: all 0.3s;
         }
@@ -134,200 +66,310 @@
         .mode-btn.active {
             background: #007AFF;
             color: white;
-            border-color: #0051D5;
         }
         
-        .feature-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin: 20px 0;
-        }
-        
-        .feature {
-            text-align: center;
+        .chat-container {
+            flex: 1;
             padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            padding-bottom: 100px;
         }
         
-        .feature-icon {
-            font-size: 48px;
-            margin-bottom: 10px;
+        .message {
+            max-width: 80%;
+            padding: 12px 18px;
+            border-radius: 20px;
+            word-wrap: break-word;
+            animation: fadeIn 0.3s;
         }
         
-        .share-box {
-            background: #e3f2fd;
-            border-radius: 12px;
-            padding: 20px;
-            text-align: center;
-            margin: 30px 0;
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         
-        .share-url {
+        .user-message {
+            align-self: flex-end;
+            background: #007AFF;
+            color: white;
+        }
+        
+        .bot-message {
+            align-self: flex-start;
             background: white;
-            padding: 10px;
-            border-radius: 8px;
-            margin: 10px 0;
-            font-family: monospace;
-            word-break: break-all;
+            color: #333;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .input-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            padding: 15px 20px;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .input-wrapper {
+            display: flex;
+            gap: 10px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .message-input {
+            flex: 1;
+            padding: 12px 20px;
+            border: 1px solid #E0E0E0;
+            border-radius: 25px;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        
+        .message-input:focus {
+            border-color: #007AFF;
+        }
+        
+        .send-btn {
+            padding: 12px 24px;
+            background: #007AFF;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .send-btn:active {
+            transform: scale(0.95);
+        }
+        
+        .typing-indicator {
+            display: none;
+            align-self: flex-start;
+            padding: 15px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .typing-indicator span {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: #999;
+            border-radius: 50%;
+            margin: 0 2px;
+            animation: typing 1.4s infinite;
+        }
+        
+        .typing-indicator span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        
+        .typing-indicator span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        
+        @keyframes typing {
+            0%, 60%, 100% {
+                transform: translateY(0);
+            }
+            30% {
+                transform: translateY(-10px);
+            }
+        }
+        
+        .install-prompt {
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #333;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-size: 14px;
+            display: none;
+            animation: slideUp 0.5s;
+        }
+        
+        @keyframes slideUp {
+            from { transform: translateX(-50%) translateY(20px); opacity: 0; }
+            to { transform: translateX(-50%) translateY(0); opacity: 1; }
         }
         
         @media (max-width: 600px) {
-            h1 { font-size: 28px; }
-            .message { max-width: 85%; }
+            .mode-selector {
+                flex-direction: column;
+                gap: 5px;
+            }
+            
+            .mode-btn {
+                font-size: 12px;
+                padding: 6px 12px;
+            }
+            
+            .message {
+                max-width: 90%;
+            }
         }
     </style>
 </head>
 <body>
     <div class="header">
-        <div class="bee-logo">🐝</div>
-        <h1>Wisbee</h1>
-        <div class="subtitle">AIブンブン先生と楽しく学ぼう！</div>
+        <div class="app-title">
+            <span class="bee-icon">🐝</span>
+            <span class="app-name">Wisbee</span>
+        </div>
+        <div class="mode-selector">
+            <div class="mode-btn active" onclick="selectMode(this, 'teacher')">
+                ブンブン先生
+            </div>
+            <div class="mode-btn" onclick="selectMode(this, 'student')">
+                ブンブン生徒
+            </div>
+        </div>
     </div>
     
-    <div class="container">
-        <div class="demo-section">
-            <h2>📱 今すぐ試してみよう！</h2>
-            <p>下のチャットでブンブン先生と会話してみてください</p>
+    <div class="chat-container" id="chatContainer">
+        <div class="bot-message message">
+            こんにちは！私はブンブン先生です🐝 何でも質問してくださいね！
         </div>
-        
-        <div class="card">
-            <h3>💬 Wisbeeチャットデモ</h3>
-            
-            <div class="mode-selector">
-                <div class="mode-btn active" onclick="selectMode(this, 'teacher-smart')">
-                    🐝 ブンブン先生 (賢い)
-                </div>
-                <div class="mode-btn" onclick="selectMode(this, 'teacher-fast')">
-                    ⚡ ブンブン先生 (速い)
-                </div>
-                <div class="mode-btn" onclick="selectMode(this, 'student-curious')">
-                    🔍 ブンブン生徒 (好奇心)
-                </div>
-                <div class="mode-btn" onclick="selectMode(this, 'student-beginner')">
-                    🌱 ブンブン生徒 (初心者)
-                </div>
-            </div>
-            
-            <div class="chat-demo" id="chatArea">
-                <div class="message ai-message">
-                    ブンブン！こんにちは！ブンブン先生です🐝<br>
-                    何でも聞いてくださいね！一緒に楽しく学びましょう！
-                </div>
-            </div>
-            
-            <div class="input-area">
-                <input type="text" id="userInput" placeholder="質問を入力してください..." 
-                       onkeypress="if(event.key==='Enter') sendMessage()">
-                <button onclick="sendMessage()">送信</button>
-            </div>
+    </div>
+    
+    <div class="typing-indicator" id="typingIndicator">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+    
+    <div class="input-container">
+        <div class="input-wrapper">
+            <input type="text" 
+                   class="message-input" 
+                   id="messageInput" 
+                   placeholder="メッセージを入力..."
+                   onkeypress="handleKeyPress(event)">
+            <button class="send-btn" onclick="sendMessage()">送信</button>
         </div>
-        
-        <div class="card">
-            <h2>✨ Wisbeeの特徴</h2>
-            <div class="feature-grid">
-                <div class="feature">
-                    <div class="feature-icon">🐝</div>
-                    <h4>ブンブン先生</h4>
-                    <p>親切で楽しいAI先生</p>
-                </div>
-                <div class="feature">
-                    <div class="feature-icon">🎓</div>
-                    <h4>生徒モード</h4>
-                    <p>一緒に学ぶAI生徒</p>
-                </div>
-                <div class="feature">
-                    <div class="feature-icon">🌐</div>
-                    <h4>Web検索対応</h4>
-                    <p>最新情報も即座に</p>
-                </div>
-                <div class="feature">
-                    <div class="feature-icon">⚡</div>
-                    <h4>高速応答</h4>
-                    <p>RAG技術で賢く速い</p>
-                </div>
-            </div>
-        </div>
-        
-        <div class="share-box">
-            <h3>🎯 友達と共有しよう！</h3>
-            <p>このページのURLをコピーして送ってください：</p>
-            <div class="share-url" id="shareUrl">読み込み中...</div>
-            <button onclick="copyUrl()">URLをコピー</button>
-            <p style="margin-top: 20px;">
-                または、下のメッセージをコピペ：
-            </p>
-            <textarea style="width: 100%; height: 100px; padding: 10px; border-radius: 8px;" readonly>
-🐝 Wisbee - AIブンブン先生アプリ見つけた！
-
-ブンブン先生が何でも教えてくれるよ！
-試してみて〜 面白い！😊</textarea>
-        </div>
-        
-        <div class="card" style="text-align: center;">
-            <h3>📲 アプリ版について</h3>
-            <p>iOS/Androidアプリ版は現在開発中です！</p>
-            <p>完成したらこのページでお知らせします🚀</p>
-        </div>
+    </div>
+    
+    <div class="install-prompt" id="installPrompt">
+        ホーム画面に追加してアプリとして使えます！
     </div>
     
     <script>
-        let currentMode = 'teacher-smart';
-        
-        // ページURL表示
-        document.getElementById('shareUrl').textContent = window.location.href;
+        let currentMode = 'teacher';
+        const API_URL = 'https://wisbee-router.yukihamada.workers.dev/v1/chat/completions';
         
         function selectMode(btn, mode) {
             document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
             currentMode = mode;
+            
+            const greeting = mode === 'teacher' 
+                ? 'ブンブン先生モードに切り替わりました！何でも聞いてください🐝'
+                : 'ブンブン生徒モードに切り替わりました！一緒に楽しく学びましょう🐝';
+            
+            addMessage(greeting, 'bot');
         }
         
-        function sendMessage() {
-            const input = document.getElementById('userInput');
-            const chatArea = document.getElementById('chatArea');
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+        
+        function addMessage(text, sender) {
+            const chatContainer = document.getElementById('chatContainer');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}-message`;
+            messageDiv.textContent = text;
+            chatContainer.appendChild(messageDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+        
+        function showTyping() {
+            document.getElementById('typingIndicator').style.display = 'block';
+        }
+        
+        function hideTyping() {
+            document.getElementById('typingIndicator').style.display = 'none';
+        }
+        
+        async function sendMessage() {
+            const input = document.getElementById('messageInput');
             const message = input.value.trim();
             
             if (!message) return;
             
-            // ユーザーメッセージ追加
-            const userMsg = document.createElement('div');
-            userMsg.className = 'message user-message';
-            userMsg.textContent = message;
-            chatArea.appendChild(userMsg);
-            
+            addMessage(message, 'user');
             input.value = '';
+            showTyping();
             
-            // AI応答（デモ用）
-            setTimeout(() => {
-                const aiMsg = document.createElement('div');
-                aiMsg.className = 'message ai-message';
+            try {
+                const systemPrompt = currentMode === 'teacher'
+                    ? 'あなたはブンブン先生です。蜂のように活発で親しみやすい性格です。「〜ブン！」という語尾を時々使い、知識豊富で優しく教えます。'
+                    : 'あなたはブンブン生徒です。好奇心旺盛で元気な蜂の生徒です。「〜ブンね！」「〜ブンよ！」という語尾を使い、一緒に学ぶ友達のように接します。';
                 
-                let response = '';
-                if (currentMode.includes('teacher')) {
-                    response = `ブンブン！「${message}」について説明しますね🐝\n\n`;
-                    response += 'これは素晴らしい質問です！';
-                    if (message.includes('AI') || message.includes('プログラミング')) {
-                        response += '\n\nAIやプログラミングは今とても重要な分野ですね。';
-                    }
-                    response += '\n\nもっと詳しく知りたいことがあれば、どんどん聞いてください！';
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        model: 'gpt-3.5-turbo',
+                        messages: [
+                            { role: 'system', content: systemPrompt },
+                            { role: 'user', content: message }
+                        ]
+                    })
+                });
+                
+                const data = await response.json();
+                hideTyping();
+                
+                if (data.choices && data.choices[0]) {
+                    addMessage(data.choices[0].message.content, 'bot');
                 } else {
-                    response = `ブンブン！生徒として質問します🎓\n\n`;
-                    response += `「${message}」についてもっと教えてもらえませんか？`;
-                    response += '\n\n特に実例があると嬉しいです！';
+                    addMessage('申し訳ありません、エラーが発生しました。', 'bot');
                 }
-                
-                aiMsg.textContent = response;
-                chatArea.appendChild(aiMsg);
-                chatArea.scrollTop = chatArea.scrollHeight;
-            }, 1000);
+            } catch (error) {
+                hideTyping();
+                addMessage('ネットワークエラーが発生しました。', 'bot');
+            }
         }
         
-        function copyUrl() {
-            const url = window.location.href;
-            navigator.clipboard.writeText(url).then(() => {
-                alert('URLをコピーしました！友達に送ってね🐝');
-            });
+        // PWA対応
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js').catch(() => {});
         }
+        
+        // インストールプロンプト
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            document.getElementById('installPrompt').style.display = 'block';
+            
+            setTimeout(() => {
+                document.getElementById('installPrompt').style.display = 'none';
+            }, 5000);
+        });
+        
+        // フォーカス時にキーボードを表示
+        document.getElementById('messageInput').addEventListener('focus', () => {
+            setTimeout(() => {
+                window.scrollTo(0, document.body.scrollHeight);
+            }, 300);
+        });
     </script>
 </body>
 </html>
