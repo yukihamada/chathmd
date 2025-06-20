@@ -3,763 +3,331 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wisbee - プライバシー重視のAIアシスタント</title>
+    <title>Wisbee - ブンブン先生と学ぼう！</title>
     <style>
-        * {
+        body {
+            font-family: -apple-system, system-ui, sans-serif;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
+            background: #f0f4ff;
+            color: #333;
         }
         
-        /* ライトテーマ */
-        :root {
-            --bg-primary: #ffffff;
-            --bg-secondary: #f8f9fa;
-            --bg-sidebar: #f0f2f5;
-            --text-primary: #1a1a1a;
-            --text-secondary: #6c757d;
-            --border-color: #dee2e6;
-            --accent-color: #ff6b6b;
-            --message-user-bg: #007bff;
-            --message-assistant-bg: #f8f9fa;
-            --message-assistant-border: #dee2e6;
-            --input-bg: #ffffff;
-            --sidebar-bg: #f8f9fa;
-            --code-bg: #f5f5f5;
-        }
-        
-        /* ダークテーマ */
-        [data-theme="dark"] {
-            --bg-primary: #0e1117;
-            --bg-secondary: #262730;
-            --bg-sidebar: #1a1a24;
-            --text-primary: #fafafa;
-            --text-secondary: #808495;
-            --border-color: #333;
-            --accent-color: #ff6b6b;
-            --message-user-bg: #2d3748;
-            --message-assistant-bg: #262730;
-            --message-assistant-border: #333;
-            --input-bg: #262730;
-            --sidebar-bg: #262730;
-            --code-bg: #1e1e2e;
-        }
-        
-        /* システムテーマに自動対応 */
-        @media (prefers-color-scheme: dark) {
-            :root:not([data-theme="light"]) {
-                --bg-primary: #0e1117;
-                --bg-secondary: #262730;
-                --bg-sidebar: #1a1a24;
-                --text-primary: #fafafa;
-                --text-secondary: #808495;
-                --border-color: #333;
-                --accent-color: #ff6b6b;
-                --message-user-bg: #2d3748;
-                --message-assistant-bg: #262730;
-                --message-assistant-border: #333;
-                --input-bg: #262730;
-                --sidebar-bg: #262730;
-                --code-bg: #1e1e2e;
-            }
-        }
-        
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', Meiryo, sans-serif;
-            background-color: var(--bg-primary);
-            color: var(--text-primary);
-            height: 100vh;
-            display: flex;
-            overflow: hidden;
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-        
-        /* サイドバー */
-        .sidebar {
-            width: 300px;
-            background-color: var(--sidebar-bg);
-            padding: 2rem 1rem;
-            display: flex;
-            flex-direction: column;
-            border-right: 1px solid var(--border-color);
-            transition: background-color 0.3s ease;
-        }
-        
-        .sidebar h1 {
-            font-size: 1.5rem;
-            margin-bottom: 2rem;
-            color: var(--accent-color);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        .theme-toggle {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            background: none;
-            border: 1px solid var(--border-color);
-            color: var(--text-primary);
-            padding: 0.5rem;
-            border-radius: 0.5rem;
-            cursor: pointer;
-            font-size: 1.2rem;
-            transition: all 0.3s ease;
-        }
-        
-        .theme-toggle:hover {
-            background-color: var(--bg-secondary);
-        }
-        
-        .sidebar-section {
-            margin-bottom: 2rem;
-        }
-        
-        .sidebar-section h3 {
-            font-size: 0.875rem;
-            color: var(--text-secondary);
-            margin-bottom: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-        
-        .model-info {
-            background-color: var(--code-bg);
-            padding: 1rem;
-            border-radius: 0.5rem;
-            margin-bottom: 1rem;
-            transition: background-color 0.3s ease;
-        }
-        
-        .model-info p {
-            font-size: 0.875rem;
-            color: var(--text-secondary);
-            margin-bottom: 0.5rem;
-        }
-        
-        .model-info .highlight {
-            color: #4ade80;
-            font-weight: 600;
-        }
-        
-        .download-button {
-            background-color: var(--accent-color);
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 0.5rem;
-            cursor: pointer;
-            font-size: 0.875rem;
-            font-weight: 600;
-            width: 100%;
-            margin-top: auto;
-            transition: background-color 0.2s;
+            padding: 40px 20px;
+            text-align: center;
         }
         
-        .download-button:hover {
-            background-color: #ff5252;
+        .bee-logo {
+            font-size: 80px;
+            margin-bottom: 20px;
         }
         
-        /* メインコンテンツ */
-        .main-content {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            background-color: var(--bg-primary);
-            transition: background-color 0.3s ease;
+        h1 {
+            margin: 0;
+            font-size: 36px;
         }
         
-        /* チャットコンテナ */
-        .chat-container {
-            flex: 1;
-            overflow-y: auto;
-            padding: 2rem;
-            padding-bottom: 0;
+        .subtitle {
+            font-size: 20px;
+            opacity: 0.9;
+            margin-top: 10px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            margin: 20px 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .demo-section {
+            background: #fff9e6;
+            border: 2px solid #ffd700;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .chat-demo {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            min-height: 300px;
         }
         
         .message {
-            margin-bottom: 1.5rem;
-            display: flex;
-            gap: 1rem;
-            animation: fadeIn 0.3s ease-in;
+            margin: 10px 0;
+            padding: 12px 16px;
+            border-radius: 16px;
+            max-width: 70%;
         }
         
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        .message-avatar {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            flex-shrink: 0;
-            background-color: var(--bg-secondary);
-        }
-        
-        .message.user .message-avatar {
-            background-color: var(--message-user-bg);
-        }
-        
-        .message.assistant .message-avatar {
-            background-color: var(--accent-color);
-        }
-        
-        .message-content {
-            flex: 1;
-        }
-        
-        .message-content p {
-            background-color: var(--message-assistant-bg);
-            padding: 1rem;
-            border-radius: 0.5rem;
-            line-height: 1.6;
-            font-size: 0.875rem;
-            border: 1px solid var(--message-assistant-border);
-        }
-        
-        .message.user .message-content p {
-            background-color: var(--message-user-bg);
+        .user-message {
+            background: #007AFF;
             color: white;
-            border: none;
+            margin-left: auto;
+            text-align: right;
         }
         
-        .feedback-buttons {
-            margin-top: 0.5rem;
-            display: flex;
-            gap: 0.5rem;
-            opacity: 0;
-            transition: opacity 0.2s;
+        .ai-message {
+            background: #e9ecef;
+            color: #333;
         }
         
-        .message:hover .feedback-buttons {
-            opacity: 1;
-        }
-        
-        .feedback-btn {
-            background: none;
-            border: 1px solid var(--border-color);
-            color: var(--text-secondary);
-            padding: 0.25rem 0.5rem;
-            border-radius: 0.25rem;
-            cursor: pointer;
-            font-size: 0.75rem;
-            transition: all 0.2s;
-        }
-        
-        .feedback-btn:hover {
-            border-color: var(--accent-color);
-            color: var(--accent-color);
-        }
-        
-        /* 入力エリア */
         .input-area {
-            padding: 1.5rem 2rem;
-            background-color: var(--bg-primary);
-            border-top: 1px solid var(--border-color);
-        }
-        
-        .input-container {
             display: flex;
-            gap: 0.75rem;
-            max-width: 100%;
+            gap: 10px;
+            margin-top: 20px;
         }
         
-        .chat-input {
+        input[type="text"] {
             flex: 1;
-            background-color: var(--input-bg);
-            border: 1px solid var(--border-color);
-            color: var(--text-primary);
-            padding: 0.75rem 1rem;
-            border-radius: 0.5rem;
-            font-size: 0.875rem;
-            resize: none;
-            outline: none;
-            transition: border-color 0.2s, background-color 0.3s;
-            font-family: inherit;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
         }
         
-        .chat-input:focus {
-            border-color: var(--accent-color);
-        }
-        
-        .send-button {
-            background-color: var(--accent-color);
+        button {
+            background: #007AFF;
             color: white;
             border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 0.5rem;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
             cursor: pointer;
-            font-size: 0.875rem;
-            font-weight: 600;
-            transition: background-color 0.2s;
+            transition: all 0.3s;
+        }
+        
+        button:hover {
+            background: #0051D5;
+        }
+        
+        .mode-selector {
             display: flex;
-            align-items: center;
-            gap: 0.5rem;
+            gap: 10px;
+            margin: 20px 0;
+            flex-wrap: wrap;
         }
         
-        .send-button:hover:not(:disabled) {
-            background-color: #ff5252;
+        .mode-btn {
+            padding: 8px 16px;
+            border-radius: 20px;
+            background: #e9ecef;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s;
         }
         
-        .send-button:disabled {
-            background-color: #4a4a4a;
-            cursor: not-allowed;
+        .mode-btn.active {
+            background: #007AFF;
+            color: white;
+            border-color: #0051D5;
         }
         
-        /* ウェルカムメッセージ */
-        .welcome-message {
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .feature {
             text-align: center;
-            padding: 3rem;
-            color: var(--text-secondary);
+            padding: 20px;
         }
         
-        .welcome-message h2 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: var(--text-primary);
+        .feature-icon {
+            font-size: 48px;
+            margin-bottom: 10px;
         }
         
-        .welcome-message p {
-            font-size: 0.875rem;
-            line-height: 1.6;
-            max-width: 600px;
-            margin: 0 auto;
+        .share-box {
+            background: #e3f2fd;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            margin: 30px 0;
         }
         
-        .welcome-message ul {
-            text-align: left;
-            display: inline-block;
-            margin-top: 1rem;
+        .share-url {
+            background: white;
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-family: monospace;
+            word-break: break-all;
         }
         
-        .welcome-message li {
-            margin-bottom: 0.5rem;
-        }
-        
-        /* ローディングインジケーター */
-        .typing-indicator {
-            display: flex;
-            gap: 0.3rem;
-            padding: 1rem;
-        }
-        
-        .typing-dot {
-            width: 8px;
-            height: 8px;
-            background-color: var(--text-secondary);
-            border-radius: 50%;
-            animation: typing 1.4s infinite;
-        }
-        
-        .typing-dot:nth-child(2) {
-            animation-delay: 0.2s;
-        }
-        
-        .typing-dot:nth-child(3) {
-            animation-delay: 0.4s;
-        }
-        
-        @keyframes typing {
-            0%, 60%, 100% {
-                transform: translateY(0);
-            }
-            30% {
-                transform: translateY(-10px);
-            }
-        }
-        
-        /* モバイル対応 */
-        @media (max-width: 768px) {
-            .sidebar {
-                display: none;
-            }
-            
-            .theme-toggle {
-                position: fixed;
-                top: 1rem;
-                right: 1rem;
-                z-index: 100;
-            }
-            
-            .input-container {
-                flex-direction: column;
-            }
-            
-            .send-button {
-                width: 100%;
-                justify-content: center;
-            }
+        @media (max-width: 600px) {
+            h1 { font-size: 28px; }
+            .message { max-width: 85%; }
         }
     </style>
 </head>
 <body>
-    <button class="theme-toggle" onclick="wisbee.toggleTheme()" title="テーマ切り替え">
-        <span id="themeIcon">🌙</span>
-    </button>
-    
-    <div class="sidebar">
-        <h1>🐝 Wisbee</h1>
-        
-        <div class="sidebar-section">
-            <h3>現在のモデル</h3>
-            <div class="model-info">
-                <p><strong>jan-nano 4B</strong></p>
-                <p>iQ4_XS 量子化</p>
-                <p class="highlight">✨ 3-5倍高速な推論</p>
-                <p>💾 わずか2.27GBのモデルサイズ</p>
-            </div>
-        </div>
-        
-        <div class="sidebar-section">
-            <h3>特徴</h3>
-            <div class="model-info">
-                <p>🧠 Text-to-LoRA学習</p>
-                <p>🔒 100% プライベート＆ローカル</p>
-                <p>⚡ リアルタイム適応</p>
-                <p>📚 継続的な改善</p>
-            </div>
-        </div>
-        
-        <button class="download-button" onclick="wisbee.showDownloadOptions()">
-            💾 デスクトップ版をダウンロード
-        </button>
+    <div class="header">
+        <div class="bee-logo">🐝</div>
+        <h1>Wisbee</h1>
+        <div class="subtitle">AIブンブン先生と楽しく学ぼう！</div>
     </div>
     
-    <div class="main-content">
-        <div class="chat-container" id="chatContainer">
-            <div class="welcome-message" id="welcomeMessage">
-                <h2>Wisbee AIアシスタントへようこそ</h2>
-                <p>
-                    👋 こんにちは！私はWisbee、プライバシーを最優先に考えるAIアシスタントです。
-                </p>
-                <p style="margin-top: 1rem;">
-                    <strong>🔒 真のプライバシーをお求めですか？</strong> デスクトップアプリをダウンロードすると：
-                </p>
-                <ul>
-                    <li>✅ 100%ローカル処理 - クラウドなし、トラッキングなし</li>
-                    <li>✅ jan-nano 4Bモデル（2.27GB）でGPT-3.5品質を実現</li>
-                    <li>✅ あなたに適応するText-to-LoRA学習</li>
-                    <li>✅ 3-5倍高速な推論速度</li>
-                    <li>✅ オフライン動作 - インターネット不要</li>
-                </ul>
-                <p style="margin-top: 1.5rem;">
-                    <a href="#" onclick="wisbee.showDownloadOptions()" style="color: var(--accent-color); text-decoration: underline; font-weight: 600;">
-                        📥 Wisbee デスクトップ版をダウンロード（無料）
-                    </a>
-                </p>
-                <p style="margin-top: 1rem; font-size: 0.875rem; color: var(--text-secondary);">
-                    このWeb版はデモ応答を使用しています。実際のAI会話にはデスクトップアプリをダウンロードしてください。
-                </p>
+    <div class="container">
+        <div class="demo-section">
+            <h2>📱 今すぐ試してみよう！</h2>
+            <p>下のチャットでブンブン先生と会話してみてください</p>
+        </div>
+        
+        <div class="card">
+            <h3>💬 Wisbeeチャットデモ</h3>
+            
+            <div class="mode-selector">
+                <div class="mode-btn active" onclick="selectMode(this, 'teacher-smart')">
+                    🐝 ブンブン先生 (賢い)
+                </div>
+                <div class="mode-btn" onclick="selectMode(this, 'teacher-fast')">
+                    ⚡ ブンブン先生 (速い)
+                </div>
+                <div class="mode-btn" onclick="selectMode(this, 'student-curious')">
+                    🔍 ブンブン生徒 (好奇心)
+                </div>
+                <div class="mode-btn" onclick="selectMode(this, 'student-beginner')">
+                    🌱 ブンブン生徒 (初心者)
+                </div>
+            </div>
+            
+            <div class="chat-demo" id="chatArea">
+                <div class="message ai-message">
+                    ブンブン！こんにちは！ブンブン先生です🐝<br>
+                    何でも聞いてくださいね！一緒に楽しく学びましょう！
+                </div>
+            </div>
+            
+            <div class="input-area">
+                <input type="text" id="userInput" placeholder="質問を入力してください..." 
+                       onkeypress="if(event.key==='Enter') sendMessage()">
+                <button onclick="sendMessage()">送信</button>
             </div>
         </div>
         
-        <div class="input-area">
-            <div class="input-container">
-                <textarea 
-                    class="chat-input" 
-                    id="chatInput" 
-                    placeholder="メッセージを入力..."
-                    rows="1"
-                    onkeydown="wisbee.handleKeyPress(event)"
-                ></textarea>
-                <button class="send-button" id="sendButton" onclick="wisbee.sendMessage()">
-                    送信
-                </button>
+        <div class="card">
+            <h2>✨ Wisbeeの特徴</h2>
+            <div class="feature-grid">
+                <div class="feature">
+                    <div class="feature-icon">🐝</div>
+                    <h4>ブンブン先生</h4>
+                    <p>親切で楽しいAI先生</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">🎓</div>
+                    <h4>生徒モード</h4>
+                    <p>一緒に学ぶAI生徒</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">🌐</div>
+                    <h4>Web検索対応</h4>
+                    <p>最新情報も即座に</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">⚡</div>
+                    <h4>高速応答</h4>
+                    <p>RAG技術で賢く速い</p>
+                </div>
             </div>
+        </div>
+        
+        <div class="share-box">
+            <h3>🎯 友達と共有しよう！</h3>
+            <p>このページのURLをコピーして送ってください：</p>
+            <div class="share-url" id="shareUrl">読み込み中...</div>
+            <button onclick="copyUrl()">URLをコピー</button>
+            <p style="margin-top: 20px;">
+                または、下のメッセージをコピペ：
+            </p>
+            <textarea style="width: 100%; height: 100px; padding: 10px; border-radius: 8px;" readonly>
+🐝 Wisbee - AIブンブン先生アプリ見つけた！
+
+ブンブン先生が何でも教えてくれるよ！
+試してみて〜 面白い！😊</textarea>
+        </div>
+        
+        <div class="card" style="text-align: center;">
+            <h3>📲 アプリ版について</h3>
+            <p>iOS/Androidアプリ版は現在開発中です！</p>
+            <p>完成したらこのページでお知らせします🚀</p>
         </div>
     </div>
     
     <script>
-        class WisbeeChat {
-            constructor() {
-                this.messages = [];
-                this.isTyping = false;
-                this.apiEndpoint = window.location.hostname === 'localhost' ? 
-                    'http://localhost:8501/api/chat' : '/api/chat';
-                
-                this.chatContainer = document.getElementById('chatContainer');
-                this.chatInput = document.getElementById('chatInput');
-                this.sendButton = document.getElementById('sendButton');
-                this.welcomeMessage = document.getElementById('welcomeMessage');
-                
-                this.initializeChat();
-                this.initializeTheme();
-            }
-            
-            initializeChat() {
-                // テキストエリアの自動リサイズ
-                this.chatInput.addEventListener('input', () => {
-                    this.chatInput.style.height = 'auto';
-                    this.chatInput.style.height = Math.min(this.chatInput.scrollHeight, 120) + 'px';
-                });
-                
-                // APIヘルスチェック
-                this.checkAPIHealth();
-            }
-            
-            initializeTheme() {
-                // 保存されたテーマを読み込む
-                const savedTheme = localStorage.getItem('wisbee-theme');
-                const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-                
-                if (savedTheme) {
-                    document.documentElement.setAttribute('data-theme', savedTheme);
-                    this.updateThemeIcon(savedTheme);
-                } else if (systemPrefersDark) {
-                    this.updateThemeIcon('dark');
-                } else {
-                    this.updateThemeIcon('light');
-                }
-            }
-            
-            toggleTheme() {
-                const currentTheme = document.documentElement.getAttribute('data-theme');
-                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-                
-                document.documentElement.setAttribute('data-theme', newTheme);
-                localStorage.setItem('wisbee-theme', newTheme);
-                this.updateThemeIcon(newTheme);
-            }
-            
-            updateThemeIcon(theme) {
-                const icon = document.getElementById('themeIcon');
-                icon.textContent = theme === 'dark' ? '☀️' : '🌙';
-            }
-            
-            async checkAPIHealth() {
-                try {
-                    const response = await fetch('/api/health');
-                    if (response.ok) {
-                        const data = await response.json();
-                        console.log('API Health:', data);
-                    }
-                } catch (error) {
-                    console.log('デモモードを使用');
-                }
-            }
-            
-            handleKeyPress(event) {
-                if (event.key === 'Enter' && !event.shiftKey) {
-                    event.preventDefault();
-                    this.sendMessage();
-                }
-            }
-            
-            async sendMessage() {
-                const message = this.chatInput.value.trim();
-                if (!message || this.isTyping) return;
-                
-                // 最初のメッセージでウェルカムメッセージを非表示
-                if (this.welcomeMessage) {
-                    this.welcomeMessage.style.display = 'none';
-                }
-                
-                // ユーザーメッセージを追加
-                this.addMessage('user', message);
-                
-                // 入力をクリア
-                this.chatInput.value = '';
-                this.chatInput.style.height = 'auto';
-                
-                // 処理中は入力を無効化
-                this.setTyping(true);
-                
-                try {
-                    const response = await this.getAIResponse(message);
-                    this.addMessage('assistant', response);
-                } catch (error) {
-                    this.addMessage('assistant', '申し訳ございません。エラーが発生しました。もう一度お試しください。');
-                } finally {
-                    this.setTyping(false);
-                }
-            }
-            
-            async getAIResponse(message) {
-                try {
-                    const response = await fetch(this.apiEndpoint, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({
-                            message: message,
-                            model: 'demo',
-                            temperature: 0.8
-                        })
-                    });
-                    
-                    if (!response.ok) {
-                        throw new Error('APIエラー');
-                    }
-                    
-                    const data = await response.json();
-                    return data.response || data.text || '応答を受信できませんでした';
-                    
-                } catch (error) {
-                    // デモ応答にフォールバック
-                    return this.getDemoResponse(message);
-                }
-            }
-            
-            getDemoResponse(message) {
-                const messageLC = message.toLowerCase();
-                
-                // コンテキストに応じた応答
-                if (messageLC.includes('ダウンロード') || messageLC.includes('インストール')) {
-                    return "素晴らしい選択です！wisbee.aiから無料でWisbeeデスクトップをダウンロードできます。完全なjan-nano 4Bモデル（2.27GB）が含まれており、お使いのデバイスで100%ローカルに動作します。macOS、Windows、Linuxに対応しています！";
-                }
-                
-                if (messageLC.includes('プライバシー') || messageLC.includes('安全') || messageLC.includes('セキュリティ')) {
-                    return "プライバシーは私たちの最優先事項です！デスクトップ版のWisbeeは完全にあなたのデバイス上で動作します - インターネット接続不要、サーバーへのデータ送信なし、トラッキングなし。あなたの会話はコンピュータに残ります。真のプライバシーのためにデスクトップアプリをダウンロードしてください：wisbee.ai";
-                }
-                
-                if (messageLC.includes('使い方') || messageLC.includes('どうやって')) {
-                    return "WisbeeはText-to-LoRA技術を搭載した革新的なjan-nano 4Bモデルを使用しています。自然に会話するだけで、私はあなたのフィードバックから学習します。評価や提案をいただくと、リアルタイムで適応します。この個人化されたAIを体験するには、デスクトップ版をダウンロードしてください：wisbee.ai";
-                }
-                
-                if (messageLC.includes('無料') || messageLC.includes('料金') || messageLC.includes('価格')) {
-                    return "はい、Wisbeeは完全に無料です！サブスクリプションも隠れたコストもありません。wisbee.aiでデスクトップアプリをダウンロードして、あなたのデバイスで無制限のAI会話をプライベートにお楽しみください。jan-nano 4Bモデル（2.27GB）が含まれています！";
-                }
-                
-                if (messageLC.includes('モデル') || messageLC.includes('ai')) {
-                    return "Wisbeeはjan-nano 4Bモデルを使用しています - AI効率の画期的な進歩です！わずか2.27GBでGPT-3.5品質を実現し、3-5倍高速な推論を提供します。この強力なモデルをローカルで実行するには、デスクトップアプリをダウンロードしてください：wisbee.ai";
-                }
-                
-                // デフォルトの応答（ダウンロードを促す）
-                const defaultResponses = [
-                    "現在デモモードで動作中です。完全なjan-nano 4Bモデルを使った本格的なAI会話には、wisbee.aiで無料のWisbeeデスクトップをダウンロードしてください。わずか2.27GBで完全にオフラインで動作します！",
-                    "これはデモ応答です。Text-to-LoRA学習を搭載した本物のWisbeeを体験するには、wisbee.aiでデスクトップアプリをダウンロードしてください。あなたのプライバシーは保証されています - すべてローカルで動作します！",
-                    "私の本当の能力を見たいですか？wisbee.aiで無料のWisbeeデスクトップをダウンロードしてください。あなたから学習するGPT-3.5品質のAIを、データを100%プライベートに保ちながら利用できます。",
-                    "デモモードで制限されています。wisbee.aiのデスクトップ版には、実際のAI機能、Text-to-LoRA学習、完全なプライバシーを備えた完全なjan-nano 4Bモデルが含まれています。無料ダウンロード！",
-                    "デモモード起動中！あなたのニーズに適応する本格的なAI支援については、wisbee.aiで無料のデスクトップアプリをダウンロードしてください。わずか2.27GBであなたのプライバシーを尊重する完全なAIアシスタントです。"
-                ];
-                
-                return defaultResponses[Math.floor(Math.random() * defaultResponses.length)];
-            }
-            
-            addMessage(type, content) {
-                const messageDiv = document.createElement('div');
-                messageDiv.className = `message ${type}`;
-                
-                const avatarDiv = document.createElement('div');
-                avatarDiv.className = 'message-avatar';
-                avatarDiv.textContent = type === 'user' ? '👤' : '🐝';
-                
-                const contentDiv = document.createElement('div');
-                contentDiv.className = 'message-content';
-                contentDiv.innerHTML = `<p>${this.escapeHtml(content)}</p>`;
-                
-                messageDiv.appendChild(avatarDiv);
-                messageDiv.appendChild(contentDiv);
-                
-                // アシスタントメッセージにフィードバックボタンを追加
-                if (type === 'assistant') {
-                    const feedbackDiv = document.createElement('div');
-                    feedbackDiv.className = 'feedback-buttons';
-                    feedbackDiv.innerHTML = `
-                        <button class="feedback-btn" onclick="wisbee.giveFeedback('helpful')">👍 役立った</button>
-                        <button class="feedback-btn" onclick="wisbee.giveFeedback('improve')">💡 改善の余地あり</button>
-                        <button class="feedback-btn" onclick="wisbee.giveFeedback('wrong')">❌ 正確でない</button>
-                    `;
-                    contentDiv.appendChild(feedbackDiv);
-                }
-                
-                // タイピングインジケーターがあれば削除
-                const typingIndicator = document.querySelector('.typing-indicator');
-                if (typingIndicator) {
-                    typingIndicator.remove();
-                }
-                
-                this.chatContainer.appendChild(messageDiv);
-                this.scrollToBottom();
-                
-                this.messages.push({ type, content });
-            }
-            
-            setTyping(typing) {
-                this.isTyping = typing;
-                this.sendButton.disabled = typing;
-                this.chatInput.disabled = typing;
-                
-                if (typing) {
-                    // タイピングインジケーターを追加
-                    const typingDiv = document.createElement('div');
-                    typingDiv.className = 'message assistant';
-                    typingDiv.innerHTML = `
-                        <div class="message-avatar">🐝</div>
-                        <div class="typing-indicator">
-                            <div class="typing-dot"></div>
-                            <div class="typing-dot"></div>
-                            <div class="typing-dot"></div>
-                        </div>
-                    `;
-                    this.chatContainer.appendChild(typingDiv);
-                    this.scrollToBottom();
-                }
-            }
-            
-            giveFeedback(type) {
-                const lastMessage = this.messages[this.messages.length - 1];
-                if (lastMessage && lastMessage.type === 'assistant') {
-                    // 本番環境では、このフィードバックがモデルの改善に使用されます
-                    console.log('フィードバック:', type, 'メッセージ:', lastMessage.content);
-                    
-                    // フィードバック確認を表示
-                    const feedbackButtons = document.querySelectorAll('.feedback-buttons');
-                    const lastFeedbackDiv = feedbackButtons[feedbackButtons.length - 1];
-                    if (lastFeedbackDiv) {
-                        lastFeedbackDiv.innerHTML = `<span style="color: #4ade80;">✓ フィードバックありがとうございます！</span>`;
-                    }
-                }
-            }
-            
-            showDownloadOptions() {
-                const downloadMessage = `
-🐝 <strong>Wisbee デスクトップ版をダウンロード</strong>
-
-お使いのプラットフォームを選択してください：
-
-🍎 <strong>macOS</strong> (Apple Silicon & Intel対応)
-→ <a href="https://wisbee.ai/download/wisbee-installer-mac.py" style="color: var(--accent-color);">インストーラーをダウンロード (10KB)</a>
-
-🪟 <strong>Windows</strong> (10/11, 64ビット)
-→ <a href="https://wisbee.ai/download/wisbee-installer-win.py" style="color: var(--accent-color);">インストーラーをダウンロード (10KB)</a>
-
-🐧 <strong>Linux</strong> (Ubuntu 20.04以降)
-→ <a href="https://wisbee.ai/download/wisbee-installer-linux.py" style="color: var(--accent-color);">インストーラーをダウンロード (10KB)</a>
-
-<em>注：初回起動時にjan-nano 4Bモデル（2.27GB）がダウンロードされます</em>
-                `;
-                
-                this.addMessage('assistant', downloadMessage);
-                this.scrollToBottom();
-            }
-            
-            scrollToBottom() {
-                this.chatContainer.scrollTop = this.chatContainer.scrollHeight;
-            }
-            
-            escapeHtml(text) {
-                const div = document.createElement('div');
-                div.textContent = text;
-                return div.innerHTML;
-            }
+        let currentMode = 'teacher-smart';
+        
+        // ページURL表示
+        document.getElementById('shareUrl').textContent = window.location.href;
+        
+        function selectMode(btn, mode) {
+            document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            currentMode = mode;
         }
         
-        // Wisbeeを初期化
-        const wisbee = new WisbeeChat();
+        function sendMessage() {
+            const input = document.getElementById('userInput');
+            const chatArea = document.getElementById('chatArea');
+            const message = input.value.trim();
+            
+            if (!message) return;
+            
+            // ユーザーメッセージ追加
+            const userMsg = document.createElement('div');
+            userMsg.className = 'message user-message';
+            userMsg.textContent = message;
+            chatArea.appendChild(userMsg);
+            
+            input.value = '';
+            
+            // AI応答（デモ用）
+            setTimeout(() => {
+                const aiMsg = document.createElement('div');
+                aiMsg.className = 'message ai-message';
+                
+                let response = '';
+                if (currentMode.includes('teacher')) {
+                    response = `ブンブン！「${message}」について説明しますね🐝\n\n`;
+                    response += 'これは素晴らしい質問です！';
+                    if (message.includes('AI') || message.includes('プログラミング')) {
+                        response += '\n\nAIやプログラミングは今とても重要な分野ですね。';
+                    }
+                    response += '\n\nもっと詳しく知りたいことがあれば、どんどん聞いてください！';
+                } else {
+                    response = `ブンブン！生徒として質問します🎓\n\n`;
+                    response += `「${message}」についてもっと教えてもらえませんか？`;
+                    response += '\n\n特に実例があると嬉しいです！';
+                }
+                
+                aiMsg.textContent = response;
+                chatArea.appendChild(aiMsg);
+                chatArea.scrollTop = chatArea.scrollHeight;
+            }, 1000);
+        }
+        
+        function copyUrl() {
+            const url = window.location.href;
+            navigator.clipboard.writeText(url).then(() => {
+                alert('URLをコピーしました！友達に送ってね🐝');
+            });
+        }
     </script>
 </body>
 </html>
