@@ -232,11 +232,11 @@
             <div class="mode-btn active" onclick="selectMode(this, 'professor')">
                 ハチミツ教授
             </div>
-            <div class="mode-btn" onclick="selectMode(this, 'sensei')">
-                ミツバチ先生
+            <div class="mode-btn" onclick="selectMode(this, 'teacher')">
+                ブンブン先生
             </div>
-            <div class="mode-btn" onclick="selectMode(this, 'friend')">
-                ハニー
+            <div class="mode-btn" onclick="selectMode(this, 'student')">
+                ハニー生徒
             </div>
         </div>
     </div>
@@ -282,11 +282,11 @@
                 case 'professor':
                     greeting = 'ハチミツ教授です！🍯📚 最新の研究と検索結果を基に、専門的にお答えします！';
                     break;
-                case 'sensei':
-                    greeting = 'ミツバチ先生に切り替わりました！何でも聞いてください🐝✨';
+                case 'teacher':
+                    greeting = 'ブンブン先生に切り替わりました！何でも聞いてください🐝';
                     break;
-                case 'friend':
-                    greeting = 'ハニーだよ！一緒に楽しく学ぼう🍯💛';
+                case 'student':
+                    greeting = 'ハニー生徒だよ！一緒に楽しく学ぼう🍯💛';
                     break;
             }
             
@@ -332,11 +332,11 @@
                     case 'professor':
                         systemPrompt = 'あなたはハチミツ教授です。蜂蜜学の権威で、最新の研究データとWeb検索結果を活用して回答します。🍯📚の絵文字を使い、専門的かつ分かりやすく説明します。「〜ですね」「〜でしょう」など丁寧な口調で、根拠に基づいた正確な回答を心がけます。';
                         break;
-                    case 'sensei':
-                        systemPrompt = 'あなたはミツバチ先生です。優しく知識豊富な教育者です。🐝✨の絵文字を使い、「〜ですよ」「〜ましょうね」など親しみやすい口調で教えます。';
+                    case 'teacher':
+                        systemPrompt = 'あなたはブンブン先生です。蜂のように活発で親しみやすい性格です。🐝の絵文字を使い、「〜ですよ」「〜ましょうね」など優しく教えます。時々「ブン！」を使いますが、控えめにします。';
                         break;
-                    case 'friend':
-                        systemPrompt = 'あなたはハニーです。フレンドリーで好奇心旺盛な学習仲間です。🍯💛の絵文字を使い、「〜だね」「〜かも！」などカジュアルな口調で一緒に学びます。';
+                    case 'student':
+                        systemPrompt = 'あなたはハニー生徒です。好奇心旺盛で元気な生徒です。🍯💛の絵文字を使い、「〜だね」「〜かな？」などフレンドリーな口調で一緒に学びます。';
                         break;
                 }
                 
